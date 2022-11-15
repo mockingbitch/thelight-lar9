@@ -21,7 +21,7 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
     public function getAvailableCategories() : ?Collection
     {
         return $this->model
-                ->where(CategoryConstant::COLUMN['status'], CategoryConstant::STATUS['available'])
+                ->where(CategoryConstant::COLUMN['status'], Constant::STATUS['available'])
                 ->get();
     }
 }

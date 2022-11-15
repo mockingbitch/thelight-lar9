@@ -2,10 +2,10 @@
 
 namespace App\Constants;
 
-class CategoryConstant
+class ProductConstant
 {
-    public const BREADCRUMB = 'category';
-    public const ERR_MSG_NOT_FOUND = 'Không tìm thấy danh mục';
+    public const BREADCRUMB = 'product';
+    public const ERR_MSG_NOT_FOUND = 'Không tìm thấy sản phẩm';
 
     public const COLUMN_ID = 'id';
     public const COLUMN_NAME = 'name';

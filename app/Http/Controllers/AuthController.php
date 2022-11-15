@@ -7,13 +7,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Constants\UserConstant;
 use App\Constants\Constant;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class AuthController extends Controller
 {
     /**
-     * @return void
+     * @return View
      */
-    public function index()
+    public function index() : View
     {
         if (Auth::guard('user')->user()) return redirect()->back();
         
@@ -23,9 +25,9 @@ class AuthController extends Controller
     /**
      * @param Request $request
      * 
-     * @return void
+     * @return RedirectResponse
      */
-    public function login(Request $request)
+    public function login(Request $request) : RedirectResponse
     {
         try {
             $request->validate([
@@ -57,7 +59,10 @@ class AuthController extends Controller
         }
     }
 
-    public function logout()
+    /**
+     * @return RedirectResponse
+     */
+    public function logout() : RedirectResponse
     {
         Auth::guard('user')->logout();
         session()->forget('cart');
