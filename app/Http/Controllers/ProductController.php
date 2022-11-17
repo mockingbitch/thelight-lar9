@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductRequest;
+use Illuminate\Http\RedirectResponse;
 use App\Repositories\Contracts\Interface\ProductRepositoryInterface;
 use App\Repositories\Contracts\Interface\CategoryRepositoryInterface;
 use Illuminate\View\View;
@@ -58,20 +59,57 @@ class ProductController extends Controller
     }
 
     /**
+     * @return View
+     */
+    public function viewCreate() : View
+    {
+        return view('dashboard.product.create', [
+            'productErrCode' => session()->get('productErrCode') ?? null,
+            'productErrMsg' => session()->get('productErrMsg') ?? null,
+            'breadcrumb' => $this->breadcrumb
+        ]);
+    }
+
+    /**
+     * @param integer|null $id
+     * @return View|RedirectResponse
+     */
+    public function viewUpdate(?int $id) : View|RedirectResponse
+    {
+        try {
+            $product = $this->productRepository->find($id);
+
+            return view('dashboard.product.update', [
+                'productErrCode' => session()->get('productErrCode') ?? null,
+                'productErrMsg' => session()->get('productErrMsg') ?? null,
+                'product' => $product,
+                'breadcrumb' => $this->breadcrumb
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()
+                ->route('dashboard.product.list')
+                ->with([
+                    'productErrCode' => Constant::ERR_CODE['fail'],
+                    'productErrMsg' => ProductConstant::ERR_MSG_NOT_FOUND
+                ]);
+        }
+    }
+
+    /**
      * @param ProductRequest $request
      * 
      * @return View
      */
     public function create(ProductRequest $request) : View
     {
-        $category_id = $request->category_id;
+        $product_id = $request->product_id;
 
-        if (! $this->categoryRepository->find($category_id)) :
+        if (! $this->productRepository->find($product_id)) :
             return redirect()
                 ->route('dashboard.product.create')
                 ->with([
                     'productErrCode' => Constant::ERR_CODE['fail'],
-                    'productErrMsg' => ProductConstant::ERR_MSG['category_not_found']
+                    'productErrMsg' => ProductConstant::ERR_MSG['product_not_found']
                 ]);
         endif;
 
@@ -123,27 +161,22 @@ class ProductController extends Controller
             ]);
     }
 
-    /**
-     * @param Request $request
-     * 
-     * @return JsonResponse
-     */
-    public function delete(Request $request) : JsonResponse
+    public function delete(Request $request)
     {
-        try {
-            $product_id = $request->query('id');
+        // try {
+        //     $product_id = $request->query('id');
 
-            if (! $this->productRepository->find($product_id)) :
-                return $this->errorResponse('Resource not found');
-            endif;
+        //     if (! $this->productRepository->find($product_id)) :
+        //         return $this->errorResponse('Resource not found');
+        //     endif;
 
-            if (! $this->productRepository->delete($product_id)) :
-                return $this->errorResponse('Failed to delete product');
-            endif;
+        //     if (! $this->productRepository->delete($product_id)) :
+        //         return $this->errorResponse('Failed to delete product');
+        //     endif;
 
-            return $this->successResponse('Ok');
-        } catch (\Throwable $th) {
-            return $this->catchErrorResponse();
-        }
+        //     return $this->successResponse('Ok');
+        // } catch (\Throwable $th) {
+        //     return $this->catchErrorResponse();
+        // }
     }
 }

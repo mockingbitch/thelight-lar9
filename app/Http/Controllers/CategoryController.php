@@ -8,6 +8,7 @@ use App\Http\Requests\CategoryRequest;
 use App\Repositories\Contracts\Interface\CategoryRepositoryInterface;
 use App\Repositories\Contracts\Interface\ProductRepositoryInterface;
 use App\Constants\CategoryConstant;
+use App\Constants\Constant;
 use Illuminate\View\View;
 
 class CategoryController extends Controller
@@ -50,11 +51,56 @@ class CategoryController extends Controller
         $categories = $this->categoryRepository->getAll();
 
         return view('dashboard.category.list', [
-            'categoryErrCode' => session()->get('categoryErrCode') ?? '',
-            'categoryErrMsg' => session()->get('categoryErrMsg') ?? '',
+            'categoryErrCode' => session()->get('categoryErrCode') ?? null,
+            'categoryErrMsg' => session()->get('categoryErrMsg') ?? null,
             'categories' => $categories,
             'breadcrumb' => $this->breadcrumb
         ]);
+    }
+
+    /**
+     * @return View
+     */
+    public function viewCreate() : View
+    {
+        return view('dashboard.category.create', [
+            'categoryErrCode' => session()->get('categoryErrCode') ?? null,
+            'categoryErrMsg' => session()->get('categoryErrMsg') ?? null,
+            'breadcrumb' => $this->breadcrumb
+        ]);
+    }
+
+    /**
+     * @param integer|null $id
+     * 
+     * @return View|RedirectResponse
+     */
+    public function viewUpdate(?int $id) : View|RedirectResponse
+    {
+        try {
+            $category = $this->categoryRepository->find($id);
+
+            if (null == $category || $category == '') :
+                return redirect()->with('dashboard.category.list')->with([
+                    'categoryErrCode' => Constant::ERR_CODE['fail'],
+                    'categoryErrMsg' => CategoryConstant::ERR_MSG_NOT_FOUND
+                ]);
+            endif;
+
+            return view('dashboard.category.update', [
+                'categoryErrCode' => session()->get('categoryErrCode') ?? null,
+                'categoryErrMsg' => session()->get('categoryErrMsg') ?? null,
+                'category' => $category,
+                'breadcrumb' => $this->breadcrumb
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()
+                ->route('dashboard.category.list')
+                ->with([
+                    'categoryErrCode' => Constant::ERR_CODE['fail'],
+                    'categoryErrMsg' => CategoryConstant::ERR_MSG_NOT_FOUND
+                ]);
+        }
     }
 
     /**
@@ -89,8 +135,6 @@ class CategoryController extends Controller
      */
     public function update(?int $categoryId, CategoryRequest $request) : RedirectResponse
     {
-        $categoryId = $request->query('id');
-
         if (! $this->categoryRepository->find($categoryId)) :
             return redirect()
                 ->route('dashboard.category.list')
@@ -99,7 +143,7 @@ class CategoryController extends Controller
 
         if (! $this->categoryRepository->update($categoryId, $request->toArray())) :
             return redirect()
-                ->route('dashboard.category.update')
+                ->route('dashboard.category.update', ['id' => $categoryId])
                 ->with([
                     'categoryErrCode' => Constant::ERR_CODE['fail'],
                     'categoryErrMsg' => Constant::ERR_MSG['update_fail']
@@ -107,7 +151,7 @@ class CategoryController extends Controller
         endif;
 
         return redirect()
-            ->route('dashboard.category.update')
+            ->route('dashboard.category.update', ['id' => $categoryId])
             ->with([
                 'categoryErrCode' => Constant::ERR_CODE['success'],
                 'categoryErrMsg' => Constant::ERR_MSG['update_success']
