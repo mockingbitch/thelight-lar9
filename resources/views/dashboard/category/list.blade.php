@@ -1,6 +1,5 @@
 @extends('layouts.dashboardLayout')
 @section('content')
-{{-- <input type="hidden" class="err-code" value="{{$errCode ?? ''}}"/> --}}
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <h3 align="center" style="text-shadow: 1px 1px 2px grey;">Danh sách chức vụ</h3>
@@ -10,19 +9,22 @@
         <table class="table table-hover">
             <thead>
             <tr>
-                <th style="text-align: center"><b>Tên chức vụ</b></th>
-                <th style="text-align: center"><b>Ghi chú</b></th>
+                <th><b>Tên danh mục</b></th>
+                <th style="text-align: center"><b>Mô tả</b></th>
                 <th style="text-align: center"><b>Trạng thái</b></th>
-                {{-- <th style="text-align: center"><b>Sửa</b></th> --}}
                 <th style="text-align: center"><b>Xoá</b></th>
             </tr>
             </thead>
             <tbody>
             @foreach($categories as $item)
             <tr class="tb-row" onclick="handleClickRow({{$item->id}})">
-                <td style="text-align: center">{{$item->name}}</td>
+                <td>{{$item->name}}</td>
                 <td style="text-align: center">{{$item->description}}</td>
-                <td style="text-align: center">{{$item->status == '1' ? 'Hiển thị' : 'Ẩn'}}</td>
+                <td style="text-align: center">
+                    <span class="badge badge-sm {{$item->status == '1' ? 'bg-gradient-success' : 'bg-gradient-secondary'}}">
+                        {{$item->status == '1' ? 'Hiển thị' : 'Ẩn'}}
+                    </span>
+                </td>
                 <td align="left" style="text-align: center">
                     <a class="btn btn-danger"
                         onclick="confirmDelete({{$item->id}})">
@@ -38,7 +40,7 @@
 </div>
 <script>
     function handleClickRow(id) {
-        // window.location.assign('/nhanvien/detail/' + id);
+        
     }
 
     function confirmDelete(id) {
