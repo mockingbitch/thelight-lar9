@@ -2,7 +2,7 @@
 @section('content')
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <h3 align="center" style="text-shadow: 1px 1px 2px grey;">Danh sách chức vụ</h3>
+        <h3 align="center" style="text-shadow: 1px 1px 2px grey;">Danh sách danh mục</h3>
         <a href="{{route('dashboard.category.create')}}">
             <button class="btn btn-primary" style="float: right;">Thêm mới</button>
         </a>
@@ -40,7 +40,7 @@
 </div>
 <script>
     function handleClickRow(id) {
-        
+        console.log(id)
     }
 
     function confirmDelete(id) {

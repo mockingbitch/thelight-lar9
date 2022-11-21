@@ -33,7 +33,7 @@
       <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
       <a class="navbar-brand m-0" href="" target="_blank">
         <img src="{{asset('dashboard/assets/img/logo-ct-dark.png')}}" class="navbar-brand-img h-100" alt="main_logo">
-        <span class="ms-1 font-weight-bold">Vinasoy</span>
+        <span class="ms-1 font-weight-bold">The Light</span>
       </a>
     </div>
     <hr class="horizontal dark mt-0">
@@ -399,13 +399,13 @@
                 © <script>
                   document.write(new Date().getFullYear())
                 </script>,
-                Copyright - Vinasoy
+                Copyright - The Light
               </div>
             </div>
             <div class="col-lg-6">
               <ul class="nav nav-footer justify-content-center justify-content-lg-end">
                 <li class="nav-item">
-                  <a href="" class="nav-link text-muted" target="_blank">Vinasoy</a>
+                  <a href="" class="nav-link text-muted" target="_blank">The Light</a>
                 </li>
                 <li class="nav-item">
                   <a href="" class="nav-link text-muted" target="_blank">Về chúng tôi</a>
@@ -430,7 +430,7 @@
     <div class="card shadow-lg ">
       <div class="card-header pb-0 pt-3 ">
         <div class="float-start">
-          <h5 class="mt-3 mb-0">Vinasoy Configurator</h5>
+          <h5 class="mt-3 mb-0">The Light Configurator</h5>
           <p>See our dashboard options.</p>
         </div>
         <div class="float-end mt-4">

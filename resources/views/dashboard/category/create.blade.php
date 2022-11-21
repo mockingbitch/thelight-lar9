@@ -6,11 +6,11 @@
         @csrf
         <div class="form-group mt-4">
             <label for="inputName">Tên danh mục @if ($errors->has('name'))<p class="text-error">*{{$errors->first('name')}}</p>@endif</label>
-            <input type="text" name="name" class="form-control" id="inputName" aria-describedby="nameHelp">
+            <input type="text" name="name" class="form-control" id="inputName" aria-describedby="nameHelp" value="{{Request::old('name')}}">
         </div> 
         <div class="form-group mt-4">
             <label for="inputDescription">Mô tả @if ($errors->has('description'))<p class="text-error">*{{$errors->first('description')}}</p>@endif</label>
-            <input type="text" name="description" class="form-control" id="inputDescription" aria-describedby="nameHelp">
+            <input type="text" name="description" class="form-control" id="inputDescription" aria-describedby="nameHelp" value="{{Request::old('description')}}">
         </div>
         <div class="form-group mt-4 row">
             <div class="col-4">
@@ -30,7 +30,7 @@
 <script>
     $(document).ready(function () {
         let errCode = '{{$categoryErrCode}}';
-        let errMsg = '{{$categoryErrMsg ?? ''}}';
+        let errMsg = '{{$categoryErrMsg}}';
         if (errCode && errCode === '1' && errMsg) {
             swal({
                 title: "Thành công!",

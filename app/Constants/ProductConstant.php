@@ -6,6 +6,9 @@ class ProductConstant
 {
     public const BREADCRUMB = 'product';
     public const ERR_MSG_NOT_FOUND = 'Không tìm thấy sản phẩm';
+    public const ERR_MSG_CATEGORY_NOT_FOUND = 'Chưa có danh mục';
+    public const ERR_MSG_CANT_PROCESS_IMAGE = 'Chưa có danh mục';
+    public const IMAGE_FOLDER = 'products';
 
     public const COLUMN_ID = 'id';
     public const COLUMN_NAME = 'name';

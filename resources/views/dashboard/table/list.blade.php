@@ -10,7 +10,7 @@
             <thead>
             <tr>
                 <th><b>Tên bàn</b></th>
-                <th style="text-align: center"><b>Ghi chú</b></th>
+                <th style="text-align: center"><b>Mô tả</b></th>
                 <th style="text-align: center"><b>Trạng thái</b></th>
                 <th style="text-align: center"><b>Xoá</b></th>
             </tr>

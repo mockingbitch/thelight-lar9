@@ -7,6 +7,7 @@ use App\Http\Requests\TableRequest;
 use Illuminate\Http\RedirectResponse;
 use App\Repositories\Contracts\Interface\TableRepositoryInterface;
 use App\Constants\TableConstant;
+use App\Constants\Constant;
 use Illuminate\View\View;
 
 class TableController extends Controller
