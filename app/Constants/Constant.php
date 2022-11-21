@@ -15,9 +15,9 @@ class Constant
     public const ERR_MSG_CREATE_FAIL = 'Thêm mới thất bại';
     public const ERR_MSG_CREATE_SUCCESS = 'Thêm mới thành công';
     public const ERR_MSG_UPDATE_FAIL = 'Cập nhật thất bại';
-    public const ERR_MSG_UPDATE_SUCCESS = 'Thêm mới thành công';
-    public const ERR_MSG_DELETE_FAIL = 'Cập nhật thất bại';
-    public const ERR_MSG_DELETE_SUCCESS = 'Thêm mới thành công';
+    public const ERR_MSG_UPDATE_SUCCESS = 'Cập nhật thành công';
+    public const ERR_MSG_DELETE_FAIL = 'Xóa thất bại';
+    public const ERR_MSG_DELETE_SUCCESS = 'Xóa thành công';
     
     public const ERR_MSG = [
         'create_fail'    => self::ERR_MSG_CREATE_FAIL,

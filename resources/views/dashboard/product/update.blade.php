@@ -44,7 +44,7 @@
         </div>
 
         <a href="{{route('dashboard.product.list')}}"><input type="text" class="btn btn-secondary" value="Trở về" disabled></a>
-        <button type="submit" class="btn btn-primary">Thêm mới</button>
+        <button type="submit" class="btn btn-primary">Cập nhật</button>
     </form>
 </div>
 

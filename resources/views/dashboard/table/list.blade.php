@@ -40,7 +40,9 @@
 </div>
 <script>
     function handleClickRow(id) {
-        
+        var url = '{{ route("dashboard.table.update", ":id") }}';
+        url = url.replace(':id', id);
+        location.replace(url);
     }
 
     function confirmDelete(id) {
@@ -72,11 +74,10 @@
     }
 
     $(document).ready(function() {
-        // var errCode = $('.err-code').val();
-        let errCode = {{$tableErrCode}};
+        let errCode = '{{$tableErrCode}}';
         let errMsg = '{{$tableErrMsg}}';
-console.log(errCode);
-        if (errCode && errCode === 1 && errMsg) {
+
+        if (errCode && errCode === '1' && errMsg) {
             swal({
                 title: "Thành công!",
                 text: errMsg,
@@ -84,7 +85,7 @@ console.log(errCode);
                 button: "Đóng!",
                 });
         }
-        if (errCode && errCode === 0 && errMsg) {
+        if (errCode && errCode === '0' && errMsg) {
             swal({
                 title: "Thất bại!",
                 text: errMsg,

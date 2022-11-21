@@ -45,7 +45,7 @@ class AuthController extends Controller
                 case UserConstant::ROLE['admin'] :
                 case UserConstant::ROLE['manager'] :
                 case UserConstant::ROLE['waiter'] :
-                    return redirect()->route('dashboard');
+                    return redirect()->route('dashboard.home');
                     break;
                 case UserConstant::ROLE['guest'] :
                     return redirect()->route('home');

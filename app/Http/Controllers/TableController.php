@@ -115,11 +115,9 @@ class TableController extends Controller
      * 
      * @return RedirectResponse
      */
-    public function update(TableRequest $request) : RedirectResponse
+    public function update($id, TableRequest $request) : RedirectResponse
     {
-        $table_id = $request->query('id');
-
-        if (! $this->tableRepository->find($table_id)) :
+        if (! $this->tableRepository->find($id)) :
             return redirect()
                 ->route('dashboard.table.list')
                 ->with([
@@ -128,9 +126,9 @@ class TableController extends Controller
                 ]);
         endif;
 
-        if (! $this->tableRepository->update($table_id, $request->toArray())) :
+        if (! $this->tableRepository->update($id, $request->toArray())) :
             return redirect()
-                ->route('dashboard.table.update')
+                ->route('dashboard.table.update', ['id' => $id])
                 ->with([
                     'tableErrCode' => Constant::ERR_CODE['fail'],
                     'tableErrMsg' => Constant::ERR_MSG['update_fail']
@@ -138,7 +136,7 @@ class TableController extends Controller
         endif;
 
         return redirect()
-            ->route('dashboard.table.update')
+            ->route('dashboard.table.update', ['id' => $id])
             ->with([
                 'tableErrCode' => Constant::ERR_CODE['success'],
                 'tableErrMsg' => Constant::ERR_MSG['update_success']

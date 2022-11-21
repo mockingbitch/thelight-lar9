@@ -15,8 +15,8 @@
         <div class="form-group mt-4">
             <label for="optionStatus">Trạng thái @if ($errors->has('status'))<p class="text-error">*{{$errors->first('status')}}</p>@endif</label>
             <select name="status" id="optionStatus" style="width: 20%; height: 50px;" class="select form-control mb-3" aria-label=".form-select-lg example">
-                <option value="1" {{$category->status == 1 ? 'selected' : ''}}>Hiển thị {{$category->status}}</option>
-                <option value="0" {{$category->status != 1 ? 'selected' : ''}}>Ẩn</option>
+                <option value="1" {{$category->status == 1 ? 'selected' : ''}}>Hiển thị</option>
+                <option value="0" {{$category->status == 0 ? 'selected' : ''}}>Ẩn</option>
             </select>
         </div>
         <br>
@@ -26,10 +26,10 @@
 </div>
 <script>
     $(document).ready(function () {
-        let errCode = {{$categoryErrCode}};
+        let errCode = '{{$categoryErrCode}}';
         let errMsg = '{{$categoryErrMsg}}';
 
-        if (errCode && errCode === 1 && errMsg) {
+        if (errCode && errCode === '1' && errMsg) {
             swal({
                 title: "Thành công!",
                 text: errMsg,
@@ -37,7 +37,7 @@
                 button: "Đóng!",
                 });
         }
-        if (errCode && errCode === 0 && errMsg) {
+        if (errCode && errCode === '0' && errMsg) {
             swal({
                 title: "Thất bại!",
                 text: errMsg,
