@@ -16,6 +16,10 @@ class CheckLogin
      */
     public function handle(Request $request, Closure $next)
     {
+        if (! auth()->guard('user')->user()) :
+            return redirect()->route('login')->with('msg', 'Vui lòng đăng nhập!');
+        endif;
+
         return $next($request);
     }
 }
