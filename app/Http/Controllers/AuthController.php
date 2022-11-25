@@ -13,9 +13,9 @@ use Illuminate\Http\RedirectResponse;
 class AuthController extends Controller
 {
     /**
-     * @return View
+     * @return View|RedirectResponse
      */
-    public function index() : View
+    public function index() : View|RedirectResponse
     {
         if (Auth::guard('user')->user()) return redirect()->back();
         
@@ -25,11 +25,11 @@ class AuthController extends Controller
     /**
      * @param Request $request
      * 
-     * @return RedirectResponse
+     * @return View|RedirectResponse
      */
-    public function login(Request $request) : RedirectResponse
+    public function login(Request $request) : View|RedirectResponse
     {
-        try {
+        // try {
             $request->validate([
                 UserConstant::COLUMN['email'] => 'required|string|email',
                 UserConstant::COLUMN['password'] => 'required|string',
@@ -37,7 +37,7 @@ class AuthController extends Controller
             $credentials = $request->only(UserConstant::COLUMN['email'], UserConstant::COLUMN['password']);
             $token       = Auth::guard('user')->attempt($credentials);
 
-            if (!$token || null == $token)  return view('auth.login')->with('msg', 'Sai tài khoản hoặc mật khẩu!!!');
+            if (!$token || null == $token)  return redirect()->route('login')->with('msg', 'Sai tài khoản hoặc mật khẩu!!!');
 
             $user = Auth::guard('user')->user();
     
@@ -54,9 +54,9 @@ class AuthController extends Controller
                     return redirect()->route('home');
                     break;
             }
-        } catch (\Throwable $th) {
-            return redirect()->route('404');
-        }
+        // } catch (\Throwable $th) {
+        //     return redirect()->route('404');
+        // }
     }
 
     /**

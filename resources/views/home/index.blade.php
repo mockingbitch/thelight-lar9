@@ -1,4 +1,1 @@
-@extends('layouts.homeLayout')
-@section('content')
-Home
-@endsection
+<h1>Home</h1>

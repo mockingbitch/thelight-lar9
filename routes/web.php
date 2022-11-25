@@ -60,3 +60,8 @@ Route::group(['middleware' => ['check.login']], function () {
         });
     });
 });
+
+// HOME
+Route::get('/table', [Table::class, 'viewIndex'])->name('home.table');
+Route::get('/table/{id}', [Table::class, 'viewDetail'])->name('home.table.detail');
+Route::get('/order', [Home::class, 'getProductsScreenOrder'])->name('home.order');

@@ -161,4 +161,24 @@ class TableController extends Controller
         //     return $this->catchErrorResponse();
         // }
     }
+
+
+    //HOME
+    public function viewIndex(Request $request)
+    {
+        return view('home.table');
+    }
+
+    public function viewDetail($id, Request $request)
+    {
+        $table = $this->tableRepository->find($id);
+
+        if (null !== $table) :
+            return view('home.tabledetail', [
+                'table' => $table
+            ]);
+        endif;
+
+        return view('home.table');
+    }
 }

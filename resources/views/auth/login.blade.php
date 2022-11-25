@@ -97,7 +97,7 @@
                     @csrf
                     <label>Email</label>
                     <div class="mb-3">
-                      <input type="email" name="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="email-addon">
+                      <input type="email" name="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="email-addon" value="{{Request::old('email')}}">
                     </div>
                     <label>Mật khẩu</label>
                     <div class="mb-3">
