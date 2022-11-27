@@ -47,7 +47,7 @@ class HomeController extends Controller
         if (null === $table) :
             return redirect()->route('home.table');
         endif;
-
+ 
         $products = $this->productRepository->getAll();
 
         return view('home.order', [

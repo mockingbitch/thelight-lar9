@@ -28,6 +28,8 @@
 		<link rel="stylesheet" href="{{asset('home/css/thelight.css')}}">
 		{{-- Custom Style --}}
 
+		<script src="{{asset('dashboard/assets/js/swal.js')}}"></script>
+
 		<!-- Custom stlylesheet -->
 		<link type="text/css" rel="stylesheet" href="{{asset('home/css/style.css')}}"/>
 
@@ -40,7 +42,7 @@
 
     </head>
 	<body>
-		<button onclick="topFunction()" id="backTop" title="Go to top">Top</button>
+		<button onclick="topFunction()" id="backTop" title="Go to top"><i class="fa fa-arrow-circle-up"></i></button>
 		<!-- HEADER -->
 		<header>
 			<!-- TOP HEADER -->
@@ -79,11 +81,11 @@
 						<div class="col-xss-6">
 							<div class="header-search">
 								<form>
-									<select class="input-select">
+									<select class="input-select" disabled>
 										<option value="0">Tìm kiếm</option>
 									</select>
-									<input class="input" placeholder="Search here">
-									<button class="search-btn">Search</button>
+									<input class="input" placeholder="Nhập tên sản phẩm">
+									<button class="search-btn">Tìm kiếm</button>
 								</form>
 							</div>
 						</div>
@@ -138,8 +140,8 @@
 											<h5>SUBTOTAL: $2940.00</h5>
 										</div>
 										<div class="cart-btns">
-											<a href="#">View Cart</a>
-											<a href="#">Checkout  <i class="fa fa-arrow-circle-right"></i></a>
+											<a href="#">Xoá order</a>
+											<a href="{{route('home.order.submit')}}">Xác nhận <i class="fa fa-arrow-circle-right"></i></a>
 										</div>
 									</div>
 								</div>
@@ -173,7 +175,7 @@
 				<div id="responsive-nav">
 					<!-- NAV -->
 					<ul class="main-nav nav navbar-nav">
-						<li class="active"><a href="#">Home</a></li>
+						<li class="active"><a href="{{route('home')}}">Home</a></li>
 						<li><a href="#">Hot Deals</a></li>
 						<li><a href="#">Categories</a></li>
 						<li><a href="#">Laptops</a></li>
@@ -192,6 +194,7 @@
 		<!-- SECTION -->
 		@yield('content')
 		<!-- /SECTION -->
+		@extends('scripts.script')
 		<script>
 			// Get the button
 			let mybutton = document.getElementById("backTop");
@@ -220,6 +223,5 @@
 		<script src="{{asset('home/js/nouislider.min.js')}}"></script>
 		<script src="{{asset('home/js/jquery.zoom.min.js')}}"></script>
 		<script src="{{asset('home/js/main.js')}}"></script>
-
 	</body>
 </html>

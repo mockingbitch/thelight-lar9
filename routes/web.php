@@ -7,6 +7,8 @@ use App\Http\Controllers\DashboardController as Dashboard;
 use App\Http\Controllers\CategoryController as Category;
 use App\Http\Controllers\ProductController as Product;
 use App\Http\Controllers\TableController as Table;
+use App\Http\Controllers\OrderController as Order;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -64,4 +66,11 @@ Route::group(['middleware' => ['check.login']], function () {
 // HOME
 Route::get('/table', [Table::class, 'viewIndex'])->name('home.table');
 Route::get('/table/{id}', [Table::class, 'viewDetail'])->name('home.table.detail');
-Route::get('/order', [Home::class, 'getProductsScreenOrder'])->name('home.order');
+
+Route::prefix('order')->group(function () {
+    Route::get('/', [Home::class, 'getProductsScreenOrder'])->name('home.order');
+    Route::get('/add', [Order::class, 'createSessionOrder'])->name('home.order.add');
+    Route::get('/update', [Order::class, 'updateSessionOrder'])->name('home.order.update');
+    Route::get('/delete', [Order::class, 'deleteSessionOrder'])->name('home.order.delete');
+    Route::get('/submit', [Order::class, 'submitOrder'])->name('home.order.submit');
+});

@@ -19,7 +19,7 @@
     font-size: 18px;
     border: none;
     outline: none;
-    background-color: red;
+    background-color: #D10024;
     color: white;
     cursor: pointer;
     padding: 15px;
@@ -27,5 +27,9 @@
   }
   
 #backTop:hover {
-background-color: #555;
+    background-color: #555;
+}
+
+.product {
+    min-height: 310px;
 }

@@ -21,88 +21,24 @@
                         <!-- tab -->
                         <div id="tab2" class="tab-pane fade in active">
                             <div class="tables row" data-nav="#slick-nav-2">
-                                <!-- product -->
-                                <div class="product col-xs-6" onclick="handleClickTable(1)">
-                                    <div class="product-img">
-                                        <img src="{{asset('upload/images/table.jpg')}}" alt="">
-                                        <div class="product-label">
-                                            <span class="sale">Chưa lên đồ</span>
-                                            <span class="done-checkout">$</span>
+                                @foreach ($tables as $table)
+                                    <!-- product -->
+                                    <div class="product col-xs-6" onclick="handleClickTable(1)">
+                                        <div class="product-img">
+                                            <img src="{{asset('upload/images/table.jpg')}}" alt="">
+                                            <div class="product-label">
+                                                <span class="sale">Chưa lên đồ</span>
+                                                <span class="done-checkout">$</span>
+                                            </div>
+                                        </div>
+                                        <div class="product-body">
+                                            <h3 class="product-name"><a href="#">{{$table->name}}</a></h3>
+                                            <div class="product-btns">
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="product-body">
-                                        <h3 class="product-name"><a href="#">Bàn 1</a></h3>
-                                        <div class="product-btns">
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /product -->
-
-                                <!-- product -->
-                                <div class="product col-xs-6">
-                                    <div class="product-img">
-                                        <img src="{{asset('upload/images/table.jpg')}}" alt="">
-                                        <div class="product-label">
-                                            <span class="sale">Chưa lên đồ</span>
-                                            <span class="done-checkout">$</span>
-                                        </div>
-                                    </div>
-                                    <div class="product-body">
-                                        <h3 class="product-name"><a href="#">Bàn 1</a></h3>
-                                        <div class="product-btns">
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /product -->
-
-                                <!-- product -->
-                                <div class="product col-xs-6">
-                                    <div class="product-img">
-                                        <img src="{{asset('upload/images/table.jpg')}}" alt="">
-                                        <div class="product-label">
-                                            <span class="sale">Chưa lên đồ</span>
-                                            <span class="done-checkout">$</span>
-                                        </div>
-                                    </div>
-                                    <div class="product-body">
-                                        <h3 class="product-name"><a href="#">Bàn 1</a></h3>
-                                        <div class="product-btns">
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /product -->
-
-                                <!-- product -->
-                                <div class="product col-xs-6">
-                                    <div class="product-img">
-                                        <img src="{{asset('upload/images/table.jpg')}}" alt="">
-                                        <div class="product-label">
-                                            <span class="sale">Chưa lên đồ</span>
-                                            <span class="done-checkout">$</span>
-                                        </div>
-                                    </div>
-                                    <div class="product-body">
-                                        <h3 class="product-name"><a href="#">Bàn 1</a></h3>
-                                        <div class="product-btns">
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /product -->
-                                <div class="product col-xs-6">
-                                    <div class="product-img">
-                                        <img src="{{asset('upload/images/table.jpg')}}" alt="">
-                                        <div class="product-label">
-                                            <span class="sale">Chưa lên đồ</span>
-                                            <span class="done-checkout">$</span>
-                                        </div>
-                                    </div>
-                                    <div class="product-body">
-                                        <h3 class="product-name"><a href="#">Bàn 1</a></h3>
-                                        <div class="product-btns">
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /product -->
+                                    <!-- /product -->
+                                @endforeach
                             </div>
                             <div id="slick-nav-2" class="products-slick-nav"></div>
                         </div>
@@ -118,7 +54,7 @@
 </div>
 <script>
     function handleClickTable(id) {
-        var url = '{{ route("home.table", ":id") }}';
+        var url = '{{ route("home.table.detail", ":id") }}';
         url = url.replace(':id', id);
         location.replace(url);
     }

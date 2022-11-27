@@ -40,6 +40,8 @@
             </tbody>
         </table>
     </div>
+    <hr>
+    <br>
     {{-- {!! $products->links("pagination::bootstrap-4") !!} --}}
 </div>
 <script>

@@ -58,10 +58,10 @@
                 <div class="row">
                     @foreach ($products as $product)
                         <!-- product -->
-                        <div class="col-md-4 col-xs-6">
+                        <div class="col-md-4 col-xs-6" onclick="handleAddOrder({{$product->id}})">
                             <div class="product">
                                 <div class="product-img">
-                                    <img src="{{asset('upload/images/table.jpg')}}" alt="">
+                                    <img src="{{asset('upload/images/products/' . $product->image)}}" alt="">
                                     <div class="product-label">
                                         <span class="new">Hết hàng</span>
                                     </div>
@@ -73,6 +73,23 @@
                                     <h4 class="product-price">{{number_format($product->price)}}</h4>
                                 </div>
                             </div>
+                        </div>
+                        <div id="myModal_{{$product->id}}" class="modal">
+                            <!-- Modal content -->
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <span class="close">&times;</span>
+                                <h2>Modal Header</h2>
+                              </div>
+                              <div class="modal-body">
+                                <p>Some text in the Modal Body</p>
+                                <p>Some other text...</p>
+                              </div>
+                              <div class="modal-footer">
+                                <h3>Modal Footer</h3>
+                              </div>
+                            </div>
+                          
                         </div>
                         <!-- /product -->
                     @endforeach
@@ -96,6 +113,7 @@
         </div>
         <!-- /row -->
     </div>
+  
     <!-- /container -->
 </div>
 @endsection

@@ -166,7 +166,11 @@ class TableController extends Controller
     //HOME
     public function viewIndex(Request $request)
     {
-        return view('home.table');
+        $tables = $this->tableRepository->getAll();
+
+        return view('home.table', [
+            'tables' => $tables
+        ]);
     }
 
     public function viewDetail($id, Request $request)
