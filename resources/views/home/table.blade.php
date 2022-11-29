@@ -23,7 +23,7 @@
                             <div class="tables row" data-nav="#slick-nav-2">
                                 @foreach ($tables as $table)
                                     <!-- product -->
-                                    <div class="product col-xs-6" onclick="handleClickTable(1)">
+                                    <div class="product col-xs-6" onclick="handleClickTable({{$table->id}})">
                                         <div class="product-img">
                                             <img src="{{asset('upload/images/table.jpg')}}" alt="">
                                             <div class="product-label">

@@ -25,4 +25,9 @@ class Order extends Model
         'note',
         'status'
     ];
+
+    public function orderDetails()
+    {
+        return $this->hasMany(\App\Models\OrderDetail::class);
+    }
 }

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\TableRequest;
 use Illuminate\Http\RedirectResponse;
 use App\Repositories\Contracts\Interface\TableRepositoryInterface;
+use App\Repositories\Contracts\Interface\OrderRepositoryInterface;
 use App\Constants\TableConstant;
 use App\Constants\Constant;
 use Illuminate\View\View;
@@ -23,13 +24,20 @@ class TableController extends Controller
     protected $tableRepository;
 
     /**
+     * @var orderRepository
+     */
+    protected $orderRepository;
+
+    /**
      * @param TableRepository $tableRepository
      */
     public function __construct(
         TableRepositoryInterface $tableRepository,
+        OrderRepositoryInterface $orderRepository
         )
     {
         $this->tableRepository = $tableRepository;
+        $this->orderRepository = $orderRepository;
     }
 
     /**
@@ -164,7 +172,12 @@ class TableController extends Controller
 
 
     //HOME
-    public function viewIndex(Request $request)
+    /**
+     * @param Request $request
+     * 
+     * @return View
+     */
+    public function viewIndex(Request $request) : View
     {
         $tables = $this->tableRepository->getAll();
 
@@ -178,11 +191,19 @@ class TableController extends Controller
         $table = $this->tableRepository->find($id);
 
         if (null !== $table) :
+            $order = $this->orderRepository->getTableOrder($table->id);
+
             return view('home.tabledetail', [
-                'table' => $table
+                'table' => $table,
+                'order' => $order
             ]);
         endif;
 
-        return view('home.table');
+        return redirect()
+            ->route('home.table')
+            ->with([
+                'tableErrCode' => Constant::ERR_CODE['fail'],
+                'tableErrMsg' => TableConstant::ERR_MSG_NOT_FOUND
+            ]);
     }
 }

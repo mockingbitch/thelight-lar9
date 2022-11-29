@@ -8,6 +8,8 @@ use App\Repositories\Contracts\Interface\OrderDetailRepositoryInterface;
 use App\Repositories\Contracts\Interface\ProductRepositoryInterface;
 use App\Repositories\Contracts\Interface\TableRepositoryInterface;
 use App\Services\OrderService;
+use Illuminate\Http\RedirectResponse;
+use App\Constants\UserConstant;
 
 class OrderController extends Controller
 {
@@ -93,15 +95,43 @@ class OrderController extends Controller
 
     }
 
-    public function submitOrder()
+    /**
+     * @return RedirectResponse
+     */
+    public function submitOrder() : RedirectResponse
     {
         $order = session()->get('order');
-        
-        if (null === $order || ! isset($order)) :
-            return redirect()->back()->with([
-                'errCode' => 1,
-                'errMsg' => 'Vui lòng thêm sản phẩm vào order'
-            ]);
+        $user = auth()->guard('user')->user();
+        $table = null !== $order ? $this->tableRepository->find(array_key_first($order)) : null;
+
+        if (null === $order 
+            || ! isset($order) 
+            || null === $user 
+            || null === $table
+            || (  $user->role !== UserConstant::ROLE['admin'] 
+             && $user->role !== UserConstant::ROLE['manager'] 
+             && $user->role !== UserConstant::ROLE['waiter'] 
+             )
+            ) :
+            return redirect()
+                ->back()
+                ->with([
+                    'orderErrCode' => 1,
+                    'orderErrMsg' => 'Vui lòng thêm sản phẩm vào order'
+                ]);
         endif;
+
+        $orderTable = $this->orderRepository->createOrder($table->id, $user, $order);
+        if (null !== $orderTable) $total = $this->orderDetailRepository->createOrderDetail($orderTable->id, $order);
+        if (null !== $total) $updateTotal = $this->orderRepository->update($orderTable->id, ['total' => $total]);
+        if (null !== $updateTotal) session()->forget('order');
+
+        return redirect()
+            ->route('home.table.detail', ['id' => array_key_first($order)]);
+    }
+
+    public function remove()
+    {
+        session()->forget('order');
     }
 }

@@ -52,7 +52,9 @@ class HomeController extends Controller
 
         return view('home.order', [
             'products' => $products,
-            'table' => $table
+            'table' => $table,
+            'orderErrCode' => session()->get('orderErrCode') ?? null,
+            'orderErrMsg' => session()->get('orderErrMsg') ?? null
         ]);
     }
 }

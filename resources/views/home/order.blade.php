@@ -27,6 +27,7 @@
         <!-- row -->
         <div class="row">
             <!-- STORE -->
+            <h2 style="margin-left: 20px">{{$table->name}}</h2>
             <div id="store" class="col-md-9">
                 <!-- store top filter -->
                 <div class="store-filter clearfix">
@@ -74,23 +75,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="myModal_{{$product->id}}" class="modal">
-                            <!-- Modal content -->
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <span class="close">&times;</span>
-                                <h2>Modal Header</h2>
-                              </div>
-                              <div class="modal-body">
-                                <p>Some text in the Modal Body</p>
-                                <p>Some other text...</p>
-                              </div>
-                              <div class="modal-footer">
-                                <h3>Modal Footer</h3>
-                              </div>
-                            </div>
-                          
-                        </div>
                         <!-- /product -->
                     @endforeach
                 </div>
@@ -116,4 +100,18 @@
   
     <!-- /container -->
 </div>
+<script>
+    $(document).ready(function () {
+        let errCode = '{{$orderErrCode}}';
+        let errMsg = '{{$orderErrMsg}}';
+     
+        if (errCode && errCode === '1' && errMsg) {
+            Swal.fire(
+                'Thất bại!',
+                errMsg,
+                'warning'
+                )
+        }
+    });
+</script>
 @endsection

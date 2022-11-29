@@ -6,4 +6,5 @@ use App\Repositories\BaseRepositoryInterface;
 
 interface OrderDetailRepositoryInterface extends BaseRepositoryInterface
 {
+    public function createOrderDetail(?int $order_id, $order = []);
 }

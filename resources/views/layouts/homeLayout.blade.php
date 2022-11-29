@@ -29,6 +29,10 @@
 		{{-- Custom Style --}}
 
 		<script src="{{asset('dashboard/assets/js/swal.js')}}"></script>
+		<script src="{{asset('home/js/swal2.js')}}"></script>
+		<script src="{{asset('home/js/jquery.min.js')}}"></script>
+
+
 
 		<!-- Custom stlylesheet -->
 		<link type="text/css" rel="stylesheet" href="{{asset('home/css/style.css')}}"/>
@@ -106,7 +110,7 @@
 
 								<!-- Cart -->
 								<div class="dropdown">
-									<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+									<a class="dropdown-toggle" data-toggle="dropdown">
 										<i class="fa fa-shopping-cart"></i>
 										<span>Order</span>
 										<div class="qty">3</div>
@@ -140,7 +144,7 @@
 											<h5>SUBTOTAL: $2940.00</h5>
 										</div>
 										<div class="cart-btns">
-											<a href="#">Xoá order</a>
+											<a onclick="handleRemoveOrder()">Xoá order</a>
 											<a href="{{route('home.order.submit')}}">Xác nhận <i class="fa fa-arrow-circle-right"></i></a>
 										</div>
 									</div>
