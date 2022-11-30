@@ -7,7 +7,7 @@ class ProductConstant
     public const BREADCRUMB = 'product';
     public const ERR_MSG_NOT_FOUND = 'Không tìm thấy sản phẩm';
     public const ERR_MSG_CATEGORY_NOT_FOUND = 'Chưa có danh mục';
-    public const ERR_MSG_CANT_PROCESS_IMAGE = 'Chưa có danh mục';
+    public const ERR_MSG_CANT_PROCESS_IMAGE = 'Không thể xử lý ảnh';
     public const IMAGE_FOLDER = 'products';
 
     public const COLUMN_ID = 'id';
@@ -26,5 +26,13 @@ class ProductConstant
         'created_at' => self::COLUMN_CREATED_AT,
         'updated_at' => self::COLUMN_UPDATED_AT,
         'deleted_at' => self::COLUMN_DELETED_AT,
+    ];
+
+    public const STATUS_CODE_OUT_OF_STOCK = 0;
+    public const STATUS_CODE_AVAILABLE = 1;
+
+    public const STATUS = [
+        'available' => self::STATUS_CODE_AVAILABLE,
+        'out_of_stock' => self::STATUS_CODE_OUT_OF_STOCK
     ];
 }

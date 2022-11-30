@@ -96,7 +96,7 @@
 						<!-- /SEARCH BAR -->
 
 						<!-- ACCOUNT -->
-						<div class="col-xss-3 clearfix">
+						<div class="col-xss-3 clearfix order-icon">
 							<div class="header-ctn">
 								<!-- Wishlist -->
 								{{-- <div>
@@ -109,7 +109,7 @@
 								<!-- /Wishlist -->
 
 								<!-- Cart -->
-								<div class="dropdown">
+								<div class="dropdown orders {{null !== session()->get('order') ? 'display-order' : ''}}">
 									<a class="dropdown-toggle" data-toggle="dropdown">
 										<i class="fa fa-shopping-cart"></i>
 										<span>Order</span>
@@ -179,13 +179,13 @@
 				<div id="responsive-nav">
 					<!-- NAV -->
 					<ul class="main-nav nav navbar-nav">
-						<li class="active"><a href="{{route('home')}}">Home</a></li>
-						<li><a href="#">Hot Deals</a></li>
-						<li><a href="#">Categories</a></li>
-						<li><a href="#">Laptops</a></li>
-						<li><a href="#">Smartphones</a></li>
-						<li><a href="#">Cameras</a></li>
-						<li><a href="#">Accessories</a></li>
+						<li class="active"><a href="{{route('home')}}">Trang chủ</a></li>
+						<li><a href="{{route('dashboard.home')}}">Trang quản trị</a></li>
+						{{-- <li><a href="#">Categories</a></li> --}}
+						{{-- <li><a href="#">Laptops</a></li> --}}
+						{{-- <li><a href="#">Smartphones</a></li> --}}
+						{{-- <li><a href="#">Cameras</a></li> --}}
+						{{-- <li><a href="#">Accessories</a></li> --}}
 					</ul>
 					<!-- /NAV -->
 				</div>

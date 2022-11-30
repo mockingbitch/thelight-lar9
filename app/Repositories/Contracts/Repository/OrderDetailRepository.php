@@ -34,6 +34,7 @@ class OrderDetailRepository extends BaseRepository implements OrderDetailReposit
 
             if (null !== $existedProduct) :  //increase number of quantity existed product
                 $this->update($existedProduct->id, [
+                    'total'=> $existedProduct->total + ($item['quantity'] * $item['price']),
                     'quantity' => $existedProduct->quantity + $item['quantity'],
                     'note' => $existedProduct->note . '<br/>' . $item['note']
                 ]);

@@ -1,25 +1,9 @@
+@php
+use App\Constants\ProductConstant;   
+@endphp
 @extends('layouts.homeLayout')
 @section('content')
-<div id="breadcrumb" class="section">
-    <!-- container -->
-    <div class="container">
-        <!-- row -->
-        <div class="row">
-            <div class="col-md-12">
-                <ul class="breadcrumb-tree">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">All Categories</a></li>
-                    <li><a href="#">Accessories</a></li>
-                    <li class="active">Headphones (227,490 Results)</li>
-                </ul>
-            </div>
-        </div>
-        <!-- /row -->
-    </div>
-    <!-- /container -->
-</div>
-<!-- /BREADCRUMB -->
-
+@include('breadcrumbs.homeBreadcrumb')
 <!-- SECTION -->
 <div class="section">
     <!-- container -->
@@ -63,9 +47,13 @@
                             <div class="product">
                                 <div class="product-img">
                                     <img src="{{asset('upload/images/products/' . $product->image)}}" alt="">
-                                    <div class="product-label">
-                                        <span class="new">Hết hàng</span>
-                                    </div>
+                                    {!!
+                                        $product->status == ProductConstant::STATUS['out_of_stock'] ? 
+                                        '<div class="product-label">
+                                            <span class="new">Hết hàng</span>
+                                        </div>' 
+                                        : ''
+                                    !!}
                                 </div>
                                 <div class="product-body">
                                     <p class="product-category">{{$product->category->name}}</p>

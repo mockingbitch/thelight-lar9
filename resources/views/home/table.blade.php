@@ -1,5 +1,6 @@
 @extends('layouts.homeLayout')
 @section('content')
+@include('breadcrumbs.homeBreadcrumb')
 <div class="section">
     <!-- container -->
     <div class="container">

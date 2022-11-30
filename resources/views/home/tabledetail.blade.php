@@ -1,11 +1,13 @@
 @extends('layouts.homeLayout')
 @section('content')
+@include('breadcrumbs.homeBreadcrumb')
+
 <div class="shopping-cart section">
-    <h1>{{$table->name}}</h1>
-    <hr>
     @if (null !== $order && null !== $order->orderDetails && ! empty($order->orderDetails->toArray()))
         <div class="container">
             <div class="row">
+                <h2 style="margin-left: 20px">{{$table->name}}</h2>
+                <hr>
                 <div class="col-12" id="list-cart">
                     <!-- Shopping Summery -->
                     <table class="table shopping-summery cart-change">
@@ -31,7 +33,7 @@
                                         {{-- <div class="input-group sm">
                                             <input onchange="" id="" type="number" name="quant[1]" class="input-number sm" min="1" value="">
                                         </div> --}}
-                                        {!! $item->note !!}
+                                        {{$item->quantity}}
                                         <!--/ End Input Order -->
                                     </td>
                                     <td align="center" class="total-amount" data-title="Total">{{number_format($item->total)}}<span>
@@ -53,13 +55,13 @@
                             <div class="col-lg-4 col-md-7 col-12 col-xs-12" id="sub" >
                                 <div class="right sub-change">
                                     <div class="total" align="right" style="margin: 20px">
-                                        <span style="font-size: 30px">Tổng:</span> &emsp; &emsp; <span style="color: red;font-size: 30px;font-weight: bold">10000 Đ</span>
+                                        <span style="font-size: 30px">Tổng:</span> &emsp; &emsp; <span style="color: red;font-size: 30px;font-weight: bold">{{number_format($order->total)}}</span>
                                     </div>
                                     <hr />
                                     <div class="button5" style="margin: 20px">
                                         <div class="row" align="right">
-                                            <button style="margin-right: 20px" class="btn btn-default col-xs-5" onclick="handleOrder({{$table->id}})"><h4>Order</h4></button>
-                                            <button class="btn btn-danger col-md-5" ><h4>Thanh toán</h4></button>
+                                            <button style="margin-right: 20px" class="btn btn-default col-xs-5" onclick="handleOrder({{$table->id}})">Order</button>
+                                            <button class="btn btn-danger col-md-5">Thanh toán</button>
                                         </div>
                                     </div>
                                 </div>
@@ -70,11 +72,15 @@
                 </div>
             </div>
         </div>
+        <div class="space-footer">
+            <br>
+            <br>
+        </div>
     @else
         <div class="container">
             <div class="row">
                 <div class="col-12" id="list-cart" align="center">
-                    <h3>Bàn trống</h3>
+                    <h3>Bàn {{$table->name}} trống</h3>
                     <button style="margin: 0px auto;" class="btn btn-default" onclick="handleOrder({{$table->id}})"><h4>Order</h4></button>
                 </div>
             </div>

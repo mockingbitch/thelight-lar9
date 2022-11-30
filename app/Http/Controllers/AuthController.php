@@ -65,7 +65,7 @@ class AuthController extends Controller
     public function logout() : RedirectResponse
     {
         Auth::guard('user')->logout();
-        session()->forget('cart');
+        session()->forget('order');
 
         return redirect()->route('login');
     }

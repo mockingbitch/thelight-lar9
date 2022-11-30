@@ -24,6 +24,9 @@
                         Note: ${result.value.note}
                     `.trim())
                     $.get('{{route('home.order.add')}}', {'product': product, 'quantity': quantity, 'table': table, 'note': note}, function (data) {
+                        var urlOrder = "{{route('home')}}" + "/order?table=" + table;
+                        console.log(urlOrder);
+                        $('.order-icon').load(`${urlOrder} .order-icon`);
                         console.log(data);
                     })
                 }
@@ -31,7 +34,11 @@
     }
 
     function handleRemoveOrder() {
+        var table = '{{$table->id}}';
+        var urlOrder = "{{route('home')}}" + "/order?table=" + table;
+        
         $.get('{{route('home.order.remove')}}', function (data) {
+            $('.order-icon').load(`${urlOrder} .order-icon`);
             Swal.fire(
                 'Đã xóa giỏ hàng!',
                 'Giỏ hàng trống',

@@ -75,7 +75,7 @@ class OrderController extends Controller
         endif;
 
         $order = session()->get('order');
-        //if ! isset order of table->id ?? forget all session order
+        // if ! isset order of table->id ?? forget all session order
         if (! isset($order[$table->id])) :
             session()->forget('order');
         endif;

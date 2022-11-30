@@ -33,3 +33,23 @@
 .product {
     min-height: 310px;
 }
+
+.orders {
+    display: none !important;
+}
+
+.display-order {
+    display: inline-block !important;
+}
+
+@media (max-width: 991.98px) {
+    .input-search {
+        display: none !important;
+    }
+    .setting-menu {
+        display: none !important;
+    }
+    .alert-menu {
+        display: none !important;
+    }
+}

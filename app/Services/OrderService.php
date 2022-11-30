@@ -11,7 +11,7 @@ class OrderService
         
         if (null !== $order && isset($order[$table_id][$product_id])) :
             $order[$table_id][$product_id]['quantity'] += $request['quantity'] ?? 1;
-            $order[$table_id][$product_id]['note'] = $request['note'] ? $order[$table_id][$product_id]['note'] . '<br/>' . $request['note'] : order[$table_id][$product_id]['note']; //add note for product
+            $order[$table_id][$product_id]['note'] = $request['note'] ? $order[$table_id][$product_id]['note'] . '<br/>' . $request['note'] : $order[$table_id][$product_id]['note']; //add note for product
         else :
             $order[$table_id][$product_id] = [
                 'id' => $product->id,
@@ -22,7 +22,7 @@ class OrderService
                 'note' => $request['note'] ?? null
             ];
         endif;
-        
+
         session()->put('order', $order);
         print_r($order);
     }

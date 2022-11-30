@@ -361,7 +361,7 @@ textarea.input {
   padding: 30px 0px;
   background: #FBFBFC;
   border-bottom: 1px solid #E4E7ED;
-  margin-bottom: 30px;
+  /* margin-bottom: 30px; */
 }
 
 #breadcrumb .breadcrumb-header {
@@ -543,7 +543,7 @@ textarea.input {
 
 .cart-dropdown {
   position: absolute;
-  width: 300px;
+  width: 250px;
   background: #FFF;
   padding: 15px;
   -webkit-box-shadow: 0px 0px 0px 2px #E4E7ED;

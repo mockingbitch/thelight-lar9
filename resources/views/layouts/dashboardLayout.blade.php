@@ -23,6 +23,7 @@
   <!-- CSS Files -->
   <link id="pagestyle" href="{{asset('dashboard/assets/css/soft-ui-dashboard.css?v=1.0.6')}}" rel="stylesheet" />
   <link href="{{asset('dashboard/assets/css/custom.css')}}" rel="stylesheet" />
+  <link href="{{asset('home/css/thelight.css')}}" rel="stylesheet" />
   <script src="{{asset('dashboard/assets/js/swal.js')}}"></script>
   <script src="{{asset('dashboard/assets/js/jquery.js')}}"crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
@@ -259,7 +260,7 @@
             <h6 class="font-weight-bolder mb-0">Trang quản trị</h6>
             </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-          <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+          <div class="ms-md-auto pe-md-3 d-flex align-items-center input-search">
             <div class="input-group">
               <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
               <input type="text" class="form-control" placeholder="Tìm kiếm...">
@@ -306,12 +307,12 @@
                 </div>
               </a>
             </li>
-            <li class="nav-item px-3 d-flex align-items-center">
+            <li class="nav-item px-3 d-flex align-items-center setting-menu">
               <a href="javascript:;" class="nav-link text-body p-0">
                 <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
               </a>
             </li>
-            <li class="nav-item dropdown pe-2 d-flex align-items-center">
+            <li class="nav-item dropdown pe-2 d-flex align-items-center alert-menu">
               <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="fa fa-bell cursor-pointer"></i>
               </a>
