@@ -7,9 +7,12 @@ use App\Repositories\Contracts\Interface\OrderRepositoryInterface;
 use App\Repositories\Contracts\Interface\OrderDetailRepositoryInterface;
 use App\Repositories\Contracts\Interface\ProductRepositoryInterface;
 use App\Repositories\Contracts\Interface\TableRepositoryInterface;
+use App\Repositories\Contracts\Interface\BillRepositoryInterface;
+use App\Repositories\Contracts\Interface\BillDetailRepositoryInterface;
 use App\Services\OrderService;
 use Illuminate\Http\RedirectResponse;
 use App\Constants\UserConstant;
+use App\Constants\TableConstant;
 
 class OrderController extends Controller
 {
@@ -39,18 +42,32 @@ class OrderController extends Controller
     protected $orderService;
 
     /**
+     * @var billRepository
+     */
+    protected $billRepository;
+
+    /**
+     * @var billDetailRepository
+     */
+    protected $billDetailRepository;
+
+    /**
      * @param OrderRepositoryInterface $orderRepository
      * @param OrderDetailRepositoryInterface $orderDetailRepository
      * @param ProductRepositoryInterface $productRepository
      * @param TableRepositoryInterface $tableRepository
      * @param OrderService $orderService
+     * @param BillRepositoryInterface $billRepository
+     * @param BillDetailRepositoryInterface $billDetailRepository
      */
     public function __construct(
         OrderRepositoryInterface $orderRepository, 
         OrderDetailRepositoryInterface $orderDetailRepository,
         ProductRepositoryInterface $productRepository,
         TableRepositoryInterface $tableRepository,
-        OrderService $orderService
+        OrderService $orderService,
+        BillRepositoryInterface $billRepository,
+        BillDetailRepositoryInterface $billDetailRepository
         )
     {
         $this->orderRepository = $orderRepository;
@@ -58,6 +75,8 @@ class OrderController extends Controller
         $this->productRepository = $productRepository;
         $this->tableRepository = $tableRepository;
         $this->orderService = $orderService;
+        $this->billRepository = $billRepository;
+        $this->billDetailRepository = $billDetailRepository;
     }
 
     /**
@@ -133,5 +152,23 @@ class OrderController extends Controller
     public function remove()
     {
         session()->forget('order');
+    }
+
+    public function checkOut($id)
+    {
+        $order = $this->orderRepository->getTableOrder($id);
+
+        if (null === $order || empty($order)) return false;
+
+        if (! $bill = $this->billRepository->createBill($order)) return false;
+
+        if (! $this->billDetailRepository->createBillDetail($bill, $order)); return false;
+
+        if (! $this->orderDetailRepository->deleteByOrderId($order->id)
+            || ! $this->tableRepository->update($id, [TableConstant::COLUMN_STATUS => TableConstant::STATUS['empty']])  // update status of table
+            || ! $this->orderRepository->delete($order->id)
+            ) return false;
+
+        return true;
     }
 }

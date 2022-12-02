@@ -61,4 +61,22 @@ class OrderDetailRepository extends BaseRepository implements OrderDetailReposit
 
         return $subTotal;
     }
+
+    /**
+     * @param integer|null $order_id
+     * 
+     * @return boolean
+     */
+    public function deleteByOrderId(?int $order_id) : bool
+    {
+        $result = $this->model->where('order_id', $order_id)->get();
+        
+        foreach ($result as $item) :
+            if($item){
+                if (! $item->delete()) return false;
+            }    
+        endforeach;
+
+        return true;
+    }
 }

@@ -53,3 +53,7 @@
         display: none !important;
     }
 }
+
+.shopping-summery {
+    table-layout: fixed;
+}

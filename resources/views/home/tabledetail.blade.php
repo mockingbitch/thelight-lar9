@@ -1,7 +1,29 @@
+@php
+    use App\Constants\OrderConstant;
+@endphp
 @extends('layouts.homeLayout')
 @section('content')
-@include('breadcrumbs.homeBreadcrumb')
-
+<div id="breadcrumb" class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <div class="col-xs-9 col-md-9">
+                <ul class="breadcrumb-tree">
+                    <li><a href="{{route('home')}}">Trang chủ</a></li>
+                    <li><a href="{{route('home.table')}}">Bàn</a></li>
+                    <li class="active">Chi tiết bàn</li>
+                </ul>
+            </div>
+            <div class="col-xs-3 col-md-3">
+                <a href={{route('home.table')}} class="btn btn-primary">Trở về</a>
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /BREADCRUMB -->
 <div class="shopping-cart section">
     @if (null !== $order && null !== $order->orderDetails && ! empty($order->orderDetails->toArray()))
         <div class="container">
@@ -18,13 +40,13 @@
                             <th class="text-center">Đơn giá</th>
                             <th class="text-center">Số lượng</th>
                             <th class="text-center">Tổng</th>
-                            <th class="text-center"><i class="ti-trash remove-icon"></i></th>
+                            <th class="text-center">Trạng thái</th>
                         </tr>
                         </thead>
                         <tbody>
                             @foreach ($order->orderDetails as $item)
                                 <tr>
-                                    <td class="image" data-title="No"><img width="100px" src="{{asset('upload/images/products/' . $item->product->image)}}" alt="#"></td>
+                                    <td class="image" data-title="No"><img width="50px" src="{{asset('upload/images/products/' . $item->product->image)}}" alt="#"></td>
                                     <td class="product-des" data-title="Description">
                                         <p class="product-name"><a href="#">{{$item->product->name}}</a></p>
                                     </td>
@@ -37,8 +59,24 @@
                                         <!--/ End Input Order -->
                                     </td>
                                     <td align="center" class="total-amount" data-title="Total">{{number_format($item->total)}}<span>
-                                            
-                                    <td align="center" class="action" data-title="Remove"><a href="#" onclick=""><i class="ti-trash remove-icon"></i></a></td>
+                                    <td align="center" class="total-amount" data-title="Total">
+                                        @switch($item->status)
+                                            @case(OrderConstant::STATUS_PENDING)
+                                                Đang chờ
+                                                @break
+                                            @case(OrderConstant::STATUS_DONE)
+                                                Đã xong
+                                                @break
+                                            @case(OrderConstant::STATUS_DELIVERED)
+                                                Đã lên đồ
+                                                @break
+                                            @case(OrderConstant::STATUS_CANCEL)
+                                                Hủy
+                                                @break
+                                            @default
+                                                
+                                        @endswitch
+                                    <span>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -61,7 +99,7 @@
                                     <div class="button5" style="margin: 20px">
                                         <div class="row" align="right">
                                             <button style="margin-right: 20px" class="btn btn-default col-xs-5" onclick="handleOrder({{$table->id}})">Order</button>
-                                            <button class="btn btn-danger col-md-5">Thanh toán</button>
+                                            <button class="btn btn-danger col-md-5" onclick="handleCheckOut({{$table->id}})">Thanh toán</button>
                                         </div>
                                     </div>
                                 </div>
@@ -91,6 +129,33 @@
     function handleOrder(id) {
         var url = '{{ route("home.order") }}?table=' + id;
         location.replace(url);
+    }
+
+    function handleCheckOut(id) {
+        var url = '{{ route("home.order.checkout", ":id") }}';
+        url = url.replace(':id', id);
+        // location.replace(url);
+        Swal.fire({
+            title: 'Thanh toán',
+            text: "Xác nhận thanh toán đơn hàng!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xác nhận!',
+            cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.get(url, function (data) {
+                        $('.order-icon').load(`${urlOrder} .order-icon`);
+                        Swal.fire(
+                            'Thành công!',
+                            'Thanh toán thành công',
+                            'success'
+                            )
+                    })
+                }
+            })
     }
 </script>
 @endsection

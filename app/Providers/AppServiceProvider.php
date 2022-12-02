@@ -20,7 +20,9 @@ class AppServiceProvider extends ServiceProvider
             'Table',
             'Product',
             'Order',
-            'OrderDetail'
+            'OrderDetail',
+            'Bill',
+            'BillDetail'
         ];
 
         foreach ($models as $model) {

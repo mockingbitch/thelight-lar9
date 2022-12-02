@@ -36,14 +36,54 @@
     function handleRemoveOrder() {
         var table = '{{$table->id}}';
         var urlOrder = "{{route('home')}}" + "/order?table=" + table;
-        
-        $.get('{{route('home.order.remove')}}', function (data) {
-            $('.order-icon').load(`${urlOrder} .order-icon`);
-            Swal.fire(
-                'Đã xóa giỏ hàng!',
-                'Giỏ hàng trống',
+        Swal.fire({
+            title: 'Xóa order',
+            text: "Xóa tất cả sản phẩm khỏi order!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xác nhận!',
+            cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.get('{{route('home.order.remove')}}', function (data) {
+                        $('.order-icon').load(`${urlOrder} .order-icon`);
+                        Swal.fire(
+                            'Đã xóa!',
+                            'Order đã được xóa',
+                            'success'
+                            )
+                    })
+                }
+            })
+      
+    }
+
+    function handleToggleMenu() {
+        $('#responsive-nav').toggle('', function () {
+            $('#responsive-nav').addClass( "active" );
+        });
+    }
+
+    function handleRemoveItemOrder(id) {
+        Swal.fire({
+            title: 'Xóa sản phẩm',
+            text: "Xóa sản phẩm khỏi order!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xác nhận!',
+            cancelButtonText: 'Hủy'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                'Đã xóa!',
+                'Sản phẩm đã được xóa',
                 'success'
                 )
-        })
+            }
+            })
     }
 </script>

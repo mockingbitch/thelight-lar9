@@ -24,4 +24,16 @@ class TableConstant
         'updated_at' => self::COLUMN_UPDATED_AT,
         'deleted_at' => self::COLUMN_DELETED_AT,
     ];
+
+    public const STATUS_PENDING = 'PENDING';
+    public const STATUS_ON_DELIVERY = 'ON_DELIVERY';
+    public const STATUS_DELIVERED = 'DELIVERED';
+    public const STATUS_EMPTY = 'EMPTY';
+
+    public const STATUS = [
+        'pending' => 'PENDING',
+        'on_delivery' => 'ON_DELIVERY',
+        'delivered' => 'DELIVERED',
+        'empty' => 'EMPTY'
+    ];
 }

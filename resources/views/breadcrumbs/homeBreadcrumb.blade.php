@@ -5,10 +5,10 @@
         <div class="row">
             <div class="col-xs-9 col-md-9">
                 <ul class="breadcrumb-tree">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">All Categories</a></li>
-                    <li><a href="#">Accessories</a></li>
-                    <li class="active">Headphones (227,490 Results)</li>
+                    <li><a href="#">Trang chủ</a></li>
+                    <li><a href="#">Bàn</a></li>
+                    <li><a href="#">Chi tiết</a></li>
+                    <li class="active">Order sản phẩm (20 Sản phẩm)</li>
                 </ul>
             </div>
             <div class="col-xs-3 col-md-3">

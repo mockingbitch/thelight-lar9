@@ -1,3 +1,8 @@
+@php
+	$order = session()->get('order');
+	$table_id = null !== $order ? array_key_first($order) : null;
+	$subTotal = 0;
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -109,40 +114,36 @@
 								<!-- /Wishlist -->
 
 								<!-- Cart -->
-								<div class="dropdown orders {{null !== session()->get('order') ? 'display-order' : ''}}">
+								<div class="dropdown orders {{null !== $order ? 'display-order' : ''}}">
 									<a class="dropdown-toggle" data-toggle="dropdown">
 										<i class="fa fa-shopping-cart"></i>
 										<span>Order</span>
-										<div class="qty">3</div>
+										<div class="qty">{{null !== $order && null !== $table_id ? count($order[$table_id]) : ''}}</div>
 									</a>
 									<div class="cart-dropdown">
+										@if (null !== $order && null !== $order[$table_id])
 										<div class="cart-list">
+											@foreach ($order[$table_id] as $item)
 											<div class="product-widget">
 												<div class="product-img">
-													<img src="./img/product01.png" alt="">
+													<img src="{{asset('upload/images/products/' . $item['image'])}}" alt="">
 												</div>
 												<div class="product-body">
-													<h3 class="product-name"><a href="#">product name goes here</a></h3>
-													<h4 class="product-price"><span class="qty">1x</span>$980.00</h4>
+													<h3 class="product-name"><a href="#">{{$item['name']}}</a></h3>
+													<h4 class="product-price"><span class="qty">{{$item['quantity']}} X</span>{{number_format($item['price'])}}</h4>
 												</div>
-												<button class="delete"><i class="fa fa-close"></i></button>
+												<a class="delete" onclick="handleRemoveItemOrder({{$item['id']}})"><i class="fa fa-close"></i></a>
 											</div>
-
-											<div class="product-widget">
-												<div class="product-img">
-													<img src="./img/product02.png" alt="">
-												</div>
-												<div class="product-body">
-													<h3 class="product-name"><a href="#">product name goes here</a></h3>
-													<h4 class="product-price"><span class="qty">3x</span>$980.00</h4>
-												</div>
-												<button class="delete"><i class="fa fa-close"></i></button>
-											</div>
+											@php
+												$subTotal += $item['quantity'] * $item['price']
+											@endphp
+											@endforeach
 										</div>
 										<div class="cart-summary">
-											<small>3 Item(s) selected</small>
-											<h5>SUBTOTAL: $2940.00</h5>
+											<small>{{count($order[$table_id])}} sản phẩm</small>
+											<h5>Tổng: {{number_format($subTotal)}}</h5>
 										</div>
+										@endif
 										<div class="cart-btns">
 											<a onclick="handleRemoveOrder()">Xoá order</a>
 											<a href="{{route('home.order.submit')}}">Xác nhận <i class="fa fa-arrow-circle-right"></i></a>
@@ -152,7 +153,7 @@
 								<!-- /Cart -->
 
 								<!-- Menu Toogle -->
-								<div class="menu-toggle">
+								<div class="menu-toggle" onclick="handleToggleMenu()">
 									<a href="#">
 										<i class="fa fa-bars"></i>
 										<span>Menu</span>
