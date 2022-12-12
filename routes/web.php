@@ -69,8 +69,8 @@ Route::group(['middleware' => ['check.login']], function () {
     Route::prefix('order')->group(function () {
         Route::get('/', [Home::class, 'getProductsScreenOrder'])->name('home.order');
         Route::get('/add', [Order::class, 'createSessionOrder'])->name('home.order.add');
-        Route::get('/update', [Order::class, 'updateSessionOrder'])->name('home.order.update');
-        Route::get('/delete', [Order::class, 'deleteSessionOrder'])->name('home.order.delete');
+        Route::get('/update', [Order::class, 'updateOrder'])->name('home.order.update');
+        Route::get('/delete', [Order::class, 'deleteOrder'])->name('home.order.delete');
         Route::get('/submit', [Order::class, 'submitOrder'])->name('home.order.submit');
         Route::get('/remove-all', [Order::class, 'remove'])->name('home.order.remove');
         Route::get('/checkout/{id}', [Order::class, 'checkOut'])->name('home.order.checkout');

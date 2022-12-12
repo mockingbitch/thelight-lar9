@@ -13,6 +13,7 @@ use App\Services\OrderService;
 use Illuminate\Http\RedirectResponse;
 use App\Constants\UserConstant;
 use App\Constants\TableConstant;
+use App\Constants\OrderDetailConstant;
 
 class OrderController extends Controller
 {
@@ -154,7 +155,12 @@ class OrderController extends Controller
         session()->forget('order');
     }
 
-    public function checkOut($id)
+    /**
+     * @param integer|null $id
+     * 
+     * @return boolean
+     */
+    public function checkOut(?int $id) : bool
     {
         $order = $this->orderRepository->getTableOrder($id);
 
@@ -162,12 +168,68 @@ class OrderController extends Controller
 
         if (! $bill = $this->billRepository->createBill($order)) return false;
 
-        if (! $this->billDetailRepository->createBillDetail($bill, $order)); return false;
+        $billDetail = $this->billDetailRepository->createBillDetail($bill, $order);
 
+        if ( $billDetail == false) return false;
+       
         if (! $this->orderDetailRepository->deleteByOrderId($order->id)
             || ! $this->tableRepository->update($id, [TableConstant::COLUMN_STATUS => TableConstant::STATUS['empty']])  // update status of table
             || ! $this->orderRepository->delete($order->id)
-            ) return false;
+            )
+        {
+            return false;
+        }
+
+        session()->forget('order');        
+
+        return true;
+    }
+
+    /**
+     * @param Request $request
+     * 
+     * @return boolean
+     */
+    public function updateOrder(Request $request) : bool
+    {
+        if ($request->query(OrderDetailConstant::COLUMN_QUANTITY) == 0) :
+            if (! $this->deleteOrder($request->query(OrderDetailConstant::COLUMN_ID))) :
+                return false;
+            endif;
+
+            return true;
+        endif;
+
+        $orderDetail = $this->orderDetailRepository->find($request->query(OrderDetailConstant::COLUMN_ID));
+
+        if (null === $orderDetail) :
+            return false;
+        endif;
+
+        $dataUpdate = [
+            OrderDetailConstant::COLUMN_QUANTITY => $request->query(OrderDetailConstant::COLUMN_QUANTITY),
+            OrderDetailConstant::COLUMN_TOTAL => $request->query(OrderDetailConstant::COLUMN_QUANTITY) * $orderDetail->price,
+        ];
+        
+        if (! $this->orderDetailRepository->update($orderDetail->id, $dataUpdate)
+            || ! $this->orderRepository->updateTotal($orderDetail->order_id)
+        ) :
+            return false;
+        endif;
+
+        return true;
+    }
+
+    /**
+     * @param integer|null $id
+     * 
+     * @return boolean
+     */
+    public function deleteOrder(?int $id) : bool
+    {
+        if (! $this->orderDetailRepository->delete($id)) :
+            return false;
+        endif;
 
         return true;
     }

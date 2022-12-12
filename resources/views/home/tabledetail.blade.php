@@ -28,11 +28,16 @@
     @if (null !== $order && null !== $order->orderDetails && ! empty($order->orderDetails->toArray()))
         <div class="container">
             <div class="row">
-                <h2 style="margin-left: 20px">{{$table->name}}</h2>
+                <div class="col-xs-9 col-md-9">
+                    <h2>{{$table->name}}</h2>
+                </div>
+                <div class="col-xs-2 col-md-2">
+                    <a href={{route('home.table')}} class="btn btn-primary">Trở về</a>
+                </div>
                 <hr>
-                <div class="col-12" id="list-cart">
+                <div class="col-12" id="list-order">
                     <!-- Shopping Summery -->
-                    <table class="table shopping-summery cart-change">
+                    <table class="table shopping-summery order-change">
                         <thead>
                         <tr class="main-hading">
                             <th></th>
@@ -45,7 +50,7 @@
                         </thead>
                         <tbody>
                             @foreach ($order->orderDetails as $item)
-                                <tr>
+                                <tr onclick="handleClickItemOrder({{$item->id}}, '{{$item->product->name}}', '{{$item->status}}')">
                                     <td class="image" data-title="No"><img width="50px" src="{{asset('upload/images/products/' . $item->product->image)}}" alt="#"></td>
                                     <td class="product-des" data-title="Description">
                                         <p class="product-name"><a href="#">{{$item->product->name}}</a></p>
@@ -59,19 +64,19 @@
                                         <!--/ End Input Order -->
                                     </td>
                                     <td align="center" class="total-amount" data-title="Total">{{number_format($item->total)}}<span>
-                                    <td align="center" class="total-amount" data-title="Total">
+                                    <td align="center" class="total-amount" data-title="status">
                                         @switch($item->status)
                                             @case(OrderConstant::STATUS_PENDING)
-                                                Đang chờ
+                                                <i class="fa-solid fa-hourglass-half fa-spin"></i>
                                                 @break
                                             @case(OrderConstant::STATUS_DONE)
-                                                Đã xong
+                                                <i class="fa-regular fa-circle-check fa-bounce" style="color: green"></i>
                                                 @break
                                             @case(OrderConstant::STATUS_DELIVERED)
-                                                Đã lên đồ
+                                                <i class="fa-sharp fa-solid fa-circle-check" style="color: green"></i>
                                                 @break
                                             @case(OrderConstant::STATUS_CANCEL)
-                                                Hủy
+                                                <i class="fa-sharp fa-solid fa-circle-exclamation" style="color: red"></i>
                                                 @break
                                             @default
                                                 
@@ -126,6 +131,56 @@
     @endif
 </div>
 <script>
+    function handleClickItemOrder(id, product_name, status) {
+        var current_url = '{{ route("home.table.detail", ":id") }}';
+        current_url = current_url.replace(':id', {{$table->id}});
+
+        if (status == 'PENDING') {
+            Swal.fire({
+            title: 'Cập nhật ' + product_name + `<br/><small>Nhập 0 để xóa sản phẩm</small>`,
+            html: `<input type="text" id="quantity" class="swal2-input" placeholder="Số lượng">`,
+            confirmButtonText: 'Xác nhận',
+            focusConfirm: false,
+            preConfirm: () => {
+                const quantity = Swal.getPopup().querySelector('#quantity').value
+                if (! quantity || isNaN(quantity) || quantity < 0) {
+                    Swal.showValidationMessage(`Vui lòng nhập số lượng`)
+                }
+                return { quantity: quantity }
+            }
+            }).then((result) => {
+                var quantity = parseInt(result.value.quantity);
+                if (! isNaN(quantity)) {
+                    Swal.fire(`
+                        Số lượng: ${result.value.quantity}
+                    `.trim())
+                    $.get('{{route('home.order.update')}}', {'id': id, 'quantity': quantity}, function (data) {
+                        if (data == 1) {
+                            console.log(current_url);
+                            $('.order-change').load(`${current_url} .order-change`)
+                            $('.total').load(`${current_url} .total`);
+                            Swal.fire(
+                                'Thành công!',
+                                'Cập nhật thành công',
+                                'success'
+                            );
+                        } else {
+                            Swal.fire(
+                            'Đã có lỗi xảy ra!',
+                            'Cập nhật không thành công',
+                            'warning'
+                            );
+                        }
+                    })
+                }
+            })
+        }
+
+        if (status == 'CANCEL') {
+            
+        }
+    }
+
     function handleOrder(id) {
         var url = '{{ route("home.order") }}?table=' + id;
         location.replace(url);
@@ -147,15 +202,33 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.get(url, function (data) {
-                        $('.order-icon').load(`${urlOrder} .order-icon`);
-                        Swal.fire(
-                            'Thành công!',
-                            'Thanh toán thành công',
-                            'success'
-                            )
+                        console.log(data);
+                        if (data == 1) {
+                            Swal.fire({
+                                title: 'Thanh toán thành công',
+                                text: "Đã thanh toán!",
+                                icon: 'success',
+                                // showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                // cancelButtonColor: '#d33',
+                                confirmButtonText: 'Ok!',
+                                // cancelButtonText: 'Hủy'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                            'Đã có lỗi xảy ra!',
+                            'Thanh toán không thành công',
+                            'warning'
+                            );
+                        }
                     })
                 }
             })
     }
 </script>
+
 @endsection

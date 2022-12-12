@@ -2,14 +2,15 @@
 
 namespace App\Constants;
 
-class OrderConstant
+class OrderDetailConstant
 {
     public const BREADCRUMB = 'order';
 
     public const COLUMN_ID = 'id';
-    public const COLUMN_WAITER_ID = 'waiter_id';
-    public const COLUMN_GUEST_ID = 'guest_id';
-    public const COLUMN_TABLE_ID = 'table_id';
+    public const COLUMN_PRODUCT_ID= 'product_id';
+    public const COLUMN_ORDER_ID = 'order_id';
+    public const COLUMN_QUANTITY = 'quantity';
+    public const COLUMN_PRICE = 'price';
     public const COLUMN_TOTAL = 'total';
     public const COLUMN_NOTE = 'note';
     public const COLUMN_STATUS ='status';
@@ -19,9 +20,10 @@ class OrderConstant
     
     public const COLUMN = [
         'id' => self::COLUMN_ID,
-        'waiter_id' => self::COLUMN_WAITER_ID,
-        'guest_id' => self::COLUMN_GUEST_ID,
-        'table_id' => self::COLUMN_TABLE_ID,
+        'product_id' => self::COLUMN_PRODUCT_ID,
+        'order_id' => self::COLUMN_ORDER_ID,
+        'quantity' => self::COLUMN_QUANTITY,
+        'price' => self::COLUMN_PRICE,
         'total' => self::COLUMN_TOTAL,
         'note' => self::COLUMN_NOTE,
         'status' => self::COLUMN_STATUS,

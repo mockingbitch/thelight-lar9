@@ -17,9 +17,9 @@ class BillRepository extends BaseRepository implements BillRepositoryInterface
     /**
      * @param object|null $order
      * 
-     * @return void
+     * @return Bill|null
      */
-    public function createBill(? object $order)
+    public function createBill(? object $order) : ?Bill
     {
         $data = [
             BillConstant::COLUMN['waiter_id'] => $order->waiter_id,
@@ -30,7 +30,7 @@ class BillRepository extends BaseRepository implements BillRepositoryInterface
             BillConstant::COLUMN['status'] => $order->status,
         ];
 
-        if (! $bill = $this->create($data)) return false;
+        if (! $bill = $this->create($data)) return null;
 
         return $bill;
     }

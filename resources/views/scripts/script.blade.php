@@ -10,7 +10,7 @@
             preConfirm: () => {
                 const quantity = Swal.getPopup().querySelector('#quantity').value
                 const note = Swal.getPopup().querySelector('#note').value
-                if (! quantity || isNaN(quantity)) {
+                if (! quantity || isNaN(quantity) || quantity <= 0) {
                     Swal.showValidationMessage(`Vui lòng nhập số lượng`)
                 }
                 return { quantity: quantity, note: note }

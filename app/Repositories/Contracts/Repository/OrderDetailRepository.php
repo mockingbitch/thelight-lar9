@@ -5,6 +5,7 @@ namespace App\Repositories\Contracts\Repository;
 use App\Models\OrderDetail;
 use App\Repositories\Contracts\Interface\OrderDetailRepositoryInterface;
 use App\Repositories\BaseRepository;
+use App\Constants\OrderConstant;
 
 class OrderDetailRepository extends BaseRepository implements OrderDetailRepositoryInterface
 {
@@ -27,16 +28,25 @@ class OrderDetailRepository extends BaseRepository implements OrderDetailReposit
         $subTotal = 0;
 
         foreach ($orderItems as $item) :
+            $existedPendingProduct = null;
             $existedProduct = $this->model                  //check exist product in order
                 ->where('product_id', $item['id'])
                 ->where('order_id', $order_id)
-                ->first();
+                ->get();
 
-            if (null !== $existedProduct) :  //increase number of quantity existed product
-                $this->update($existedProduct->id, [
-                    'total'=> $existedProduct->total + ($item['quantity'] * $item['price']),
-                    'quantity' => $existedProduct->quantity + $item['quantity'],
-                    'note' => $existedProduct->note . '<br/>' . $item['note']
+            if ( null !== $existedProduct) :
+                foreach ($existedProduct as $itemProduct) :
+                    if (null !== $itemProduct && $itemProduct->status === OrderConstant::STATUS['pending']) :  //check last pending product
+                        $existedPendingProduct = $itemProduct;
+                    endif;
+                endforeach;
+            endif;
+
+            if (null !== $existedPendingProduct and $existedPendingProduct->status === OrderConstant::STATUS['pending']) :  //increase number of quantity existed pending product
+                $this->update($existedPendingProduct->id, [
+                    'total'=> $existedPendingProduct->total + ($item['quantity'] * $item['price']),
+                    'quantity' => $existedPendingProduct->quantity + $item['quantity'],
+                    'note' => $existedPendingProduct->note ? $existedPendingProduct->note . '<br/>' . $item['note'] : $item['note']
                 ]);
             else :
                 $data = [

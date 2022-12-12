@@ -28,6 +28,9 @@
 
 		<!-- Font Awesome Icon -->
 		<link rel="stylesheet" href="{{asset('home/css/font-awesome.min.css')}}">
+		<link rel="stylesheet" href="{{asset('home/css/font-awesome6.css')}}">
+		<script src="https://kit.fontawesome.com/915a42d302.js" crossorigin="anonymous"></script>
+
 
 		{{-- Custom Style --}}
 		<link rel="stylesheet" href="{{asset('home/css/thelight.css')}}">
