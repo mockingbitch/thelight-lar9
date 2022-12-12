@@ -1,6 +1,8 @@
 @php
-    use App\Constants\OrderConstant;
+use App\Constants\OrderConstant;
+use App\Constants\RouteConstant;
 @endphp
+
 @extends('layouts.homeLayout')
 @section('content')
 <div id="breadcrumb" class="section">
@@ -10,13 +12,13 @@
         <div class="row">
             <div class="col-xs-9 col-md-9">
                 <ul class="breadcrumb-tree">
-                    <li><a href="{{route('home')}}">Trang chủ</a></li>
-                    <li><a href="{{route('home.table')}}">Bàn</a></li>
+                    <li><a href="{{route(RouteConstant::HOMEPAGE)}}">Trang chủ</a></li>
+                    <li><a href="{{route(RouteConstant::HOME['table_list'])}}">Bàn</a></li>
                     <li class="active">Chi tiết bàn</li>
                 </ul>
             </div>
             <div class="col-xs-3 col-md-3">
-                <a href={{route('home.table')}} class="btn btn-primary">Trở về</a>
+                <a href={{route(RouteConstant::HOME['table_list'])}} class="btn btn-primary">Trở về</a>
             </div>
         </div>
         <!-- /row -->
@@ -32,7 +34,7 @@
                     <h2>{{$table->name}}</h2>
                 </div>
                 <div class="col-xs-2 col-md-2">
-                    <a href={{route('home.table')}} class="btn btn-primary">Trở về</a>
+                    <a href={{route(RouteConstant::HOME['table_list'])}} class="btn btn-primary">Trở về</a>
                 </div>
                 <hr>
                 <div class="col-12" id="list-order">
@@ -182,7 +184,7 @@
     }
 
     function handleOrder(id) {
-        var url = '{{ route("home.order") }}?table=' + id;
+        var url = '{{ route("home.order.products") }}?table=' + id;
         location.replace(url);
     }
 

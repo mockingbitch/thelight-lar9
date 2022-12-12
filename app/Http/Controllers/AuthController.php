@@ -9,6 +9,7 @@ use App\Constants\UserConstant;
 use App\Constants\Constant;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use App\Constants\RouteConstant;
 
 class AuthController extends Controller
 {
@@ -37,7 +38,7 @@ class AuthController extends Controller
             $credentials = $request->only(UserConstant::COLUMN['email'], UserConstant::COLUMN['password']);
             $token       = Auth::guard('user')->attempt($credentials);
 
-            if (!$token || null == $token)  return redirect()->route('login')->with('msg', 'Sai tài khoản hoặc mật khẩu!!!');
+            if (!$token || null == $token)  return redirect()->route(RouteConstant::LOGIN)->with('msg', 'Sai tài khoản hoặc mật khẩu!!!');
 
             $user = Auth::guard('user')->user();
     
@@ -45,13 +46,13 @@ class AuthController extends Controller
                 case UserConstant::ROLE['admin'] :
                 case UserConstant::ROLE['manager'] :
                 case UserConstant::ROLE['waiter'] :
-                    return redirect()->route('dashboard.home');
+                    return redirect()->route(RouteConstant::DASHBOARD['home']);
                     break;
                 case UserConstant::ROLE['guest'] :
-                    return redirect()->route('home');
+                    return redirect()->route(RouteConstant::HOMEPAGE);
                     break;
                 default:
-                    return redirect()->route('home');
+                    return redirect()->route(RouteConstant::HOMEPAGE);
                     break;
             }
         // } catch (\Throwable $th) {
@@ -67,6 +68,6 @@ class AuthController extends Controller
         Auth::guard('user')->logout();
         session()->forget('order');
 
-        return redirect()->route('login');
+        return redirect()->route(RouteConstant::LOGIN);
     }
 }

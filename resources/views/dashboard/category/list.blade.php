@@ -1,3 +1,7 @@
+@php
+use App\Constants\RouteConstant;
+@endphp
+
 @extends('layouts.dashboardLayout')
 @section('content')
 <div class="row">

@@ -8,6 +8,7 @@ use App\Http\Requests\CategoryRequest;
 use App\Repositories\Contracts\Interface\CategoryRepositoryInterface;
 use App\Repositories\Contracts\Interface\ProductRepositoryInterface;
 use App\Constants\CategoryConstant;
+use App\Constants\RouteContant;
 use App\Constants\Constant;
 use Illuminate\View\View;
 
@@ -50,7 +51,7 @@ class CategoryController extends Controller
     {
         $categories = $this->categoryRepository->getAll();
 
-        return view('dashboard.category.list', [
+        return view(RouteConstant::DASHBOARD['category_list'], [
             'categoryErrCode' => session()->get('categoryErrCode') ?? null,
             'categoryErrMsg' => session()->get('categoryErrMsg') ?? null,
             'categories' => $categories,
@@ -63,7 +64,7 @@ class CategoryController extends Controller
      */
     public function viewCreate() : View
     {
-        return view('dashboard.category.create', [
+        return view(RouteConstant::DASHBOARD['category_create'], [
             'categoryErrCode' => session()->get('categoryErrCode') ?? null,
             'categoryErrMsg' => session()->get('categoryErrMsg') ?? null,
             'breadcrumb' => $this->breadcrumb
@@ -81,13 +82,13 @@ class CategoryController extends Controller
             $category = $this->categoryRepository->find($id);
 
             if (null == $category || $category == '') :
-                return redirect()->with('dashboard.category.list')->with([
+                return redirect()->with(RouteConstant::DASHBOARD['category_list'])->with([
                     'categoryErrCode' => Constant::ERR_CODE['fail'],
                     'categoryErrMsg' => CategoryConstant::ERR_MSG_NOT_FOUND
                 ]);
             endif;
 
-            return view('dashboard.category.update', [
+            return view(RouteConstant::DASHBOARD['category_update'], [
                 'categoryErrCode' => session()->get('categoryErrCode') ?? null,
                 'categoryErrMsg' => session()->get('categoryErrMsg') ?? null,
                 'category' => $category,
@@ -95,7 +96,7 @@ class CategoryController extends Controller
             ]);
         } catch (\Throwable $th) {
             return redirect()
-                ->route('dashboard.category.list')
+                ->route(RouteConstant::DASHBOARD['category_list'])
                 ->with([
                     'categoryErrCode' => Constant::ERR_CODE['fail'],
                     'categoryErrMsg' => CategoryConstant::ERR_MSG_NOT_FOUND
@@ -112,7 +113,7 @@ class CategoryController extends Controller
     {
         if (! $this->categoryRepository->create($request->toArray())) :
             return redirect()
-                ->route('dashboard.category.create')
+                ->route(RouteConstant::DASHBOARD['category_create'])
                 ->with([
                     'categoryErrCode' => Constant::ERR_CODE['fail'],
                     'categoryErrMsg' => Constant::ERR_MSG['create_fail']
@@ -120,7 +121,7 @@ class CategoryController extends Controller
         endif;
 
         return redirect()
-            ->route('dashboard.category.create')
+            ->route(RouteConstant::DASHBOARD['category_create'])
             ->with([
                 'categoryErrCode' => Constant::ERR_CODE['success'],
                 'categoryErrMsg' => Constant::ERR_MSG['create_success']
@@ -137,13 +138,13 @@ class CategoryController extends Controller
     {
         if (! $this->categoryRepository->find($categoryId)) :
             return redirect()
-                ->route('dashboard.category.list')
+                ->route(RouteConstant::DASHBOARD['category_list'])
                 ->with('msg', CategoryConstant::ERR_MSG_NOT_FOUND);
         endif;
 
         if (! $this->categoryRepository->update($categoryId, $request->toArray())) :
             return redirect()
-                ->route('dashboard.category.update', ['id' => $categoryId])
+                ->route(RouteConstant::DASHBOARD['category_update'], ['id' => $categoryId])
                 ->with([
                     'categoryErrCode' => Constant::ERR_CODE['fail'],
                     'categoryErrMsg' => Constant::ERR_MSG['update_fail']
@@ -151,7 +152,7 @@ class CategoryController extends Controller
         endif;
 
         return redirect()
-            ->route('dashboard.category.update', ['id' => $categoryId])
+            ->route(RouteConstant::DASHBOARD['category_update'], ['id' => $categoryId])
             ->with([
                 'categoryErrCode' => Constant::ERR_CODE['success'],
                 'categoryErrMsg' => Constant::ERR_MSG['update_success']
@@ -164,7 +165,7 @@ class CategoryController extends Controller
         
         if (! $this->categoryRepository->find($categoryId)) :
             return redirect()
-                ->route('dashboard.category.list')
+                ->route(RouteConstant::DASHBOARD['category_list'])
                 ->with('msg', CategoryConstant::ERR_MSG_NOT_FOUND);
         endif;
 

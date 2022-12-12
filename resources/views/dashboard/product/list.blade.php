@@ -1,9 +1,13 @@
+@php
+use App\Constants\RouteConstant;
+@endphp
+
 @extends('layouts.dashboardLayout')
 @section('content')
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <h3 align="center" style="text-shadow: 1px 1px 2px grey;">Danh sách sản phẩm</h3>
-        <a href="{{route('dashboard.product.create')}}">
+        <a href="{{route(RouteConstant::DASHBOARD['product_create'])}}">
             <button class="btn btn-primary" style="float: right;">Thêm mới</button>
         </a>
         <table class="table table-hover">

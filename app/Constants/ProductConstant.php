@@ -13,6 +13,9 @@ class ProductConstant
     public const COLUMN_ID = 'id';
     public const COLUMN_NAME = 'name';
     public const COLUMN_DESCRIPTION = 'description';
+    public const COLUMN_IMAGE = 'image';
+    public const COLUMN_PRICE = 'price';
+    public const COLUMN_CATEGORY_ID = 'category_id';
     public const COLUMN_STATUS = 'status';
     public const COLUMN_CREATED_AT = 'created_at';
     public const COLUMN_UPDATED_AT = 'updated_at';
@@ -22,6 +25,9 @@ class ProductConstant
         'id' => self::COLUMN_ID,
         'name' => self::COLUMN_NAME,
         'description' => self::COLUMN_DESCRIPTION,
+        'image' => self::COLUMN_IMAGE,
+        'price' => self::COLUMN_PRICE,
+        'category_id' => self::COLUMN_CATEGORY_ID,
         'status' => self::COLUMN_STATUS,
         'created_at' => self::COLUMN_CREATED_AT,
         'updated_at' => self::COLUMN_UPDATED_AT,

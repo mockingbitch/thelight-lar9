@@ -6,6 +6,7 @@ use App\Models\OrderDetail;
 use App\Repositories\Contracts\Interface\OrderDetailRepositoryInterface;
 use App\Repositories\BaseRepository;
 use App\Constants\OrderConstant;
+use App\Constants\OrderDetailConstant;
 
 class OrderDetailRepository extends BaseRepository implements OrderDetailRepositoryInterface
 {
@@ -30,8 +31,8 @@ class OrderDetailRepository extends BaseRepository implements OrderDetailReposit
         foreach ($orderItems as $item) :
             $existedPendingProduct = null;
             $existedProduct = $this->model                  //check exist product in order
-                ->where('product_id', $item['id'])
-                ->where('order_id', $order_id)
+                ->where(OrderDetailConstant::COLUMN_PRODUCT_ID, $item['id'])
+                ->where(OrderDetailConstant::COLUMN_ORDER_ID, $order_id)
                 ->get();
 
             if ( null !== $existedProduct) :
@@ -44,25 +45,25 @@ class OrderDetailRepository extends BaseRepository implements OrderDetailReposit
 
             if (null !== $existedPendingProduct and $existedPendingProduct->status === OrderConstant::STATUS['pending']) :  //increase number of quantity existed pending product
                 $this->update($existedPendingProduct->id, [
-                    'total'=> $existedPendingProduct->total + ($item['quantity'] * $item['price']),
-                    'quantity' => $existedPendingProduct->quantity + $item['quantity'],
-                    'note' => $existedPendingProduct->note ? $existedPendingProduct->note . '<br/>' . $item['note'] : $item['note']
+                    OrderDetailConstant::COLUMN_TOTAL => $existedPendingProduct->total + ($item['quantity'] * $item['price']),
+                    OrderDetailConstant::COLUMN_QUANTITY => $existedPendingProduct->quantity + $item['quantity'],
+                    OrderDetailConstant::COLUMN_NOTE => $existedPendingProduct->note ? $existedPendingProduct->note . '<br/>' . $item['note'] : $item['note']
                 ]);
             else :
                 $data = [
-                    'product_id' => $item['id'],
-                    'order_id' => $order_id,
-                    'quantity' => $item['quantity'],
-                    'price' => $item['price'],
-                    'total' => $item['price'] * $item['quantity'],
-                    'note' => $item['note'] ?? null
+                    OrderDetailConstant::COLUMN_PRODUCT_ID => $item['id'],
+                    OrderDetailConstant::COLUMN_ORDER_ID => $order_id,
+                    OrderDetailConstant::COLUMN_QUANTITY => $item['quantity'],
+                    OrderDetailConstant::COLUMN_PRICE => $item['price'],
+                    OrderDetailConstant::COLUMN_TOTAL => $item['price'] * $item['quantity'],
+                    OrderDetailConstant::COLUMN_NOTE => $item['note'] ?? null
                 ];
 
                 if (! $this->create($data)) return 0;
             endif;
         endforeach;
 
-        $arrayOrder = $this->model->where('order_id', $order_id)->get();
+        $arrayOrder = $this->model->where(OrderDetailConstant::COLUMN_ORDER_ID, $order_id)->get();
         
         foreach ($arrayOrder as $item) :
             $total = (int) $item->price * (int) $item->quantity;
@@ -79,7 +80,7 @@ class OrderDetailRepository extends BaseRepository implements OrderDetailReposit
      */
     public function deleteByOrderId(?int $order_id) : bool
     {
-        $result = $this->model->where('order_id', $order_id)->get();
+        $result = $this->model->where(OrderDetailConstant::COLUMN_ORDER_ID, $order_id)->get();
         
         foreach ($result as $item) :
             if($item){

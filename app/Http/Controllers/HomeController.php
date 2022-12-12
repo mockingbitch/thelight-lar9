@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Repositories\Contracts\Interface\TableRepositoryInterface;
 use App\Repositories\Contracts\Interface\ProductRepositoryInterface;
+use App\Constants\RouteConstant;
 
 class HomeController extends Controller
 {
@@ -25,10 +26,10 @@ class HomeController extends Controller
     {
         // return view('home.index');
         if (auth()->guard('user')->user()) {
-            return redirect()->route('home.table');
+            return redirect()->route(RouteConstant::HOME['table_list']);
         }
 
-        return \redirect()->route('login');
+        return \redirect()->route(RouteConstant::LOGIN);
     }
 
     /**
@@ -36,7 +37,7 @@ class HomeController extends Controller
      */
     public function catchError() : View
     {
-        return view('home.error');
+        return view(RouteConstant::ERROR);
     }
 
     public function getProductsScreenOrder(Request $request)
@@ -45,7 +46,7 @@ class HomeController extends Controller
         $table = $this->tableRepository->find((int) $table_id);
 
         if (null === $table) :
-            return redirect()->route('home.table');
+            return redirect()->route(RouteConstant::HOME['table_list']);
         endif;
  
         $products = $this->productRepository->getAll();

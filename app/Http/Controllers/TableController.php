@@ -9,6 +9,7 @@ use App\Repositories\Contracts\Interface\TableRepositoryInterface;
 use App\Repositories\Contracts\Interface\OrderRepositoryInterface;
 use App\Constants\TableConstant;
 use App\Constants\Constant;
+use App\Constants\RouteConstant;
 use Illuminate\View\View;
 
 class TableController extends Controller
@@ -86,7 +87,7 @@ class TableController extends Controller
             ]);
         } catch (\Throwable $th) {
             return redirect()
-                ->route('dashboard.table.list')
+                ->route(RouteConstant::DASHBOARD['table_list'])
                 ->with([
                     'tableErrCode' => Constant::ERR_CODE['fail'],
                     'tableErrMsg' => TableConstant::ERR_MSG_NOT_FOUND
@@ -103,7 +104,7 @@ class TableController extends Controller
     {
         if (! $this->tableRepository->create($request->toArray())) :
             return redirect()
-                ->route('dashboard.table.create')
+                ->route(RouteConstant::DASHBOARD['table_create'])
                 ->with([
                     'tableErrCode' => Constant::ERR_CODE['fail'],
                     'tableErrMsg' => Constant::ERR_MSG['create_fail']
@@ -111,7 +112,7 @@ class TableController extends Controller
         endif;
 
         return redirect()
-            ->route('dashboard.table.create')
+            ->route(RouteConstant::DASHBOARD['table_create'])
             ->with([
                 'tableErrCode' => Constant::ERR_CODE['success'],
                 'tableErrMsg' => Constant::ERR_MSG['create_success']
@@ -127,7 +128,7 @@ class TableController extends Controller
     {
         if (! $this->tableRepository->find($id)) :
             return redirect()
-                ->route('dashboard.table.list')
+                ->route(RouteConstant::DASHBOARD['table_list'])
                 ->with([
                     'tableErrCode' => Constant::ERR_CODE['fail'],
                     'tableErrMsg' => TableConstant::ERR_MSG_NOT_FOUND
@@ -136,7 +137,7 @@ class TableController extends Controller
 
         if (! $this->tableRepository->update($id, $request->toArray())) :
             return redirect()
-                ->route('dashboard.table.update', ['id' => $id])
+                ->route(RouteConstant::DASHBOARD['table_update'], ['id' => $id])
                 ->with([
                     'tableErrCode' => Constant::ERR_CODE['fail'],
                     'tableErrMsg' => Constant::ERR_MSG['update_fail']
@@ -144,7 +145,7 @@ class TableController extends Controller
         endif;
 
         return redirect()
-            ->route('dashboard.table.update', ['id' => $id])
+            ->route(RouteConstant::DASHBOARD['table_update'], ['id' => $id])
             ->with([
                 'tableErrCode' => Constant::ERR_CODE['success'],
                 'tableErrMsg' => Constant::ERR_MSG['update_success']
@@ -200,7 +201,7 @@ class TableController extends Controller
         endif;
 
         return redirect()
-            ->route('home.table')
+            ->route(RouteConstant::HOME['table_list'])
             ->with([
                 'tableErrCode' => Constant::ERR_CODE['fail'],
                 'tableErrMsg' => TableConstant::ERR_MSG_NOT_FOUND

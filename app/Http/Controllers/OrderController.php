@@ -14,6 +14,7 @@ use Illuminate\Http\RedirectResponse;
 use App\Constants\UserConstant;
 use App\Constants\TableConstant;
 use App\Constants\OrderDetailConstant;
+use App\Constants\RouteConstant;
 
 class OrderController extends Controller
 {
@@ -147,7 +148,7 @@ class OrderController extends Controller
         if (null !== $updateTotal) session()->forget('order');
 
         return redirect()
-            ->route('home.table.detail', ['id' => array_key_first($order)]);
+            ->route(RouteConstant::HOME['table_detail'], ['id' => array_key_first($order)]);
     }
 
     public function remove()

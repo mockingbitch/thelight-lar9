@@ -23,7 +23,7 @@ class OrderRepository extends BaseRepository implements OrderRepositoryInterface
      */
     public function createOrder($table_id, $user, $order = []) : object
     {
-        $orderTable = $this->model->where('table_id', $table_id)->first(); //check if exist order table 
+        $orderTable = $this->model->where(OrderConstant::COLUMN_TABLE_ID, $table_id)->first(); //check if exist order table 
 
         if (null !== $orderTable && ! empty($orderTable)) :
             return $orderTable;
@@ -48,7 +48,7 @@ class OrderRepository extends BaseRepository implements OrderRepositoryInterface
      */
     public function getTableOrder(?int $table_id) : ?object
     {
-        return $this->model->where('table_id', $table_id)->first();
+        return $this->model->where(OrderConstant::COLUMN_TABLE_ID, $table_id)->first();
     }
 
     /**

@@ -1,6 +1,8 @@
 @php
-use App\Constants\ProductConstant;   
+use App\Constants\ProductConstant;
+use App\Constants\RouteConstant; 
 @endphp
+
 @extends('layouts.homeLayout')
 @section('content')
 <div id="breadcrumb" class="section">
@@ -10,14 +12,14 @@ use App\Constants\ProductConstant;
         <div class="row">
             <div class="col-xs-9 col-md-9">
                 <ul class="breadcrumb-tree">
-                    <li><a href="{{route('home')}}">Trang chủ</a></li>
-                    <li><a href="{{route('home.table')}}">Bàn</a></li>
-                    <li><a href="{{route('home.table.detail', ['id' => $table->id])}}">Chi tiết</a></li>
+                    <li><a href="{{route(RouteConstant::HOME)}}">Trang chủ</a></li>
+                    <li><a href="{{route(RouteConstant::HOME['table_list'])}}">Bàn</a></li>
+                    <li><a href="{{route(RouteConstant::HOME['table_detail'], ['id' => $table->id])}}">Chi tiết</a></li>
                     <li class="active">Order sản phẩm (20 Sản phẩm)</li>
                 </ul>
             </div>
             <div class="col-xs-3 col-md-3">
-                <a href={{route('home.table.detail', ['id' => $table->id])}} class="btn btn-primary">Trở về</a>
+                <a href={{route(RouteConstant::HOME['table_detail'], ['id' => $table->id])}} class="btn btn-primary">Trở về</a>
             </div>
         </div>
         <!-- /row -->

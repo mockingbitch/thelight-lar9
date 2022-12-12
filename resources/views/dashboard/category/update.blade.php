@@ -1,3 +1,7 @@
+@php
+use App\Constants\RouteConstant;
+@endphp
+
 @extends('layouts.dashboardLayout')
 @section('content')
 <h2>Cập nhật danh mục</h2>
@@ -20,7 +24,7 @@
             </select>
         </div>
         <br>
-        <a href="{{route('dashboard.category.list')}}"><input type="text" class="btn btn-secondary" value="Trở về" disabled></a>
+        <a href="{{route(RouteConstant::DASHBOARD['category_list'])}}"><input type="text" class="btn btn-secondary" value="Trở về" disabled></a>
         <button type="submit" class="btn btn-primary">Cập nhật</button>
     </form>
 </div>

@@ -11,6 +11,7 @@ use App\Services\ImageService;
 use Illuminate\View\View;
 use App\Constants\ProductConstant;
 use App\Constants\Constant;
+use App\Constants\RouteConstant;
 
 class ProductController extends Controller
 {
@@ -76,7 +77,7 @@ class ProductController extends Controller
 
         if  (! $categories || null === $categories || count($categories) == 0) :
             return redirect()
-                ->route('dashboard.product.list')
+                ->route(RouteConstant::DASHBOARD['product_list'])
                 ->with([
                     'productErrCode' => Constant::ERR_CODE['fail'],
                     'productErrMsg' => ProductConstant::ERR_MSG_CATEGORY_NOT_FOUND
@@ -103,7 +104,7 @@ class ProductController extends Controller
 
             if  (! $categories || null === $categories || count($categories) == 0 || null == $product) :
                 return redirect()
-                    ->route('dashboard.product.list')
+                    ->route(RouteConstant::DASHBOARD['product_list'])
                     ->with([
                         'productErrCode' => Constant::ERR_CODE['fail'],
                         'productErrMsg' => ProductConstant::ERR_MSG_NOT_FOUND
@@ -119,7 +120,7 @@ class ProductController extends Controller
             ]);
         } catch (\Throwable $th) {
             return redirect()
-                ->route('dashboard.product.list')
+                ->route(RouteConstant::DASHBOARD['product_list'])
                 ->with([
                     'productErrCode' => Constant::ERR_CODE['fail'],
                     'productErrMsg' => ProductConstant::ERR_MSG_NOT_FOUND
@@ -137,7 +138,7 @@ class ProductController extends Controller
 
         if (! $this->categoryRepository->find($category_id)) :
             return redirect()
-                ->route('dashboard.product.create')
+                ->route(RouteConstant::DASHBOARD['product_create'])
                 ->with([
                     'productErrCode' => Constant::ERR_CODE['fail'],
                     'productErrMsg' => ProductConstant::ERR_MSG_CATEGORY_NOT_FOUND
@@ -151,7 +152,7 @@ class ProductController extends Controller
 
             if (null == $data['image'] || $data['image'] == '') :
                 return redirect()
-                    ->route('dashboard.product.create')
+                    ->route(RouteConstant::DASHBOARD['product_create'])
                     ->with([
                         'productErrCode' => Constant::ERR_CODE['fail'],
                         'productErrMsg' => ProductConstant::ERR_MSG_CANT_PROCESS_IMAGE
@@ -161,7 +162,7 @@ class ProductController extends Controller
 
         if (! $this->productRepository->create($data)) :
             return redirect()
-                ->route('dashboard.product.create')
+                ->route(RouteConstant::DASHBOARD['product_create'])
                 ->with([
                     'productErrCode' => Constant::ERR_CODE['fail'],
                     'productErrMsg' => Constant::ERR_MSG['create_fail']
@@ -169,7 +170,7 @@ class ProductController extends Controller
         endif;
 
         return redirect()
-            ->route('dashboard.product.create')
+            ->route(RouteConstant::DASHBOARD['product_create'])
             ->with([
                 'productErrCode' => Constant::ERR_CODE['success'],
                 'productErrMsg' => Constant::ERR_MSG['create_success']
@@ -189,7 +190,7 @@ class ProductController extends Controller
 
         if (! $this->categoryRepository->find($category_id)) :
             return redirect()
-                ->route('dashboard.product.update', ['id' => $productId])
+                ->route(RouteConstant::DASHBOARD['product_update'], ['id' => $productId])
                 ->with([
                     'productErrCode' => Constant::ERR_CODE['fail'],
                     'productErrMsg' => ProductConstant::ERR_MSG_CATEGORY_NOT_FOUND
@@ -198,7 +199,7 @@ class ProductController extends Controller
 
         if (! $product = $this->productRepository->find($productId)) :
             return redirect()
-                ->route('dashboard.product.list')
+                ->route(RouteConstant::DASHBOARD['product_list'])
                 ->with('msg', ProductConstant::ERR_MSG_NOT_FOUND);
         endif;
 
@@ -208,7 +209,7 @@ class ProductController extends Controller
             
             if (null == $data['image'] || $data['image'] == '') :
                 return redirect()
-                    ->route('dashboard.product.update', ['id' => $productId])
+                    ->route(RouteConstant::DASHBOARD['product_update'], ['id' => $productId])
                     ->with([
                         'productErrCode' => Constant::ERR_CODE['fail'],
                         'productErrMsg' => ProductConstant::ERR_MSG_CANT_PROCESS_IMAGE
@@ -220,7 +221,7 @@ class ProductController extends Controller
 
         if (! $this->productRepository->update($productId, $data)) :
             return redirect()
-                ->route('dashboard.product.update', ['id' => $productId])
+                ->route(RouteConstant::DASHBOARD['product_update'], ['id' => $productId])
                 ->with([
                     'productErrCode' => Constant::ERR_CODE['fail'],
                     'productErrMsg' => Constant::ERR_MSG['update_fail']
@@ -228,7 +229,7 @@ class ProductController extends Controller
         endif;
 
         return redirect()
-            ->route('dashboard.product.update', ['id' => $productId])
+            ->route(RouteConstant::DASHBOARD['product_update'], ['id' => $productId])
             ->with([
                 'productErrCode' => Constant::ERR_CODE['success'],
                 'productErrMsg' => Constant::ERR_MSG['update_success']
