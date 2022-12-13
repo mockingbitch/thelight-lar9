@@ -12,7 +12,7 @@ use App\Constants\RouteConstant;
         <div class="row">
             <div class="col-xs-9 col-md-9">
                 <ul class="breadcrumb-tree">
-                    <li><a href="{{route(RouteConstant::HOME)}}">Trang chủ</a></li>
+                    <li><a href="{{route(RouteConstant::HOMEPAGE)}}">Trang chủ</a></li>
                     <li><a href="{{route(RouteConstant::HOME['table_list'])}}">Bàn</a></li>
                     <li><a href="{{route(RouteConstant::HOME['table_detail'], ['id' => $table->id])}}">Chi tiết</a></li>
                     <li class="active">Order sản phẩm (20 Sản phẩm)</li>

@@ -34,7 +34,7 @@ use App\Constants\RouteConstant;
                     <h2>{{$table->name}}</h2>
                 </div>
                 <div class="col-xs-2 col-md-2">
-                    <a href={{route(RouteConstant::HOME['table_list'])}} class="btn btn-primary">Trở về</a>
+                    <a href={{route(RouteConstant::HOME['table_list'])}} class="btn btn-danger">Hủy đơn</a>
                 </div>
                 <hr>
                 <div class="col-12" id="list-order">
@@ -139,47 +139,88 @@ use App\Constants\RouteConstant;
 
         if (status == 'PENDING') {
             Swal.fire({
-            title: 'Cập nhật ' + product_name + `<br/><small>Nhập 0 để xóa sản phẩm</small>`,
+            title: 'Cập nhật ' + product_name,
             html: `<input type="text" id="quantity" class="swal2-input" placeholder="Số lượng">`,
+            input: 'select',
+            inputOptions: {
+                'PENDING': 'Đang chờ',
+                'DONE': 'Đã xong đồ',
+                'DELIVERED': 'Đã lên đồ',
+                'CANCEL': 'Hủy'
+            },
             confirmButtonText: 'Xác nhận',
             focusConfirm: false,
-            preConfirm: () => {
-                const quantity = Swal.getPopup().querySelector('#quantity').value
-                if (! quantity || isNaN(quantity) || quantity < 0) {
-                    Swal.showValidationMessage(`Vui lòng nhập số lượng`)
+                preConfirm: () => {
+                    const quantity = Swal.getPopup().querySelector('#quantity').value
+                    const status = Swal.getPopup().querySelector('.swal2-select').value
+                    if (quantity && (isNaN(quantity) || quantity <= 0)) {
+                        Swal.showValidationMessage(`Vui lòng nhập số lượng`)
+                    }
+                    return { quantity: quantity, status: status }
                 }
-                return { quantity: quantity }
-            }
             }).then((result) => {
                 var quantity = parseInt(result.value.quantity);
-                if (! isNaN(quantity)) {
-                    Swal.fire(`
-                        Số lượng: ${result.value.quantity}
-                    `.trim())
-                    $.get('{{route('home.order.update')}}', {'id': id, 'quantity': quantity}, function (data) {
-                        if (data == 1) {
-                            console.log(current_url);
-                            $('.order-change').load(`${current_url} .order-change`)
-                            $('.total').load(`${current_url} .total`);
-                            Swal.fire(
-                                'Thành công!',
-                                'Cập nhật thành công',
-                                'success'
-                            );
-                        } else {
-                            Swal.fire(
-                            'Đã có lỗi xảy ra!',
-                            'Cập nhật không thành công',
-                            'warning'
-                            );
-                        }
-                    })
-                }
+                var status = result.value.status;
+
+                Swal.fire(`
+                    Số lượng: ${result.value.quantity}
+                `.trim())
+                $.get('{{route('home.order.update')}}', {'id': id, 'quantity': quantity, 'status': status}, function (data) {
+                    if (data == 1) {
+                        console.log(current_url);
+                        $('.order-change').load(`${current_url} .order-change`)
+                        $('.total').load(`${current_url} .total`);
+                        Swal.fire(
+                            'Thành công!',
+                            'Cập nhật thành công',
+                            'success'
+                        );
+                    } else {
+                        Swal.fire(
+                        'Đã có lỗi xảy ra!',
+                        'Cập nhật không thành công',
+                        'warning'
+                        );
+                    }
+                })
             })
         }
+        if (status == 'DONE') {
+            Swal.fire({
+            title: 'Cập nhật ' + product_name,
+            input: 'select',
+            inputOptions: {
+                'DONE': 'Đã xong đồ',
+                'DELIVERED': 'Đã lên đồ'
+            },
+            confirmButtonText: 'Xác nhận',
+            focusConfirm: false,
+                preConfirm: () => {
+                    const status = Swal.getPopup().querySelector('.swal2-select').value
+                    return { status: status }
+                }
+            }).then((result) => {
+                var status = result.value.status;
 
-        if (status == 'CANCEL') {
-            
+                $.get('{{route('home.order.update')}}', {'id': id, 'status': status}, function (data) {
+                    if (data == 1) {
+                        console.log(current_url);
+                        $('.order-change').load(`${current_url} .order-change`)
+                        $('.total').load(`${current_url} .total`);
+                        Swal.fire(
+                            'Thành công!',
+                            'Cập nhật thành công',
+                            'success'
+                        );
+                    } else {
+                        Swal.fire(
+                        'Đã có lỗi xảy ra!',
+                        'Cập nhật không thành công',
+                        'warning'
+                        );
+                    }
+                })
+            })
         }
     }
 

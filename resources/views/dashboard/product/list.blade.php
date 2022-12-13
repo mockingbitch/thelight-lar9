@@ -18,7 +18,6 @@ use App\Constants\RouteConstant;
                 <th style="text-align: center"><b>Danh mục</b></th>
                 <th style="text-align: center"><b>Hình ảnh</b></th>
                 <th style="text-align: center"><b>Trạng thái</b></th>
-                <th style="text-align: center"><b>Xoá</b></th>
             </tr>
             </thead>
             <tbody>
@@ -29,15 +28,11 @@ use App\Constants\RouteConstant;
                 <td style="text-align: center">{{$item->category->name}}</td>
                 <td style="text-align: center"><img width="100px" src="{{asset('upload/images/products/' . $item->image)}}" alt="Product Image" /></td>
                 <td style="text-align: center">
-                    <span class="badge badge-sm {{$item->status == '1' ? 'bg-gradient-success' : 'bg-gradient-secondary'}}">
-                        {{$item->status == '1' ? 'Hiển thị' : 'Ẩn'}}
-                    </span>
-                </td>
-                <td align="left" style="text-align: center">
-                    <a class="btn btn-danger"
-                        onclick="confirmDelete({{$item->id}})">
-                        <i class="far fa-trash-alt"></i>
-                    </a>
+                    @if ($item->status == 1)
+                        <i class="far fa-thumbs-up" style="color:green"></i>
+                    @else
+                        <i class="far fa-thumbs-down" style="color:red"></i>
+                    @endif
                 </td>
             </tr>
             @endforeach
@@ -53,34 +48,6 @@ use App\Constants\RouteConstant;
         var url = '{{ route("dashboard.product.update", ":id") }}';
         url = url.replace(':id', id);
         location.replace(url);
-    }
-
-    function confirmDelete(id) {
-        swal({
-            title: "Bạn có muốn xoá mục này?",
-            text: "Dữ liệu xoá sẽ không thể khôi phục!",
-            icon: "warning",
-            buttons: [
-                'Huỷ',
-                'Xoá'
-            ],
-            dangerMode: true,
-            }).then(function(isConfirm) {
-            if (isConfirm) {
-                $.get("{{route('dashboard.product.delete')}}", {"id": id}, function(data) {
-                     $(".table").load("{{ route('dashboard.product.list') }} .table");
-                });
-
-                swal({
-                title: 'Đã xoá!',
-                text: 'Xoá thành công mục này!',
-                icon: 'success'
-                }).then(function() {
-                });
-            } else {
-                swal("Huỷ", "Dữ liệu của bạn vẫn an toàn :)", "error");
-            }
-        })
     }
 
     $(document).ready(function() {

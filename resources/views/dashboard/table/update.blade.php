@@ -1,10 +1,11 @@
 @php
-use App\Constans\RouteConstant;
+use App\Constants\RouteConstant;
 @endphp
 
 @extends('layouts.dashboardLayout')
 @section('content')
 <h2>Chi tiết bàn</h2>
+<a href="{{route(RouteConstant::DASHBOARD['table_list'])}}" class="btn btn-secondary">Trở về</a>
 <div class="card mb-4">
     <form class="mx-4 pt-4" method="post" enctype="multipart/form-data">
         @csrf
@@ -26,7 +27,10 @@ use App\Constans\RouteConstant;
             </div>
         </div>
 
-        <a href="{{route(RouteConstant::DASHBOARD['table_list'])}}"><input type="text" class="btn btn-secondary" value="Trở về" disabled></a>
+        <a class="btn btn-danger"
+            onclick="confirmDelete({{$table->id}})">
+            <i class="far fa-trash-alt"></i>
+        </a>
         <button type="submit" class="btn btn-primary">Cập nhật</button>
     </form>
 </div>
@@ -52,5 +56,36 @@ use App\Constans\RouteConstant;
                 });
         }
     });
+
+    function confirmDelete(id) {
+        swal({
+            title: "Bạn có muốn xoá mục này?",
+            text: "Dữ liệu xoá sẽ không thể khôi phục!",
+            icon: "warning",
+            buttons: [
+                'Huỷ',
+                'Xoá'
+            ],
+            dangerMode: true,
+            }).then(function(isConfirm) {
+            if (isConfirm) {
+                $.get("{{route('dashboard.table.delete')}}", {"id": id}, function(data) {
+                    if (data == 1) {
+                        var url = '{{ route("dashboard.table.list") }}';
+                        location.replace(url);
+                    } else {
+                        swal({
+                            title: 'Đã xảy ra lỗi!',
+                            text: 'Xoá không thành công!',
+                            icon: 'warning'
+                            }).then(function() {
+                        });
+                    }
+                });
+            } else {
+                swal("Huỷ", "Dữ liệu của bạn vẫn an toàn :)", "error");
+            }
+        })
+    }
 </script>
 @endsection

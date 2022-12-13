@@ -57,3 +57,21 @@
 .shopping-summery {
     table-layout: fixed;
 }
+
+.table-status-pending {
+    background-color: #FFF;
+    border-color: #D10024;
+    color: #D10024;
+}
+
+.table-status-on-delivery {
+    background-color: #FFF;
+    border-color: #ffa600;
+    color: #ffa600;
+}
+
+.table-status-delivered {
+    background-color: #FFF;
+    border-color: green;
+    color: green;
+}

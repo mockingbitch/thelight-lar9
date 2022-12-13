@@ -5,6 +5,8 @@ use App\Constants\RouteConstant;
 @extends('layouts.dashboardLayout')
 @section('content')
 <h2>Chi tiết sản phẩm</h2>
+<a href="{{route(RouteConstant::DASHBOARD['product_list'])}}" class="btn btn-secondary">Trở về</a>
+
 <div class="card mb-4">
     <form class="mx-4 pt-4" method="post" enctype="multipart/form-data">
         @csrf
@@ -46,8 +48,10 @@ use App\Constants\RouteConstant;
                 <img src="{{asset('upload/images/products/' . $product->image)}}" width="200px" />
             </div>
         </div>
-
-        <a href="{{route(RouteConstant::DASHBOARD['product_list'])}}"><input type="text" class="btn btn-secondary" value="Trở về" disabled></a>
+        <a class="btn btn-danger"
+            onclick="confirmDelete({{$product->id}})">
+            <i class="far fa-trash-alt"></i>
+        </a>
         <button type="submit" class="btn btn-primary">Cập nhật</button>
     </form>
 </div>
@@ -73,5 +77,34 @@ use App\Constants\RouteConstant;
                 });
         }
     });
+
+    function confirmDelete(id) {
+        swal({
+            title: "Bạn có muốn xoá mục này?",
+            text: "Dữ liệu xoá sẽ không thể khôi phục!",
+            icon: "warning",
+            buttons: [
+                'Huỷ',
+                'Xoá'
+            ],
+            dangerMode: true,
+            }).then(function(isConfirm) {
+            if (isConfirm) {
+                $.get("{{route('dashboard.product.delete')}}", {"id": id}, function(data) {
+                    var url = '{{ route("dashboard.product.list") }}';
+                    location.replace(url);
+                });
+
+                swal({
+                title: 'Đã xoá!',
+                text: 'Xoá thành công mục này!',
+                icon: 'success'
+                }).then(function() {
+                });
+            } else {
+                swal("Huỷ", "Dữ liệu của bạn vẫn an toàn :)", "error");
+            }
+        })
+    }
 </script>
 @endsection

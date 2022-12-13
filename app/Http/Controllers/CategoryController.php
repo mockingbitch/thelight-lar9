@@ -8,7 +8,7 @@ use App\Http\Requests\CategoryRequest;
 use App\Repositories\Contracts\Interface\CategoryRepositoryInterface;
 use App\Repositories\Contracts\Interface\ProductRepositoryInterface;
 use App\Constants\CategoryConstant;
-use App\Constants\RouteContant;
+use App\Constants\RouteConstant;
 use App\Constants\Constant;
 use Illuminate\View\View;
 
@@ -159,20 +159,19 @@ class CategoryController extends Controller
             ]);
     }
 
-    public function delete(Request $request)
+    /**
+     * @param Request $request
+     * 
+     * @return boolean
+     */
+    public function delete(Request $request) : bool
     {
-        $categoryId = $request->query('id');
+        $category_id = $request->query('id');
         
-        if (! $this->categoryRepository->find($categoryId)) :
-            return redirect()
-                ->route(RouteConstant::DASHBOARD['category_list'])
-                ->with('msg', CategoryConstant::ERR_MSG_NOT_FOUND);
+        if (! $this->categoryRepository->delete($category_id)) :
+            return false;
         endif;
 
-        // if (! $this->categoryRepository->delete($categoryId)) :
-        //     return $this->errorResponse('Failed to delete category');
-        // endif;
-
-        // return $this->successResponse('Ok');
+        return true;
     }
 }

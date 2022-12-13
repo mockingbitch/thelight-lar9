@@ -19,14 +19,17 @@ class OrderRepository extends BaseRepository implements OrderRepositoryInterface
      * @param [type] $user
      * @param array $order
      * 
-     * @return object
+     * @return array
      */
-    public function createOrder($table_id, $user, $order = []) : object
+    public function createOrder($table_id, $user, $order = []) : array
     {
         $orderTable = $this->model->where(OrderConstant::COLUMN_TABLE_ID, $table_id)->first(); //check if exist order table 
 
         if (null !== $orderTable && ! empty($orderTable)) :
-            return $orderTable;
+            return [
+                'existOrder' => true,
+                'order' => $orderTable
+            ];
         endif;
 
         $data = [
@@ -38,7 +41,10 @@ class OrderRepository extends BaseRepository implements OrderRepositoryInterface
 
         $orderTable = $this->create($data);
 
-        return $orderTable;
+        return [
+            'existOrder' => false,
+            'order' => $orderTable
+        ];;
     }
 
     /**

@@ -1,3 +1,7 @@
+@php
+use App\Constants\TableConstant;
+@endphp
+
 @extends('layouts.homeLayout')
 @section('content')
 @include('breadcrumbs.homeBreadcrumb')
@@ -28,8 +32,24 @@
                                         <div class="product-img">
                                             <img src="{{asset('upload/images/table.jpg')}}" alt="">
                                             <div class="product-label">
-                                                <span class="sale">Chưa lên đồ</span>
-                                                <span class="done-checkout">$</span>
+                                                @if ($table->status == TableConstant::STATUS_PENDING)
+                                                    <span class="table-status-pending">
+                                                        Đang chờ
+                                                    </span>
+                                                @elseif ($table->status == TableConstant::STATUS_ON_DELIVERY)
+                                                    <span class="table-status-on-delivery">
+                                                        Đang lên đồ
+                                                    </span>
+                                                @elseif ($table->status == TableConstant::STATUS_DELIVERED)
+                                                    <span class="table-status-delivered">
+                                                        Đã lên đồ
+                                                    </span>
+                                                @else
+                                                    <span class="table-status-empty">
+                                                        Bàn trống
+                                                    </span>
+                                                @endif
+                                                {{-- <span class="done-checkout">$</span> --}}
                                             </div>
                                         </div>
                                         <div class="product-body">

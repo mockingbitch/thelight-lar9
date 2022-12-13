@@ -236,22 +236,19 @@ class ProductController extends Controller
             ]);
     }
 
-    public function delete(Request $request)
+    /**
+     * @param Request $request
+     * 
+     * @return boolean
+     */
+    public function delete(Request $request) : bool
     {
-        // try {
-        //     $product_id = $request->query('id');
+        $product_id = $request->query('id');
+        
+        if (! $this->productRepository->delete($product_id)) :
+            return false;
+        endif;
 
-        //     if (! $this->productRepository->find($product_id)) :
-        //         return $this->errorResponse('Resource not found');
-        //     endif;
-
-        //     if (! $this->productRepository->delete($product_id)) :
-        //         return $this->errorResponse('Failed to delete product');
-        //     endif;
-
-        //     return $this->successResponse('Ok');
-        // } catch (\Throwable $th) {
-        //     return $this->catchErrorResponse();
-        // }
+        return true;
     }
 }

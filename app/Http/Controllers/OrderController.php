@@ -142,13 +142,21 @@ class OrderController extends Controller
                 ]);
         endif;
 
-        $orderTable = $this->orderRepository->createOrder($table->id, $user, $order);
-        if (null !== $orderTable) $total = $this->orderDetailRepository->createOrderDetail($orderTable->id, $order);
-        if (null !== $total) $updateTotal = $this->orderRepository->update($orderTable->id, ['total' => $total]);
-        if (null !== $updateTotal) session()->forget('order');
+        $orderTable = $this->orderRepository->createOrder($table->id, $user, $order);   //create order
+        if (null !== $orderTable) $total = $this->orderDetailRepository->createOrderDetail($orderTable['order']->id, $order); //createOrderDetail and get total 
+        if (null !== $total) $updateTotal = $this->orderRepository->update($orderTable['order']->id, ['total' => $total]); //update total order
+
+        if (null !== $orderTable && $orderTable['existOrder'] === true) :
+            $this->tableRepository->update($table->id, [TableConstant::COLUMN_STATUS => TableConstant::STATUS['on_delivery']]);
+        else :
+            $this->tableRepository->update($table->id, [TableConstant::COLUMN_STATUS => TableConstant::STATUS['pending']]);
+        endif;
+
+        session()->forget('order');
+
 
         return redirect()
-            ->route(RouteConstant::HOME['table_detail'], ['id' => array_key_first($order)]);
+            ->route(RouteConstant::HOME['table_detail'], ['id' => $table->id]);
     }
 
     public function remove()
@@ -193,30 +201,48 @@ class OrderController extends Controller
      */
     public function updateOrder(Request $request) : bool
     {
-        if ($request->query(OrderDetailConstant::COLUMN_QUANTITY) == 0) :
-            if (! $this->deleteOrder($request->query(OrderDetailConstant::COLUMN_ID))) :
-                return false;
-            endif;
-
-            return true;
-        endif;
-
+        $dataUpdate = [];
         $orderDetail = $this->orderDetailRepository->find($request->query(OrderDetailConstant::COLUMN_ID));
+        $order = $this->orderRepository->find($orderDetail->order_id);
+        $quantity = $request->query(OrderDetailConstant::COLUMN_QUANTITY);
 
         if (null === $orderDetail) :
             return false;
         endif;
 
-        $dataUpdate = [
-            OrderDetailConstant::COLUMN_QUANTITY => $request->query(OrderDetailConstant::COLUMN_QUANTITY),
-            OrderDetailConstant::COLUMN_TOTAL => $request->query(OrderDetailConstant::COLUMN_QUANTITY) * $orderDetail->price,
-        ];
-        
-        if (! $this->orderDetailRepository->update($orderDetail->id, $dataUpdate)
+        if ((int) $quantity > 0) :   //Case isset quantity update
+            $dataUpdate = [
+                OrderDetailConstant::COLUMN_QUANTITY => $request->query(OrderDetailConstant::COLUMN_QUANTITY),
+                OrderDetailConstant::COLUMN_TOTAL => $request->query(OrderDetailConstant::COLUMN_QUANTITY) * $orderDetail->price,
+                OrderDetailConstant::COLUMN_STATUS => $request->query(OrderDetailConstant::COLUMN_STATUS)
+            ];
+
+            if (! $this->orderDetailRepository->update($orderDetail->id, $dataUpdate)
             || ! $this->orderRepository->updateTotal($orderDetail->order_id)
-        ) :
-            return false;
+            ) :
+                return false;
+            endif;
+        else :
+            $dataUpdate = [                                                      //Case ! isset quantity update
+                OrderDetailConstant::COLUMN_STATUS => $request->query(OrderDetailConstant::COLUMN_STATUS)
+            ];
+
+            if (! $this->orderDetailRepository->update($orderDetail->id, $dataUpdate)) :
+                return false;
+            endif;
         endif;
+
+        $orderDetails = $order->orderDetails;   //get list order details to check table status
+        $check = true;
+
+        foreach ($orderDetails as $orderDetail) :
+            if ($orderDetail->status !== OrderDetailConstant::STATUS['delivered']) :
+                $check = false;
+                break;
+            endif;
+        endforeach;
+
+        if ($check) $this->tableRepository->update($order->table_id, [TableConstant::COLUMN_STATUS => TableConstant::STATUS['delivered']]);
 
         return true;
     }

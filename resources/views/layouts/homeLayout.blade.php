@@ -1,4 +1,6 @@
 @php
+use App\Constants\RouteConstant;
+
 	$order = session()->get('order');
 	$table_id = null !== $order ? array_key_first($order) : null;
 	$subTotal = 0;
@@ -149,7 +151,7 @@
 										@endif
 										<div class="cart-btns">
 											<a onclick="handleRemoveOrder()">Xoá order</a>
-											<a href="{{route('home.order.submit')}}">Xác nhận <i class="fa fa-arrow-circle-right"></i></a>
+											<a href="{{route(RouteConstant::HOME['order_submit'])}}">Xác nhận <i class="fa fa-arrow-circle-right"></i></a>
 										</div>
 									</div>
 								</div>
@@ -183,8 +185,8 @@
 				<div id="responsive-nav">
 					<!-- NAV -->
 					<ul class="main-nav nav navbar-nav">
-						<li class="active"><a href="{{route('home')}}">Trang chủ</a></li>
-						<li><a href="{{route('dashboard.home')}}">Trang quản trị</a></li>
+						<li class="active"><a href="{{route(RouteConstant::HOMEPAGE)}}">Trang chủ</a></li>
+						<li><a href="{{route(RouteConstant::DASHBOARD['home'])}}">Trang quản trị</a></li>
 						{{-- <li><a href="#">Categories</a></li> --}}
 						{{-- <li><a href="#">Laptops</a></li> --}}
 						{{-- <li><a href="#">Smartphones</a></li> --}}

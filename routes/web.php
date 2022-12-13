@@ -37,9 +37,9 @@ Route::group(['middleware' => ['check.login']], function () {
             Route::get('/', [Category::class, 'index'])->name(RouteConstant::DASHBOARD['category_list']);
             Route::get('/create', [Category::class, 'viewCreate'])->name(RouteConstant::DASHBOARD['category_create']);
             Route::post('/create', [Category::class, 'create']);
-            Route::get('/{id}', [Category::class, 'viewUpdate'])->name(RouteConstant::DASHBOARD['category_update']);
-            Route::post('/{id}', [Category::class, 'update']);
-            Route::get('/delete', [Category::class, 'delete'])->name(RouteConstant::DASHBOARD['category_update']);
+            Route::get('/{id}', [Category::class, 'viewUpdate'])->name(RouteConstant::DASHBOARD['category_update'])->where('id', '[0-9]+');
+            Route::post('/{id}', [Category::class, 'update'])->where('id', '[0-9]+');
+            Route::get('/delete', [Category::class, 'delete'])->name(RouteConstant::DASHBOARD['category_delete']);
         });
 
         //TABLE
@@ -47,8 +47,8 @@ Route::group(['middleware' => ['check.login']], function () {
             Route::get('/', [Table::class, 'index'])->name(RouteConstant::DASHBOARD['table_list']);
             Route::get('/create', [Table::class, 'viewCreate'])->name(RouteConstant::DASHBOARD['table_create']);
             Route::post('/create', [Table::class, 'create']);
-            Route::get('/{id}', [Table::class, 'viewUpdate'])->name(RouteConstant::DASHBOARD['table_update']);
-            Route::post('/{id}', [Table::class, 'update']);
+            Route::get('/{id}', [Table::class, 'viewUpdate'])->name(RouteConstant::DASHBOARD['table_update'])->where('id', '[0-9]+');
+            Route::post('/{id}', [Table::class, 'update'])->where('id', '[0-9]+');
             Route::get('/delete', [Table::class, 'delete'])->name(RouteConstant::DASHBOARD['table_delete']);
         });
 
@@ -57,15 +57,15 @@ Route::group(['middleware' => ['check.login']], function () {
             Route::get('/', [Product::class, 'index'])->name(RouteConstant::DASHBOARD['product_list']);
             Route::get('/create', [Product::class, 'viewCreate'])->name(RouteConstant::DASHBOARD['product_create']);
             Route::post('/create', [Product::class, 'create']);
-            Route::get('/{id}', [Product::class, 'viewUpdate'])->name(RouteConstant::DASHBOARD['product_update']);
-            Route::post('/{id}', [Product::class, 'update']);
+            Route::get('/{id}', [Product::class, 'viewUpdate'])->name(RouteConstant::DASHBOARD['product_update'])->where('id', '[0-9]+');
+            Route::post('/{id}', [Product::class, 'update'])->where('id', '[0-9]+');
             Route::get('/delete', [Product::class, 'delete'])->name(RouteConstant::DASHBOARD['product_delete']);
         });
     });
 
     // HOME
     Route::get('/table', [Table::class, 'viewIndex'])->name(RouteConstant::HOME['table_list']);
-    Route::get('/table/{id}', [Table::class, 'viewDetail'])->name(RouteConstant::HOME['table_detail']);
+    Route::get('/table/{id}', [Table::class, 'viewDetail'])->name(RouteConstant::HOME['table_detail'])->where('id', '[0-9]+');
 
     Route::prefix('order')->group(function () {
         Route::get('/', [Home::class, 'getProductsScreenOrder'])->name(RouteConstant::HOME['order_products']);
@@ -74,7 +74,7 @@ Route::group(['middleware' => ['check.login']], function () {
         Route::get('/delete', [Order::class, 'deleteOrder'])->name(RouteConstant::HOME['order_delete']);
         Route::get('/submit', [Order::class, 'submitOrder'])->name(RouteConstant::HOME['order_submit']);
         Route::get('/remove-all', [Order::class, 'remove'])->name(RouteConstant::HOME['order_remove']);
-        Route::get('/checkout/{id}', [Order::class, 'checkOut'])->name(RouteConstant::HOME['order_checkout']);
+        Route::get('/checkout/{id}', [Order::class, 'checkOut'])->name(RouteConstant::HOME['order_checkout'])->where('id', '[0-9]+');
     });
 });
 

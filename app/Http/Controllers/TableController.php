@@ -152,23 +152,20 @@ class TableController extends Controller
             ]);
     }
 
-    public function delete(Request $request)
+    /**
+     * @param Request $request
+     * 
+     * @return boolean
+     */
+    public function delete(Request $request) : bool
     {
-        // try {
-        //     $table_id = $request->query('id');
+        $table_id = $request->query('id');
+        
+        if (! $this->tableRepository->delete($table_id)) :
+            return false;
+        endif;
 
-        //     if (! $this->tableRepository->find($table_id)) :
-        //         return $this->errorResponse('Resource not found');
-        //     endif;
-
-        //     if (! $this->tableRepository->delete($table_id)) :
-        //         return $this->errorResponse('Failed to delete table');
-        //     endif;
-
-        //     return $this->successResponse('Ok');
-        // } catch (\Throwable $th) {
-        //     return $this->catchErrorResponse();
-        // }
+        return true;
     }
 
 
