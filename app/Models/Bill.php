@@ -25,4 +25,19 @@ class Bill extends Model
         'note',
         'status',
     ];
+
+    public function waiter()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'waiter_id');
+    }
+
+    public function table()
+    {
+        return $this->belongsTo(\App\Models\Table::class, 'table_id');
+    }
+
+    public function billDetails()
+    {
+        return $this->hasMany(\App\Models\BillDetail::class);
+    }
 }

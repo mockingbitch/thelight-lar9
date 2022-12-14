@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoryController as Category;
 use App\Http\Controllers\ProductController as Product;
 use App\Http\Controllers\TableController as Table;
 use App\Http\Controllers\OrderController as Order;
+use App\Http\Controllers\BillController as Bill;
 use App\Constants\RouteConstant;
 
 /*
@@ -31,7 +32,7 @@ Route::group(['middleware' => ['check.login']], function () {
     //ADMIN
     Route::prefix('admin')->group(function () {
         Route::get('/', [Dashboard::class, 'index'])->name(RouteConstant::DASHBOARD['home']);
-        
+
         //CATEGORY
         Route::prefix('/category')->group(function () {
             Route::get('/', [Category::class, 'index'])->name(RouteConstant::DASHBOARD['category_list']);
@@ -60,6 +61,12 @@ Route::group(['middleware' => ['check.login']], function () {
             Route::get('/{id}', [Product::class, 'viewUpdate'])->name(RouteConstant::DASHBOARD['product_update'])->where('id', '[0-9]+');
             Route::post('/{id}', [Product::class, 'update'])->where('id', '[0-9]+');
             Route::get('/delete', [Product::class, 'delete'])->name(RouteConstant::DASHBOARD['product_delete']);
+        });
+
+        //BILL
+        Route::prefix('/bill')->group(function () {
+            Route::get('/', [Bill::class, 'index'])->name(RouteConstant::DASHBOARD['bill_list']);
+            Route::get('/{id}', [Bill::class, 'viewDetail'])->name(RouteConstant::DASHBOARD['bill_detail'])->where('id', '[0-9]+');
         });
     });
 

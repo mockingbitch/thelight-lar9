@@ -13,7 +13,7 @@ use App\Constants\RouteConstant;
         <div class="form-group mt-4">
             <label for="inputName">Tên danh mục @if ($errors->has('name'))<p class="text-error">*{{$errors->first('name')}}</p>@endif</label>
             <input type="text" name="name" class="form-control" id="inputName" aria-describedby="nameHelp" value="{{$category->name}}">
-        </div> 
+        </div>
         <div class="form-group mt-4">
             <label for="inputDescription">Mô tả @if ($errors->has('description'))<p class="text-error">*{{$errors->first('description')}}</p>@endif</label>
             <input type="text" name="description" class="form-control" id="inputDescription" aria-describedby="nameHelp" value="{{$category->description}}">

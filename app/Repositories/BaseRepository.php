@@ -69,4 +69,15 @@ abstract class BaseRepository implements BaseRepositoryInterface
     public function count(){
         return $this->model->count();
     }
+
+    /**
+     * @param string|null $key
+     * @param string|null $value
+     * 
+     * @return object|null
+     */
+    public function search(?string $key, ?string $value) : ?object
+    {
+        return $this->model->where($key, 'like', '%'.$value.'%')->get();
+    }
 }

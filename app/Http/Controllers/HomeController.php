@@ -7,6 +7,7 @@ use Illuminate\View\View;
 use App\Repositories\Contracts\Interface\TableRepositoryInterface;
 use App\Repositories\Contracts\Interface\ProductRepositoryInterface;
 use App\Constants\RouteConstant;
+use App\Constants\ProductConstant;
 
 class HomeController extends Controller
 {
@@ -43,17 +44,24 @@ class HomeController extends Controller
     public function getProductsScreenOrder(Request $request)
     {
         $table_id = $request->query('table');
+        $keySearch = $request->query('key');
+
         $table = $this->tableRepository->find((int) $table_id);
 
-        if (null === $table) :
-            return redirect()->route(RouteConstant::HOME['table_list']);
+        // if (null === $table) :
+        //     return redirect()->route(RouteConstant::HOME['table_list']);
+        // endif;
+
+        if (null !== $keySearch) :
+            $products = $this->productRepository->search(ProductConstant::COLUMN_NAME ,$keySearch);
+        else :
+            $products = $this->productRepository->getAll();
         endif;
- 
-        $products = $this->productRepository->getAll();
 
         return view('home.order', [
             'products' => $products,
             'table' => $table,
+            'breadcrumb' => 'products_order',
             'orderErrCode' => session()->get('orderErrCode') ?? null,
             'orderErrMsg' => session()->get('orderErrMsg') ?? null
         ]);

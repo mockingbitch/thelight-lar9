@@ -13,7 +13,7 @@ use App\Constants\RouteConstant;
         <div class="form-group mt-4">
             <label for="inputName">Tên sản phẩm @if ($errors->has('name'))<p class="text-error">*{{$errors->first('name')}}</p>@endif</label>
             <input type="text" name="name" class="form-control" id="inputName" aria-describedby="nameHelp" value="{{$product->name}}">
-        </div> 
+        </div>
         <div class="form-group mt-4">
             <label for="inputDescription">Mô tả @if ($errors->has('description'))<p class="text-error">*{{$errors->first('description')}}</p>@endif</label>
             <input type="text" name="description" class="form-control" id="inputDescription" aria-describedby="nameHelp" value="{{$product->description}}">
@@ -28,7 +28,7 @@ use App\Constants\RouteConstant;
                 <select name="category_id" class="select form-control form-select-lg mb-3" aria-label=".form-select-lg example">
                     @foreach ($categories as $category)
                         <option value="{{$category->id}}" {{$product->category_id == $category->id ? 'selected' : ''}}>{{$category->name}}</option>
-                    @endforeach 
+                    @endforeach
                 </select>
             </div>
             <div class="form-group mt-4 col-6">

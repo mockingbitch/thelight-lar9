@@ -15,7 +15,7 @@ use App\Constants\RouteConstant;
                     <li><a href="{{route(RouteConstant::HOMEPAGE)}}">Trang chủ</a></li>
                     <li><a href="{{route(RouteConstant::HOME['table_list'])}}">Bàn</a></li>
                     <li><a href="{{route(RouteConstant::HOME['table_detail'], ['id' => $table->id])}}">Chi tiết</a></li>
-                    <li class="active">Order sản phẩm (20 Sản phẩm)</li>
+                    {{-- <li class="active">Order sản phẩm (20 Sản phẩm)</li> --}}
                 </ul>
             </div>
             <div class="col-xs-3 col-md-3">
@@ -66,7 +66,7 @@ use App\Constants\RouteConstant;
                 <div class="row">
                     @foreach ($products as $product)
                         <!-- product -->
-                        <div class="col-md-4 col-xs-6" onclick="handleAddOrder({{$product->id}})">
+                        <div class="col-md-4 col-xs-6" onclick="handleAddOrder({{$product->id}}, {{$product->status}})">
                             <div class="product">
                                 <div class="product-img">
                                     <img src="{{asset('upload/images/products/' . $product->image)}}" alt="">

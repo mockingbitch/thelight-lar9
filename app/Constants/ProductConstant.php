@@ -34,11 +34,11 @@ class ProductConstant
         'deleted_at'    => self::COLUMN_DELETED_AT,
     ];
 
-    public const STATUS_CODE_OUT_OF_STOCK   = 0;
-    public const STATUS_CODE_AVAILABLE      = 1;
+    public const STATUS_OUT_OF_STOCK   = 0;
+    public const STATUS_AVAILABLE      = 1;
 
     public const STATUS = [
-        'available'     => self::STATUS_CODE_AVAILABLE,
-        'out_of_stock'  => self::STATUS_CODE_OUT_OF_STOCK
+        'available'     => self::STATUS_AVAILABLE,
+        'out_of_stock'  => self::STATUS_OUT_OF_STOCK
     ];
 }

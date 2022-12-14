@@ -90,4 +90,23 @@ class OrderDetailRepository extends BaseRepository implements OrderDetailReposit
 
         return true;
     }
+
+    /**
+     * @param integer|null $order
+     * 
+     * @return boolean
+     */
+    public function checkDeleteAvailability(?int $order) : bool
+    {
+        $count = $this->model
+                ->leftJoin('orders', 'orders.id', '=', 'orderdetails.order_id')
+                ->select('orderdetails.*')
+                ->where("orders.id", "=", $order)
+                ->where("orderdetails.status", "=", OrderDetailConstant::STATUS_DELIVERED)
+                ->get();
+
+        if (count($count->toArray()) > 0) return false;
+
+        return true;
+    }
 }

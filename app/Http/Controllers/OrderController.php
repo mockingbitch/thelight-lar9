@@ -15,6 +15,7 @@ use App\Constants\UserConstant;
 use App\Constants\TableConstant;
 use App\Constants\OrderDetailConstant;
 use App\Constants\RouteConstant;
+use App\Constants\ProductConstant;
 
 class OrderController extends Controller
 {
@@ -63,7 +64,7 @@ class OrderController extends Controller
      * @param BillDetailRepositoryInterface $billDetailRepository
      */
     public function __construct(
-        OrderRepositoryInterface $orderRepository, 
+        OrderRepositoryInterface $orderRepository,
         OrderDetailRepositoryInterface $orderDetailRepository,
         ProductRepositoryInterface $productRepository,
         TableRepositoryInterface $tableRepository,
@@ -83,7 +84,7 @@ class OrderController extends Controller
 
     /**
      * @param Request $request
-     * 
+     *
      * @return void
      */
     public function createSessionOrder(Request $request)
@@ -91,7 +92,7 @@ class OrderController extends Controller
         $table   = $this->tableRepository->find($request->query('table'));
         $product = $this->productRepository->find($request->query('product'));
 
-        if (null === $table || null === $product) :
+        if (null === $table || null === $product || $product->status == ProductConstant::STATUS_OUT_OF_STOCK) :
             return false;
         endif;
 
@@ -125,13 +126,13 @@ class OrderController extends Controller
         $user = auth()->guard('user')->user();
         $table = null !== $order ? $this->tableRepository->find(array_key_first($order)) : null;
 
-        if (null === $order 
-            || ! isset($order) 
-            || null === $user 
+        if (null === $order
+            || ! isset($order)
+            || null === $user
             || null === $table
-            || (  $user->role !== UserConstant::ROLE['admin'] 
-             && $user->role !== UserConstant::ROLE['manager'] 
-             && $user->role !== UserConstant::ROLE['waiter'] 
+            || (  $user->role !== UserConstant::ROLE['admin']
+             && $user->role !== UserConstant::ROLE['manager']
+             && $user->role !== UserConstant::ROLE['waiter']
              )
             ) :
             return redirect()
@@ -143,7 +144,7 @@ class OrderController extends Controller
         endif;
 
         $orderTable = $this->orderRepository->createOrder($table->id, $user, $order);   //create order
-        if (null !== $orderTable) $total = $this->orderDetailRepository->createOrderDetail($orderTable['order']->id, $order); //createOrderDetail and get total 
+        if (null !== $orderTable) $total = $this->orderDetailRepository->createOrderDetail($orderTable['order']->id, $order); //createOrderDetail and get total
         if (null !== $total) $updateTotal = $this->orderRepository->update($orderTable['order']->id, ['total' => $total]); //update total order
 
         if (null !== $orderTable && $orderTable['existOrder'] === true) :
@@ -166,8 +167,8 @@ class OrderController extends Controller
 
     /**
      * @param integer|null $id
-     * 
-     * @return boolean
+     *
+        * @return boolean
      */
     public function checkOut(?int $id) : bool
     {
@@ -180,7 +181,7 @@ class OrderController extends Controller
         $billDetail = $this->billDetailRepository->createBillDetail($bill, $order);
 
         if ( $billDetail == false) return false;
-       
+
         if (! $this->orderDetailRepository->deleteByOrderId($order->id)
             || ! $this->tableRepository->update($id, [TableConstant::COLUMN_STATUS => TableConstant::STATUS['empty']])  // update status of table
             || ! $this->orderRepository->delete($order->id)
@@ -189,14 +190,14 @@ class OrderController extends Controller
             return false;
         }
 
-        session()->forget('order');        
+        session()->forget('order');
 
         return true;
     }
 
     /**
      * @param Request $request
-     * 
+     *
      * @return boolean
      */
     public function updateOrder(Request $request) : bool
@@ -208,6 +209,14 @@ class OrderController extends Controller
 
         if (null === $orderDetail) :
             return false;
+        endif;
+
+        if ($request->query(OrderDetailConstant::COLUMN_STATUS) == OrderDetailConstant::STATUS_CANCEL) :
+            if (! $this->orderDetailRepository->delete($orderDetail->id)) :
+                return false;
+            endif;
+
+            return true;
         endif;
 
         if ((int) $quantity > 0) :   //Case isset quantity update
@@ -248,15 +257,21 @@ class OrderController extends Controller
     }
 
     /**
-     * @param integer|null $id
-     * 
-     * @return boolean
+     * @param Request $request
+     *
+     * @return bool
      */
-    public function deleteOrder(?int $id) : bool
+    public function deleteOrder(Request $request) : bool
     {
-        if (! $this->orderDetailRepository->delete($id)) :
+        $check = $this->orderDetailRepository->checkDeleteAvailability($request->query('order'));
+
+        if (! $check) return false;
+
+        if (! $this->orderRepository->delete($request->query('order'))) :
             return false;
         endif;
+
+        if (! $this->tableRepository->update($request->query('table'), [TableConstant::COLUMN_STATUS => TableConstant::STATUS['empty']])) return false;
 
         return true;
     }

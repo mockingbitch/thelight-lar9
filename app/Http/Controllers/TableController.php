@@ -184,7 +184,13 @@ class TableController extends Controller
         ]);
     }
 
-    public function viewDetail($id, Request $request)
+    /**
+     * @param integer|null $id
+     * @param Request $request
+     * 
+     * @return View|RedirectResponse
+     */
+    public function viewDetail(?int $id, Request $request) : View|RedirectResponse
     {
         $table = $this->tableRepository->find($id);
 
@@ -193,7 +199,9 @@ class TableController extends Controller
 
             return view('home.tabledetail', [
                 'table' => $table,
-                'order' => $order
+                'order' => $order,
+                'orderErrCode' => session()->get('orderErrCode') ?? null,
+                'orderErrMsg' => session()->get('orderErrMsg') ?? null
             ]);
         endif;
 

@@ -92,17 +92,20 @@ use App\Constants\RouteConstant;
 						<!-- /LOGO -->
 
 						<!-- SEARCH BAR -->
-						<div class="col-xss-6">
-							<div class="header-search">
-								<form>
-									<select class="input-select" disabled>
-										<option value="0">Tìm kiếm</option>
-									</select>
-									<input class="input" placeholder="Nhập tên sản phẩm">
-									<button class="search-btn">Tìm kiếm</button>
-								</form>
+						@if (isset($breadcrumb) && null !== $breadcrumb && $breadcrumb == 'products_order')
+							<div class="col-xss-6">
+								<div class="header-search">
+									<form method="get">
+										<select class="input-select" disabled>
+											<option value="0">Tìm kiếm</option>
+										</select>
+										<input name="key" class="input search-product" placeholder="Nhập tên sản phẩm">
+										<input type="hidden" name="table" value="{{$table->id ?? null}}">
+										<button class="search-btn">Tìm kiếm</button>
+									</form>
+								</div>
 							</div>
-						</div>
+						@endif
 						<!-- /SEARCH BAR -->
 
 						<!-- ACCOUNT -->

@@ -34,7 +34,7 @@ use App\Constants\RouteConstant;
                     <h2>{{$table->name}}</h2>
                 </div>
                 <div class="col-xs-2 col-md-2">
-                    <a href={{route(RouteConstant::HOME['table_list'])}} class="btn btn-danger">Hủy đơn</a>
+                    <a onclick="handleDeleteOrder({{$order->id}}, {{$table->id}})" class="btn btn-danger">Hủy đơn</a>
                 </div>
                 <hr>
                 <div class="col-12" id="list-order">
@@ -225,12 +225,12 @@ use App\Constants\RouteConstant;
     }
 
     function handleOrder(id) {
-        var url = '{{ route("home.order.products") }}?table=' + id;
+        let url = '{{ route("home.order.products") }}?table=' + id;
         location.replace(url);
     }
 
     function handleCheckOut(id) {
-        var url = '{{ route("home.order.checkout", ":id") }}';
+        let url = '{{ route("home.order.checkout", ":id") }}';
         url = url.replace(':id', id);
         // location.replace(url);
         Swal.fire({
@@ -272,6 +272,62 @@ use App\Constants\RouteConstant;
                 }
             })
     }
+
+    function handleDeleteOrder(order_id, table_id) {
+        let url = '{{ route("home.table.detail", ":id") }}';
+        url = url.replace(':id', table_id);
+
+        Swal.fire({
+            title: 'Xóa order',
+            text: "Chắc chắn xóa mục này!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xóa!'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                $.get("{{route('home.order.delete')}}", {"order": order_id, "table": table_id}, function(data) {
+                    if (data == 1) {
+                        Swal.fire(
+                        'Đã xóa!',
+                        'Order đã được xóa',
+                        'success'
+                        )
+                        setTimeout(() => {
+                            location.replace(url);
+                        }, 1000);
+                    } else {
+                        Swal.fire(
+                        'Đã xảy ra lỗi!',
+                        'Order chưa được xóa',
+                        'warning'
+                        )
+                    }
+                });
+            }
+        })
+    }
+
+    $(document).ready(function () {
+        let errCode = '{{$orderErrCode}}';
+        let errMsg = '{{$orderErrMsg}}';
+        console.log(errCode, errMsg);
+        if (errCode && errCode === '0' && errMsg) {
+            Swal.fire(
+                'Xóa thành công!',
+                errMsg,
+                'warning'
+                );
+        }
+        if (errCode && errCode === '1' && errMsg) {
+            Swal.fire(
+                'Đã có lỗi xảy ra!',
+                errMsg,
+                'warning'
+                );
+        }
+    });
 </script>
 
 @endsection
