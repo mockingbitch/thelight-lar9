@@ -1,6 +1,6 @@
 @php
 use App\Constants\ProductConstant;
-use App\Constants\RouteConstant; 
+use App\Constants\RouteConstant;
 @endphp
 
 @extends('layouts.homeLayout')
@@ -47,13 +47,13 @@ use App\Constants\RouteConstant;
                             </select>
                         </label>
 
-                        <label>
+                        {{-- <label>
                             Show:
                             <select class="input-select">
                                 <option value="0">20</option>
                                 <option value="1">50</option>
                             </select>
-                        </label>
+                        </label> --}}
                     </div>
                     <ul class="store-grid">
                         <li class="active"><i class="fa fa-th"></i></li>
@@ -71,10 +71,10 @@ use App\Constants\RouteConstant;
                                 <div class="product-img">
                                     <img src="{{asset('upload/images/products/' . $product->image)}}" alt="">
                                     {!!
-                                        $product->status == ProductConstant::STATUS['out_of_stock'] ? 
+                                        $product->status == ProductConstant::STATUS['out_of_stock'] ?
                                         '<div class="product-label">
                                             <span class="new">Hết hàng</span>
-                                        </div>' 
+                                        </div>'
                                         : ''
                                     !!}
                                 </div>
@@ -108,14 +108,14 @@ use App\Constants\RouteConstant;
         </div>
         <!-- /row -->
     </div>
-  
+
     <!-- /container -->
 </div>
 <script>
     $(document).ready(function () {
         let errCode = '{{$orderErrCode}}';
         let errMsg = '{{$orderErrMsg}}';
-     
+
         if (errCode && errCode === '1' && errMsg) {
             Swal.fire(
                 'Thất bại!',
