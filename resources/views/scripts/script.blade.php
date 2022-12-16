@@ -1,7 +1,7 @@
 <script>
     function handleAddOrder(product, status) {
         if (status != 0) {
-            var table = '{{$table->id}}';
+            var table = '{{$table->id ?? ''}}';
             Swal.fire({
                 title: 'Note',
                 html: `<input type="text" id="quantity" class="swal2-input" placeholder="Số lượng">
@@ -42,7 +42,7 @@
     }
 
     function handleRemoveOrder() {
-        var table = '{{$table->id}}';
+        var table = '{{$table->id ?? ''}}';
         var urlOrder = "{{route('home')}}" + "/order?table=" + table;
         Swal.fire({
             title: 'Xóa order',
@@ -65,7 +65,7 @@
                     })
                 }
             })
-      
+
     }
 
     function handleToggleMenu() {

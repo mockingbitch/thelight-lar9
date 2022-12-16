@@ -23,7 +23,7 @@ class RouteConstant
     public const DASHBOARD_PRODUCT_UPDATE   = 'dashboard.product.update';
     public const DASHBOARD_PRODUCT_DELETE   = 'dashboard.product.delete';
     public const DASHBOARD_BILL_LIST        = 'dashboard.bill.list';
-    public const DASHBOARD_BILL_DETAIL       = 'dashboard.bill.detail';
+    public const DASHBOARD_BILL_DETAIL      = 'dashboard.bill.detail';
     public const DASHBOARD_BILL_UPDATE      = 'dashboard.bill.update';
     public const DASHBOARD_BILL_DELETE      = 'dashboard.bill.delete';
 
@@ -45,7 +45,7 @@ class RouteConstant
         'bill_list'         => self::DASHBOARD_BILL_LIST,
         'bill_update'       => self::DASHBOARD_BILL_UPDATE,
         'bill_delete'       => self::DASHBOARD_BILL_DELETE,
-        'bill_detail'      => self::DASHBOARD_BILL_DETAIL
+        'bill_detail'       => self::DASHBOARD_BILL_DETAIL
     ];
 
     public const HOME_TABLE_LIST        = 'home.table.list';
@@ -57,7 +57,8 @@ class RouteConstant
     public const HOME_ORDER_SUBMIT      = 'home.order.submit';
     public const HOME_ORDER_REMOVE      = 'home.order.remove';
     public const HOME_ORDER_CHECKOUT    = 'home.order.checkout';
-    public const HOME_SEARCH    = 'home.search';
+    public const HOME_ORDER_LIST        = 'home.order.list';
+    public const HOME_SEARCH            = 'home.search';
 
     public const HOME = [
         'search'            => self::HOME_SEARCH,
@@ -69,6 +70,7 @@ class RouteConstant
         'order_delete'      => self::HOME_ORDER_DELETE,
         'order_submit'      => self::HOME_ORDER_SUBMIT,
         'order_remove'      => self::HOME_ORDER_REMOVE,
-        'order_checkout'    => self::HOME_ORDER_CHECKOUT
+        'order_checkout'    => self::HOME_ORDER_CHECKOUT,
+        'order_list'        => self::HOME_ORDER_LIST,
     ];
 }

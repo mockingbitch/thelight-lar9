@@ -73,14 +73,35 @@ class OrderController extends Controller
         BillDetailRepositoryInterface $billDetailRepository
         )
     {
-        $this->orderRepository = $orderRepository;
-        $this->orderDetailRepository =$orderDetailRepository;
-        $this->productRepository = $productRepository;
-        $this->tableRepository = $tableRepository;
-        $this->orderService = $orderService;
-        $this->billRepository = $billRepository;
-        $this->billDetailRepository = $billDetailRepository;
+        $this->orderRepository          = $orderRepository;
+        $this->orderDetailRepository    = $orderDetailRepository;
+        $this->productRepository        = $productRepository;
+        $this->tableRepository          = $tableRepository;
+        $this->orderService             = $orderService;
+        $this->billRepository           = $billRepository;
+        $this->billDetailRepository     = $billDetailRepository;
     }
+
+    public function index()
+    {
+        $tables = $this->tableRepository->getAll();
+        $data = [];
+        foreach ($tables as $table) :
+            $order  = $this->orderRepository->calculatePercentStatus($table->id);
+            $data[] = [
+                'id' => $table->id,
+                'name' => $table->name,
+                'percent' => (int) $order['percent'],
+                'order' => $order['order']
+            ];
+        endforeach;
+
+        return view('home.orderlist', [
+            'data' => $data,
+            'breadcrumb' => 'home'
+        ]);
+    }
+
 
     /**
      * @param Request $request
@@ -131,9 +152,9 @@ class OrderController extends Controller
             || null === $user
             || null === $table
             || (  $user->role !== UserConstant::ROLE['admin']
-             && $user->role !== UserConstant::ROLE['manager']
-             && $user->role !== UserConstant::ROLE['waiter']
-             )
+            && $user->role !== UserConstant::ROLE['manager']
+            && $user->role !== UserConstant::ROLE['waiter']
+                )
             ) :
             return redirect()
                 ->back()

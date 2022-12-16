@@ -22,4 +22,9 @@ class Table extends Model
         'description',
         'status'
     ];
+
+    public function Orders()
+    {
+        return $this->hasMany(\App\Models\OrderDetail::class);
+    }
 }

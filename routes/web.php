@@ -82,6 +82,7 @@ Route::group(['middleware' => ['check.login']], function () {
         Route::get('/submit', [Order::class, 'submitOrder'])->name(RouteConstant::HOME['order_submit']);
         Route::get('/remove-all', [Order::class, 'remove'])->name(RouteConstant::HOME['order_remove']);
         Route::get('/checkout/{id}', [Order::class, 'checkOut'])->name(RouteConstant::HOME['order_checkout'])->where('id', '[0-9]+');
+        Route::get('/list', [Order::class, 'index'])->name(RouteConstant::HOME['order_list']);
     });
 });
 

@@ -30,8 +30,8 @@ use App\Constants\RouteConstant;
 
 		<!-- Font Awesome Icon -->
 		<link rel="stylesheet" href="{{asset('home/css/font-awesome.min.css')}}">
-		<link rel="stylesheet" href="{{asset('home/css/font-awesome6.css')}}">
-		<script src="https://kit.fontawesome.com/915a42d302.js" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="{{asset('home/css/all.css')}}">
+		{{-- <script src="https://kit.fontawesome.com/915a42d302.js" crossorigin="anonymous"></script> --}}
 
 
 		{{-- Custom Style --}}
@@ -50,8 +50,8 @@ use App\Constants\RouteConstant;
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 		<!--[if lt IE 9]>
-		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 		<![endif]-->
 
     </head>
@@ -190,6 +190,7 @@ use App\Constants\RouteConstant;
 					<ul class="main-nav nav navbar-nav">
 						<li class="active"><a href="{{route(RouteConstant::HOMEPAGE)}}">Trang chủ</a></li>
 						<li><a href="{{route(RouteConstant::DASHBOARD['home'])}}">Trang quản trị</a></li>
+						<li><a href="{{route(RouteConstant::HOME['order_list'])}}">Quản lý order</a></li>
 						{{-- <li><a href="#">Categories</a></li> --}}
 						{{-- <li><a href="#">Laptops</a></li> --}}
 						{{-- <li><a href="#">Smartphones</a></li> --}}
@@ -211,22 +212,22 @@ use App\Constants\RouteConstant;
 		<script>
 			// Get the button
 			let mybutton = document.getElementById("backTop");
-			
+
 			// When the user scrolls down 20px from the top of the document, show the button
 			window.onscroll = function() {scrollFunction()};
-			
+
 			function scrollFunction() {
-			  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-				mybutton.style.display = "block";
-			  } else {
-				mybutton.style.display = "none";
-			  }
+				if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+					mybutton.style.display = "block";
+				} else {
+					mybutton.style.display = "none";
+				}
 			}
-			
+
 			// When the user clicks on the button, scroll to the top of the document
 			function topFunction() {
-			  document.body.scrollTop = 0;
-			  document.documentElement.scrollTop = 0;
+				document.body.scrollTop = 0;
+				document.documentElement.scrollTop = 0;
 			}
 			</script>
 		<!-- jQuery Plugins -->
