@@ -19,6 +19,12 @@ class Table extends Model
      */
     protected $fillable = [
         'name',
-        'description'
+        'description',
+        'status'
     ];
+
+    public function Orders()
+    {
+        return $this->hasMany(\App\Models\OrderDetail::class);
+    }
 }

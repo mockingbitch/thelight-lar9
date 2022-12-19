@@ -13,7 +13,7 @@ class TableRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,21 @@ class TableRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required',
+            'status' => 'required',
+        ];
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, mixed>
+     */
+    public function messages()
+    {
+        return [
+            'name.required' => 'Tên danh mục không được bỏ trống',
+            'status.required' => 'Cần cập nhật trạng thái',
         ];
     }
 }

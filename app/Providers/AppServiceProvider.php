@@ -20,7 +20,9 @@ class AppServiceProvider extends ServiceProvider
             'Table',
             'Product',
             'Order',
-            'OrderDetail'
+            'OrderDetail',
+            'Bill',
+            'BillDetail'
         ];
 
         foreach ($models as $model) {
@@ -36,5 +38,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
+        view()->composer('*', function($view) {
+            // dd(auth()->guard('user')->user());
+            // $view->with('currentUser', $auth->user()); // does what you expect
+        });
     }
 }

@@ -7,7 +7,7 @@
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <title>
-    Vinasoy
+    The Light
   </title>
   <!--     Fonts and icons     -->
   <link href="{{asset('dashboard/assets/css/font-google.css')}}" rel="stylesheet" />
@@ -97,7 +97,7 @@
                     @csrf
                     <label>Email</label>
                     <div class="mb-3">
-                      <input type="email" name="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="email-addon">
+                      <input type="email" name="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="email-addon" value="{{Request::old('email')}}">
                     </div>
                     <label>Mật khẩu</label>
                     <div class="mb-3">

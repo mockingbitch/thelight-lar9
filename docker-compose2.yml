@@ -1,0 +1,56 @@
+version: '3'
+services:
+  # The Application
+  app:
+      container_name: thelight_laravel_app
+      build:
+        context: ./
+        dockerfile: docker/app.dockerfile
+      tty: true
+      volumes:
+        - ./storage:/var/www/storage
+      env_file: '.env'
+      environment:
+        - "DB_HOST=database"
+        - "REDIS_HOST=cache"
+      networks:
+      - app-network
+
+  # The Web Server
+  web:
+      container_name: nginx_server
+      build:
+        context: ./
+        dockerfile: docker/web.dockerfile
+      volumes:
+        - ./storage/logs/:/var/log/nginx
+      tty: true
+      ports:
+        - 81:80
+      networks:
+        - app-network
+
+  # The Database
+  database:
+      container_name: mysql_database
+      image: mysql:5.7
+      tty: true
+      volumes:
+        - dbdata:/var/lib/mysql
+      environment:
+        - "MYSQL_DATABASE=thelight"
+        - "MYSQL_USER=phong"
+        - "MYSQL_PASSWORD=phong"
+        - "MYSQL_ROOT_PASSWORD=root"
+      ports:
+        - 3307:3306
+      networks:
+        - app-network
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
+#Volumes
+volumes:
+  dbdata:
+    driver: local

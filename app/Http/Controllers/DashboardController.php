@@ -8,7 +8,7 @@ use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    protected $breadcrumb = DashboardConstant::BREADCRUMB;
+    protected $breadcrumb = DashboardConstant::BREADCRUMB_DASHBOARD;
 
     /**
      * @return View

@@ -6,7 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Requests\TableRequest;
 use Illuminate\Http\RedirectResponse;
 use App\Repositories\Contracts\Interface\TableRepositoryInterface;
+use App\Repositories\Contracts\Interface\OrderRepositoryInterface;
 use App\Constants\TableConstant;
+use App\Constants\Constant;
+use App\Constants\RouteConstant;
 use Illuminate\View\View;
 
 class TableController extends Controller
@@ -22,13 +25,20 @@ class TableController extends Controller
     protected $tableRepository;
 
     /**
+     * @var orderRepository
+     */
+    protected $orderRepository;
+
+    /**
      * @param TableRepository $tableRepository
      */
     public function __construct(
         TableRepositoryInterface $tableRepository,
+        OrderRepositoryInterface $orderRepository
         )
     {
         $this->tableRepository = $tableRepository;
+        $this->orderRepository = $orderRepository;
     }
 
     /**
@@ -77,7 +87,7 @@ class TableController extends Controller
             ]);
         } catch (\Throwable $th) {
             return redirect()
-                ->route('dashboard.table.list')
+                ->route(RouteConstant::DASHBOARD['table_list'])
                 ->with([
                     'tableErrCode' => Constant::ERR_CODE['fail'],
                     'tableErrMsg' => TableConstant::ERR_MSG_NOT_FOUND
@@ -94,7 +104,7 @@ class TableController extends Controller
     {
         if (! $this->tableRepository->create($request->toArray())) :
             return redirect()
-                ->route('dashboard.table.create')
+                ->route(RouteConstant::DASHBOARD['table_create'])
                 ->with([
                     'tableErrCode' => Constant::ERR_CODE['fail'],
                     'tableErrMsg' => Constant::ERR_MSG['create_fail']
@@ -102,7 +112,7 @@ class TableController extends Controller
         endif;
 
         return redirect()
-            ->route('dashboard.table.create')
+            ->route(RouteConstant::DASHBOARD['table_create'])
             ->with([
                 'tableErrCode' => Constant::ERR_CODE['success'],
                 'tableErrMsg' => Constant::ERR_MSG['create_success']
@@ -114,22 +124,20 @@ class TableController extends Controller
      * 
      * @return RedirectResponse
      */
-    public function update(TableRequest $request) : RedirectResponse
+    public function update($id, TableRequest $request) : RedirectResponse
     {
-        $table_id = $request->query('id');
-
-        if (! $this->tableRepository->find($table_id)) :
+        if (! $this->tableRepository->find($id)) :
             return redirect()
-                ->route('dashboard.table.list')
+                ->route(RouteConstant::DASHBOARD['table_list'])
                 ->with([
                     'tableErrCode' => Constant::ERR_CODE['fail'],
                     'tableErrMsg' => TableConstant::ERR_MSG_NOT_FOUND
                 ]);
         endif;
 
-        if (! $this->tableRepository->update($table_id, $request->toArray())) :
+        if (! $this->tableRepository->update($id, $request->toArray())) :
             return redirect()
-                ->route('dashboard.table.update')
+                ->route(RouteConstant::DASHBOARD['table_update'], ['id' => $id])
                 ->with([
                     'tableErrCode' => Constant::ERR_CODE['fail'],
                     'tableErrMsg' => Constant::ERR_MSG['update_fail']
@@ -137,29 +145,71 @@ class TableController extends Controller
         endif;
 
         return redirect()
-            ->route('dashboard.table.update')
+            ->route(RouteConstant::DASHBOARD['table_update'], ['id' => $id])
             ->with([
                 'tableErrCode' => Constant::ERR_CODE['success'],
                 'tableErrMsg' => Constant::ERR_MSG['update_success']
             ]);
     }
 
-    public function delete(Request $request)
+    /**
+     * @param Request $request
+     * 
+     * @return boolean
+     */
+    public function delete(Request $request) : bool
     {
-        // try {
-        //     $table_id = $request->query('id');
+        $table_id = $request->query('id');
+        
+        if (! $this->tableRepository->delete($table_id)) :
+            return false;
+        endif;
 
-        //     if (! $this->tableRepository->find($table_id)) :
-        //         return $this->errorResponse('Resource not found');
-        //     endif;
+        return true;
+    }
 
-        //     if (! $this->tableRepository->delete($table_id)) :
-        //         return $this->errorResponse('Failed to delete table');
-        //     endif;
 
-        //     return $this->successResponse('Ok');
-        // } catch (\Throwable $th) {
-        //     return $this->catchErrorResponse();
-        // }
+    //HOME
+    /**
+     * @param Request $request
+     * 
+     * @return View
+     */
+    public function viewIndex(Request $request) : View
+    {
+        $tables = $this->tableRepository->getAll();
+
+        return view('home.table', [
+            'tables' => $tables
+        ]);
+    }
+
+    /**
+     * @param integer|null $id
+     * @param Request $request
+     * 
+     * @return View|RedirectResponse
+     */
+    public function viewDetail(?int $id, Request $request) : View|RedirectResponse
+    {
+        $table = $this->tableRepository->find($id);
+
+        if (null !== $table) :
+            $order = $this->orderRepository->getTableOrder($table->id);
+
+            return view('home.tabledetail', [
+                'table' => $table,
+                'order' => $order,
+                'orderErrCode' => session()->get('orderErrCode') ?? null,
+                'orderErrMsg' => session()->get('orderErrMsg') ?? null
+            ]);
+        endif;
+
+        return redirect()
+            ->route(RouteConstant::HOME['table_list'])
+            ->with([
+                'tableErrCode' => Constant::ERR_CODE['fail'],
+                'tableErrMsg' => TableConstant::ERR_MSG_NOT_FOUND
+            ]);
     }
 }

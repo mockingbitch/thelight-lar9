@@ -19,10 +19,11 @@ return new class extends Migration
             $table->foreign('product_id')->references('id')->on('products');
             $table->unsignedBigInteger('order_id');
             $table->foreign('order_id')->references('id')->on('orders');
-            $table->string('total');
             $table->string('quantity');
+            $table->string('price');
+            $table->string('total');
             $table->string('note')->nullable();
-            $table->string('status')->nullable();
+            $table->string('status')->default('PENDING');
             $table->timestamps();
             $table->softDeletes();
         });
