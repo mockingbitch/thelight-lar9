@@ -20,7 +20,7 @@ use App\Constants\RouteConstant;
                         <thead>
                         <tr>
                             <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-9"><b>Tên sản phẩm</b></th>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-9 ps-2"><b>Giá</b></th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-9 ps-2"><b>Giá</b></th>
                             <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"><b>Danh mục</b></th>
                             <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"><b>Hình ảnh</b></th>
                             <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"><b>Trạng thái</b></th>
@@ -30,21 +30,23 @@ use App\Constants\RouteConstant;
                         @foreach($products as $item)
                         <tr class="tb-row" onclick="handleClickRow({{$item->id}})">
                             <td>
-                                <div class="d-flex px-2 py-1">
-                                    <div class="d-flex flex-column justify-content-center">
+                                <div class="px-2 py-1">
+                                    <div class="flex-column justify-content-center">
                                         <h6 class="mb-0">{{$item->name}}</h6>
                                     </div>
                                 </div>
                             </td>
                             <td>
-                                <p class="font-weight-bold mb-0">
+                                <p class="d-flex font-weight-bold mb-0">
                                     {{number_format($item->price)}}
                                 </p>
                             </td>
                             <td>
-                                <p class="text-sm font-weight-bold mb-0">
-                                    {{$item->category->name}}
-                                </p>
+                                <a href="{{route(RouteConstant::DASHBOARD['product_list'])}}?category={{$item->category_id}}">
+                                    <p class="d-flex text-sm font-weight-bold mb-0">
+                                        {{$item->category->name}}
+                                    </p>
+                                </a>
                             </td>
                             <td style="text-align: center"><img width="100px" src="{{asset('upload/images/products/' . $item->image)}}" alt="Product Image" /></td>
                             <td style="text-align: center">

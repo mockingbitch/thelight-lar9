@@ -576,3 +576,11 @@
 .me-3 {
     margin-right: 1rem !important;
 }
+
+td {
+    vertical-align: middle !important;
+}
+
+.column-margin {
+    margin: 0 -10px 0 -10px;
+}

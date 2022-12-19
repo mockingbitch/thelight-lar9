@@ -111,6 +111,7 @@ use App\Constants\RouteConstant;
 
     <!-- /container -->
 </div>
+@include('scripts.script')
 <script>
     $(document).ready(function () {
         let errCode = '{{$orderErrCode}}';

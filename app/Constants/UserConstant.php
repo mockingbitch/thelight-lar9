@@ -4,6 +4,8 @@ namespace App\Constants;
 
 class UserConstant
 {
+    public const BREADCRUMB                 = 'user';
+
     public const COLUMN_ID                  = 'id';
     public const COLUMN_NAME                = 'name';
     public const COLUMN_EMAIL               = 'email';

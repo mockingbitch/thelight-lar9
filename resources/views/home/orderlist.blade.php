@@ -21,12 +21,11 @@ use App\Constants\OrderConstant;
                             <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-9"><b>Bàn</b></th>
                             <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-9"><b>Trạng thái</b></th>
                             <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-9"><b>Nhân viên</b></th>
-                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-9"><b></b></th>
                         </tr>
                         </thead>
                         <tbody>
                             @foreach($data as $item)
-                                <tr class="tb-row">
+                                <tr class="tb-row" onclick="handleOnClickRow({{$item['id']}})">
                                     <td>
                                         <div class="d-flex px-2 py-1 margin-tbl-item">
                                             <div class="d-flex flex-column justify-content-center">
@@ -59,17 +58,6 @@ use App\Constants\OrderConstant;
                                             </div>
                                         @endif
                                     </td>
-                                    <td>
-                                        @if (null !== $item['order'])
-                                            <div class="d-flex align-items-center justify-content-center margin-tbl-item">
-                                                <span class="me-2 text-xs font-weight-bold">
-                                                    <a class="" href="{{route(RouteConstant::HOME['table_detail'], ['id' => $item['id']])}}">
-                                                        <i class="fa-regular fa-eye"></i>
-                                                    </a>
-                                                </span>
-                                            </div>
-                                        @endif
-                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -81,13 +69,19 @@ use App\Constants\OrderConstant;
     {{-- {!! $products->links("pagination::bootstrap-4") !!} --}}
 </div>
 <script>
+    function handleOnClickRow(id) {
+        var url = '{{ route("home.table.detail", ":id") }}';
+        url = url.replace(':id', id);
+        location.replace(url);
+    }
+
     $(document).ready(function() {
         setInterval(() => {
             $('.table').load('{{route(RouteConstant::HOME['order_list'])}} .table');
         }, 3000);
         setInterval(() => {
             window.location.reload();
-        }, 30000);
+        }, 50000);
     });
 </script>
 @endsection

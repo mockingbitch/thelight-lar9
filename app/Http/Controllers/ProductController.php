@@ -25,7 +25,7 @@ class ProductController extends Controller
      */
     protected $productRepository;
 
-     /**
+    /**
      * @var categoryRepository
      */
     protected $categoryRepository;
@@ -53,17 +53,21 @@ class ProductController extends Controller
 
     /**
      * @param Request $request
-     * 
+     *
      * @return View
      */
     public function index(Request $request) : View
     {
-        $products = $this->productRepository->getAll();
+        if (null !== $request->query('category')) :
+            $products = $this->productRepository->getProductsByCategory($request->query('category'));
+        else :
+            $products = $this->productRepository->getAll();
+        endif;
 
         return view('dashboard.product.list', [
             'productErrCode' => session()->get('productErrCode') ?? '',
             'productErrMsg' => session()->get('productErrMsg') ?? '',
-            'products' => $products,
+            'products' => $products ?? null,
             'breadcrumb' => $this->breadcrumb
         ]);
     }
@@ -146,7 +150,7 @@ class ProductController extends Controller
         endif;
 
         $data = $request->toArray();
-        
+
         if (null !== $request->image) :
             $data['image'] = $this->imageService->create($request->image, ProductConstant::IMAGE_FOLDER);
 
@@ -180,7 +184,7 @@ class ProductController extends Controller
     /**
      * @param integer|null $productId
      * @param ProductRequest $request
-     * 
+     *
      * @return RedirectResponse
      */
     public function update(?int $productId, ProductRequest $request) : RedirectResponse
@@ -203,10 +207,10 @@ class ProductController extends Controller
                 ->with('msg', ProductConstant::ERR_MSG_NOT_FOUND);
         endif;
 
-        
+
         if (null !== $request->image) :
             $data['image'] = $this->imageService->create($request->image, ProductConstant::IMAGE_FOLDER);
-            
+
             if (null == $data['image'] || $data['image'] == '') :
                 return redirect()
                     ->route(RouteConstant::DASHBOARD['product_update'], ['id' => $productId])
@@ -238,13 +242,13 @@ class ProductController extends Controller
 
     /**
      * @param Request $request
-     * 
+     *
      * @return boolean
      */
     public function delete(Request $request) : bool
     {
         $product_id = $request->query('id');
-        
+
         if (! $this->productRepository->delete($product_id)) :
             return false;
         endif;
