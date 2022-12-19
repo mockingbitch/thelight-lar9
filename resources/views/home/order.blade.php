@@ -92,7 +92,7 @@ use App\Constants\RouteConstant;
                 <!-- /store products -->
 
                 <!-- store bottom filter -->
-                <div class="store-filter clearfix">
+                {{-- <div class="store-filter clearfix">
                     <span class="store-qty">Showing 20-100 products</span>
                     <ul class="store-pagination">
                         <li class="active">1</li>
@@ -101,7 +101,7 @@ use App\Constants\RouteConstant;
                         <li><a href="#">4</a></li>
                         <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
                     </ul>
-                </div>
+                </div> --}}
                 <!-- /store bottom filter -->
             </div>
             <!-- /STORE -->
