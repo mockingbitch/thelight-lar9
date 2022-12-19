@@ -69,9 +69,9 @@ class ProductController extends Controller
     }
 
     /**
-     * @return View
+     * @return View|RedirectResponse
      */
-    public function viewCreate() : View
+    public function viewCreate() : View|RedirectResponse
     {
         $categories = $this->categoryRepository->getAll();
 

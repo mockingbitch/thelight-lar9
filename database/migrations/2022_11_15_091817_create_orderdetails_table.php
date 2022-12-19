@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('price');
             $table->string('total');
             $table->string('note')->nullable();
-            $table->string('status')->default('PENDING');
+            $table->string('status')->default(0)->comment('0 > PENDING, 1 > DONE, 2 > DELIVERED, 3 > CANCEL');
             $table->timestamps();
             $table->softDeletes();
         });

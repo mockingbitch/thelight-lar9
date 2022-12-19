@@ -137,16 +137,16 @@ use App\Constants\RouteConstant;
         var current_url = '{{ route("home.table.detail", ":id") }}';
         current_url = current_url.replace(':id', {{$table->id}});
 
-        if (status == 'PENDING') {
+        if (status == 0) {
             Swal.fire({
             title: 'Cập nhật ' + product_name,
             html: `<input type="text" id="quantity" class="swal2-input" placeholder="Số lượng">`,
             input: 'select',
             inputOptions: {
-                'PENDING': 'Đang chờ',
-                'DONE': 'Đã xong đồ',
-                'DELIVERED': 'Đã lên đồ',
-                'CANCEL': 'Hủy'
+                0: 'Đang chờ',
+                1: 'Đã xong đồ',
+                2: 'Đã lên đồ',
+                3: 'Hủy'
             },
             confirmButtonText: 'Xác nhận',
             focusConfirm: false,
@@ -185,13 +185,13 @@ use App\Constants\RouteConstant;
                 })
             })
         }
-        if (status == 'DONE') {
+        if (status == 1) {
             Swal.fire({
             title: 'Cập nhật ' + product_name,
             input: 'select',
             inputOptions: {
-                'DONE': 'Đã xong đồ',
-                'DELIVERED': 'Đã lên đồ'
+                1: 'Đã xong đồ',
+                2: 'Đã lên đồ'
             },
             confirmButtonText: 'Xác nhận',
             focusConfirm: false,

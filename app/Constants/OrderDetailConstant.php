@@ -32,10 +32,10 @@ class OrderDetailConstant
         'deleted_at'    => self::COLUMN_DELETED_AT
     ];
 
-    public const STATUS_PENDING     = 'PENDING';
-    public const STATUS_DONE        = 'DONE';
-    public const STATUS_DELIVERED   = 'DELIVERED';
-    public const STATUS_CANCEL      = 'CANCEL';
+    public const STATUS_PENDING     = 0;
+    public const STATUS_DONE        = 1;
+    public const STATUS_DELIVERED   = 2;
+    public const STATUS_CANCEL      = 3;
 
     public const STATUS = [
         'pending'   => self::STATUS_PENDING,
