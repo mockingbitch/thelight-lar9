@@ -33,6 +33,7 @@ Route::group(['middleware' => ['check.login']], function () {
     //ADMIN
     Route::prefix('admin')->group(function () {
         Route::get('/', [Dashboard::class, 'index'])->name(RouteConstant::DASHBOARD['home']);
+        Route::get('/chart', [Dashboard::class, 'getDataChart'])->name(RouteConstant::DASHBOARD['chart']);
 
         //CATEGORY
         Route::prefix('/category')->group(function () {

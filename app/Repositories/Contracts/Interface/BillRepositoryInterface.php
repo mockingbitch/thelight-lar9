@@ -6,4 +6,8 @@ use App\Repositories\BaseRepositoryInterface;
 
 interface BillRepositoryInterface extends BaseRepositoryInterface
 {
+    public function createBill(? object $order);
+    public function getLastTenDays();
+    public function getTenDaysLastMonth();
+    public function getLastTwelveMonth();
 }

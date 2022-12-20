@@ -16,7 +16,7 @@ class BillRepository extends BaseRepository implements BillRepositoryInterface
 
     /**
      * @param object|null $order
-     * 
+     *
      * @return Bill|null
      */
     public function createBill(? object $order) : ?Bill
@@ -33,5 +33,65 @@ class BillRepository extends BaseRepository implements BillRepositoryInterface
         if (! $bill = $this->create($data)) return null;
 
         return $bill;
+    }
+
+    /**
+     * @return array
+     */
+    public function getLastTenDays() : array
+    {
+        $bills = [];
+        $arrDays = [];
+
+        for ($i = 9; $i >= 0; $i--) :
+            $day = date('Y-m-d', strtotime('now - '. $i . 'day'));
+            $bills[] = $this->model->whereDate('created_at', $day)->sum('total');
+            $arrDays[] = 'N' . date('d', strtotime('now - '. $i . 'day'));
+        endfor;
+
+        return [
+            'days' => $arrDays,
+            'total' => $bills
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getLastTwelveMonth() : array
+    {
+        $bills = [];
+        $arrMonth = [];
+
+        for ($i = 9; $i >= 0; $i--) :
+            $month = date('m', strtotime('now - '. $i . 'month'));
+            $bills[] = $this->model->whereMonth('created_at', $month)->sum('total');
+            $arrMonth[] = 'T' . date('m', strtotime('now - '. $i . 'month'));
+        endfor;
+
+        return [
+            'months' => $arrMonth,
+            'total' => $bills
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getTenDaysLastMonth() : array
+    {
+        $bills = [];
+        $arrDays = [];
+        $month = date('Y-m-d', strtotime('now - 1 month'));
+        for ($i = 9; $i >= 0; $i--) :
+            $day = date('Y-m-d', strtotime($month. '- '. $i . 'day'));
+            $bills[] = $this->model->whereDate('created_at', $day)->sum('total');
+            $arrDays[] = 'N' . date('d', strtotime($month. '- '. $i . 'day'));
+        endfor;
+
+        return [
+            'days' => $arrDays,
+            'total' => $bills
+        ];
     }
 }
