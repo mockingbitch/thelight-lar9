@@ -40,4 +40,8 @@ class BillDetailRepository extends BaseRepository implements BillDetailRepositor
 
         return true;
     }
+
+    public function getTopProduct()
+    {
+    }
 }

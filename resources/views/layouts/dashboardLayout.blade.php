@@ -450,6 +450,10 @@ use App\Constants\DashboardConstant;
     function handleLogout() {
       window.location.assign('/logout');
     }
+
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
   </script>
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>

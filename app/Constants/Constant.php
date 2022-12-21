@@ -7,6 +7,9 @@ class Constant
     public const ERR_CODE_FAIL      = 0;
     public const ERR_CODE_SUCCESS   = 1;
 
+    public const DATE_FORMAT_DMY    = 'dd-MM-yyyy';
+    public const DATE_FORMAT_YMD    = 'Y-m-d';
+
     public const ERR_CODE = [
         'fail'    => self::ERR_CODE_FAIL,
         'success' => self::ERR_CODE_SUCCESS
@@ -18,7 +21,7 @@ class Constant
     public const ERR_MSG_UPDATE_SUCCESS = 'Cập nhật thành công';
     public const ERR_MSG_DELETE_FAIL    = 'Xóa thất bại';
     public const ERR_MSG_DELETE_SUCCESS = 'Xóa thành công';
-    
+
     public const ERR_MSG = [
         'create_fail'    => self::ERR_MSG_CREATE_FAIL,
         'create_success' => self::ERR_MSG_CREATE_SUCCESS,
@@ -35,4 +38,4 @@ class Constant
         'available'     => self::STATUS_AVAILABLE,
         'unavailable'   => self::STATUS_UNAVAILABLE
     ];
-}   
+}

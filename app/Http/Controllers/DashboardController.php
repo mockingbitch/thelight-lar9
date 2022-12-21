@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Constants\DashboardConstant;
 use Illuminate\View\View;
 use App\Repositories\Contracts\Interface\BillRepositoryInterface;
+use App\Repositories\Contracts\Interface\BillDetailRepositoryInterface;
 use Illuminate\Http\JsonResponse;
 
 class DashboardController extends Controller
@@ -21,11 +22,21 @@ class DashboardController extends Controller
     protected $billRepository;
 
     /**
-     * @param BillRepositoryInterface $billRepository
+     * @var billDetailRepository
      */
-    public function __construct(BillRepositoryInterface $billRepository)
+    protected $billDetailRepository;
+
+    /**
+     * @param BillRepositoryInterface $billRepository
+     * @param BillDetailRepositoryInterface $billDetailRepository
+     */
+    public function __construct(
+        BillRepositoryInterface $billRepository,
+        BillDetailRepositoryInterface $billDetailRepository
+        )
     {
         $this->billRepository = $billRepository;
+        $this->billDetailRepository = $billDetailRepository;
     }
 
     /**
@@ -33,8 +44,14 @@ class DashboardController extends Controller
      */
     public function index() : View
     {
+        $bills      = $this->billRepository->getCurrentDay();
+        $topProduct = $this->billDetailRepository->getTopProduct();
+
         return view('dashboard.index', [
-            'breadcrumb' => $this->breadcrumb,
+            'breadcrumb'        => $this->breadcrumb,
+            'income'            => $bills['income'],
+            'count'             => $bills['count'],
+            'percent'           => $bills['percent']
         ]);
     }
 
@@ -45,14 +62,14 @@ class DashboardController extends Controller
      */
     public function getDataChart() : JsonResponse
     {
-        $bills = $this->billRepository->getLastTenDays();
-        $oldBills = $this->billRepository->getTenDaysLastMonth();
+        $bills      = $this->billRepository->getLastTenDays();
+        $oldBills   = $this->billRepository->getTenDaysLastMonth();
         $getMonthly = $this->billRepository->getLastTwelveMonth();
 
         return response()->json([
-            'current' => $bills,
-            'old' => $oldBills,
-            'month' => $getMonthly
+            'current'   => $bills,
+            'old'       => $oldBills,
+            'month'     => $getMonthly
         ], 200);
     }
 }

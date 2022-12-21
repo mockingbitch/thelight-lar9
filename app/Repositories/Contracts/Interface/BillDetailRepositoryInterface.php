@@ -6,4 +6,6 @@ use App\Repositories\BaseRepositoryInterface;
 
 interface BillDetailRepositoryInterface extends BaseRepositoryInterface
 {
+    public function createBillDetail(?object $bill, ?object $order);
+    public function getTopProduct();
 }

@@ -10,4 +10,5 @@ interface BillRepositoryInterface extends BaseRepositoryInterface
     public function getLastTenDays();
     public function getTenDaysLastMonth();
     public function getLastTwelveMonth();
+    public function getCurrentDay();
 }

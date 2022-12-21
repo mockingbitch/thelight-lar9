@@ -8,10 +8,14 @@
                     <div class="row">
                         <div class="col-8">
                             <div class="numbers">
-                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Today's Money</p>
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Doanh thu hôm nay</p>
                                 <h5 class="font-weight-bolder mb-0">
-                                    $53,000
-                                    <span class="text-success text-sm font-weight-bolder">+55%</span>
+                                    {{number_format($income['today'])}} Đ
+                                    @if (null !== $percent['income'] && $percent['income'] > 0)
+                                        <span class="text-success text-sm font-weight-bolder" data-toggle="tooltip" title="Tăng {{number_format($income['today'] - $income['lastDay'])}} Đ">+{{$percent['income']}}%</span>
+                                    @else
+                                        <span class="text-danger text-sm font-weight-bolder" data-toggle="tooltip" title="Giảm {{number_format($income['lastDay'] - $income['today'])}} Đ">{{$percent['income']}}%</span>
+                                    @endif
                                 </h5>
                             </div>
                         </div>
@@ -30,10 +34,14 @@
                     <div class="row">
                         <div class="col-8">
                             <div class="numbers">
-                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Today's Users</p>
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Số đơn hàng</p>
                                 <h5 class="font-weight-bolder mb-0">
-                                    2,300
-                                    <span class="text-success text-sm font-weight-bolder">+3%</span>
+                                    {{$count['today']}}
+                                    @if (null !== $percent['bill'] && $percent['bill'] > 0)
+                                        <span class="text-success text-sm font-weight-bolder" data-toggle="tooltip" title="Tăng {{$count['today'] - $count['lastDay']}}">+{{$percent['bill']}}%</span>
+                                    @else
+                                        <span class="text-danger text-sm font-weight-bolder"  data-toggle="tooltip" title="Giảm {{$count['lastDay'] - $count['today']}}">{{$percent['bill']}}%</span>
+                                    @endif
                                 </h5>
                             </div>
                         </div>
@@ -52,10 +60,10 @@
                     <div class="row">
                         <div class="col-8">
                             <div class="numbers">
-                            <p class="text-sm mb-0 text-capitalize font-weight-bold">New Clients</p>
+                            <p class="text-sm mb-0 text-capitalize font-weight-bold">Hôm qua</p>
                             <h5 class="font-weight-bolder mb-0">
-                                +3,462
-                                <span class="text-danger text-sm font-weight-bolder">-2%</span>
+                                {{number_format($income['lastDay'])}} Đ
+                                <span class="text text-sm font-weight-bolder">({{$count['lastDay']}} đơn)</span>
                             </h5>
                             </div>
                         </div>
@@ -74,7 +82,7 @@
                 <div class="row">
                 <div class="col-8">
                     <div class="numbers">
-                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Sales</p>
+                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Sản phẩm bán chạy</p>
                     <h5 class="font-weight-bolder mb-0">
                         $103,430
                         <span class="text-success text-sm font-weight-bolder">+5%</span>
@@ -256,10 +264,17 @@
             <div class="card z-index-2">
                 <div class="card-header pb-0">
                     <h6>Doanh số theo ngày</h6>
-                    <p class="text-sm">
-                    <i class="fa fa-arrow-up text-success"></i>
-                    <span class="font-weight-bold">Tăng 4% </span> so với hôm qua
-                    </p>
+                    @if ($percent['income'] > 0)
+                        <p class="text-sm">
+                            <i class="fa fa-arrow-up text-success"></i>
+                            <span class="font-weight-bold">Tăng {{$percent['income']}}% </span> so với hôm qua
+                        </p>
+                    @else
+                        <p class="text-sm">
+                            <i class="fa fa-arrow-down text-danger"></i>
+                            <span class="font-weight-bold">Giảm {{$percent['income']}}% </span> so với hôm qua
+                        </p>
+                    @endif
                 </div>
                 <div class="card-body p-3">
                     <div class="chart">
