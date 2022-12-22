@@ -95,8 +95,8 @@ class BillRepository extends BaseRepository implements BillRepositoryInterface
             $oldBills   = $this->model->whereDate(BillConstant::COLUMN_CREATED_AT, $old);
         endif;
 
-        $incomeDifferentialPercent  = ($bills->sum(BillConstant::COLUMN_TOTAL) !== $oldBills->sum(BillConstant::COLUMN_TOTAL)) ? (($bills->sum(BillConstant::COLUMN_TOTAL) - $oldBills->sum(BillConstant::COLUMN_TOTAL)) / ($oldBills->sum(BillConstant::COLUMN_TOTAL) == 0 ?? 1)) * 100 : 0;
-        $billCountDifferential      = (count($bills->get()) !== count($oldBills->get())) ? ((count($bills->get()) - count($oldBills->get())) / (count($oldBills->get()) == 0 ?? 1)) * 100 : 0;
+        $incomeDifferentialPercent  = (($bills->sum(BillConstant::COLUMN_TOTAL) - $oldBills->sum(BillConstant::COLUMN_TOTAL)) / ($oldBills->sum(BillConstant::COLUMN_TOTAL) ?: 1)) * 100;
+        $billCountDifferential      = ((count($bills->get()) - count($oldBills->get())) / (count($oldBills->get()) ?: 1)) * 100;
 
         return [
             'income'    => [

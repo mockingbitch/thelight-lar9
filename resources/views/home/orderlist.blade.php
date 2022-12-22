@@ -76,12 +76,12 @@ use App\Constants\OrderConstant;
     }
 
     $(document).ready(function() {
-        // setInterval(() => {
-        //     $('.table').load('{{route(RouteConstant::HOME['order_list'])}} .table');
-        // }, 3000);
-        // setInterval(() => {
-        //     window.location.reload();
-        // }, 50000);
+        setInterval(() => {
+            $('.table').load('{{route(RouteConstant::HOME['order_list'])}} .table');
+        }, 3000);
+        setInterval(() => {
+            window.location.reload();
+        }, 50000);
     });
 </script>
 @endsection
