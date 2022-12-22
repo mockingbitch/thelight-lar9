@@ -20,11 +20,11 @@ use App\Constants\UserConstant;
                     <table class="table align-items-center mb-0">
                         <thead>
                         <tr>
-                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-9"><b>Tên</b></th>
-                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-9 ps-2"><b>Email</b></th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-9"><b>Tên</b></th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-9 ps-2"><b>Email</b></th>
                             <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-9 ps-2"><b>Giới tính</b></th>
                             <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-9 ps-2"><b>Vai trò</b></th>
-                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-9"><b>SĐT</b></th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-9"><b>SĐT</b></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -44,13 +44,13 @@ use App\Constants\UserConstant;
                             </td>
                             <td>
                                 @if(null !== $user->gender)
-                                    <p class="text-xs font-weight-bold mb-0">
+                                    <p class="d-flex text-xs font-weight-bold mb-0">
                                         {{$user->gender == 1 ? 'Nam' : 'Nữ'}}
                                     </p>
                                 @endif
                             </td>
                             <td>
-                                <p class="text-xs font-weight-bold mb-0">
+                                <p class="d-flex text-xs font-weight-bold mb-0">
                                     @switch($user->role)
                                         @case(UserConstant::ROLE_ADMIN)
                                             Admin
@@ -82,7 +82,7 @@ use App\Constants\UserConstant;
 </div>
 <script>
     function handleClickRow(id) {
-        var url = '{{ route("dashboard.table.update", ":id") }}';
+        var url = '{{ route("dashboard.user.update", ":id") }}';
         url = url.replace(':id', id);
         location.replace(url);
     }

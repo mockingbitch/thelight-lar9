@@ -74,6 +74,7 @@ Route::group(['middleware' => ['check.login']], function () {
         //USER
         Route::prefix('/user')->group(function () {
             Route::get('/', [User::class, 'index'])->name(RouteConstant::DASHBOARD['user_list']);
+            Route::get('/{id}', [User::class, 'viewUpdate'])->name(RouteConstant::DASHBOARD['user_update'])->where('id', '[0-9]+');
         });
     });
 

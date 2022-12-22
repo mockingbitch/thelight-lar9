@@ -39,4 +39,29 @@ class UserController extends Controller
             'breadcrumb' => $this->breadcrumb
         ]);
     }
+
+    /**
+     * @param integer|null $id
+     * @return View|RedirectResponse
+     */
+    public function viewUpdate(?int $id) : View|RedirectResponse
+    {
+        try {
+            $user = $this->userRepository->find($id);
+
+            return view('dashboard.user.update', [
+                'userErrCode' => session()->get('userErrCode') ?? null,
+                'userErrMsg' => session()->get('userErrMsg') ?? null,
+                'user' => $user,
+                'breadcrumb' => $this->breadcrumb
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()
+                ->route(RouteConstant::DASHBOARD['user_list'])
+                ->with([
+                    'userErrCode' => Constant::ERR_CODE['fail'],
+                    'userErrMsg' => UserConstant::ERR_MSG_NOT_FOUND
+                ]);
+        }
+    }
 }

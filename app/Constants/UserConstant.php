@@ -6,6 +6,8 @@ class UserConstant
 {
     public const BREADCRUMB                 = 'user';
 
+    public const ERR_MSG_NOT_FOUND          = 'Không tìm thấy người dùng';
+
     public const COLUMN_ID                  = 'id';
     public const COLUMN_NAME                = 'name';
     public const COLUMN_EMAIL               = 'email';
