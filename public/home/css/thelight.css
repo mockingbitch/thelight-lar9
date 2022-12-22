@@ -60,6 +60,12 @@
     .modal-body {
         padding: 5px !important;
     }
+    .progress {
+        width: 50px !important;
+    }
+    .table-responsive {
+        border-radius: 1em !important;
+    }
 }
 
 .shopping-summery {
@@ -537,7 +543,7 @@
 
 .progress {
     height: 6px;
-    width: 50px;
+    width: 200px;
     margin-top: 20px;
 }
 .d-flex {
@@ -583,4 +589,20 @@ td {
 
 .column-margin {
     margin: 0 -10px 0 -10px;
+}
+
+table {
+    border-collapse: collapse;
+    border-radius: 1em;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 1em;
+    background: rgb(238, 237, 237);
+    border-bottom: 2px solid white;
+}
+
+table-responsive {
+    border-radius: 1em !important;
 }

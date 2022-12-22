@@ -37,88 +37,84 @@ class BillRepository extends BaseRepository implements BillRepositoryInterface
     }
 
     /**
+     * @param string|null $label        //Chart's column name
+     * @param string|null $dateFormat   //Date format ('Y-m-d', 'd', 'm', ...)
+     * @param string|null $param1       //Now || specific date
+     * @param string|null $param2       //'month' || 'day'
+     * @param string|null $condition    //condition get
+     *
      * @return array
      */
-    public function getLastTenDays() : array
+    public function getLastBills(?string $label, ?string $dateFormat, ?string $param1, ?string $param2, ?string $condition) : array
     {
         $bills      = [];
         $arrDays    = [];
 
+        if ($condition === Constant::CONDITION_TENDAYSLASTMONTH) :
+            $month = date(Constant::DATE_FORMAT_YMD, strtotime('now - 1 month'));
+        endif;
+
         for ($i = 9; $i >= 0; $i--) :
-            $day        = date(Constant::DATE_FORMAT_YMD, strtotime('now - '. $i . 'day'));
-            $bills[]    = $this->model->whereDate(BillConstant::COLUMN_CREATED_AT, $day)->sum(BillConstant::COLUMN_TOTAL);
-            $arrDays[]  = 'N' . date('d', strtotime('now - '. $i . 'day'));
+            switch ($condition) {
+                case Constant::CONDITION_TENMONTHSLASTYEAR :
+                    $month      = date('m', strtotime('now - '. $i . 'month'));
+                    $bills[]    = $this->model->whereMonth(BillConstant::COLUMN_CREATED_AT, $month)->sum(BillConstant::COLUMN_TOTAL);
+                    break;
+                case Constant::CONDITION_TENDAYSFROMNOW :
+                    $day        = date(Constant::DATE_FORMAT_YMD, strtotime('now - '. $i . 'day'));
+                    $bills[]    = $this->model->whereDate(BillConstant::COLUMN_CREATED_AT, $day)->sum(BillConstant::COLUMN_TOTAL);
+                    break;
+                case Constant::CONDITION_TENDAYSLASTMONTH :
+                    $day        = date(Constant::DATE_FORMAT_YMD, strtotime($month. '- '. $i . 'day'));
+                    $bills[]    = $this->model->whereDate(BillConstant::COLUMN_CREATED_AT, $day)->sum(BillConstant::COLUMN_TOTAL);
+                    break;
+                default:
+                    break;
+            }
+
+            $arrLabel[] = $label . date($dateFormat, strtotime($param1 . ' - '. $i . $param2));
         endfor;
 
         return [
-            'days'  => $arrDays,
+            'label'  => $arrLabel,
             'total' => $bills
         ];
     }
 
     /**
+     * @param string|null $paramDate    //Số chênh lệch (1 day, 1 month, ...)
+     * @param string|null $format       //Date format (Y-m-d, m, ...)
+     * @param string|null $condition    //Month || day || Year
+     *
      * @return array
      */
-    public function getLastTwelveMonth() : array
+    public function getDifferent(?string $paramDate = '1', ?string $format, ?string $condition) : array
     {
-        $bills      = [];
-        $arrMonth   = [];
+        $current        = date($format, strtotime('now'));
+        $old    = date($format, strtotime('now - '. $paramDate .' '. $condition));
 
-        for ($i = 9; $i >= 0; $i--) :
-            $month      = date('m', strtotime('now - '. $i . 'month'));
-            $bills[]    = $this->model->whereMonth(BillConstant::COLUMN_CREATED_AT, $month)->sum(BillConstant::COLUMN_TOTAL);
-            $arrMonth[] = 'T' . date('m', strtotime('now - '. $i . 'month'));
-        endfor;
-
-        return [
-            'months'    => $arrMonth,
-            'total'     => $bills
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    public function getTenDaysLastMonth() : array
-    {
-        $bills      = [];
-        $arrDays    = [];
-        $month      = date(Constant::DATE_FORMAT_YMD, strtotime('now - 1 month'));
-        for ($i = 9; $i >= 0; $i--) :
-            $day        = date(Constant::DATE_FORMAT_YMD, strtotime($month. '- '. $i . 'day'));
-            $bills[]    = $this->model->whereDate(BillConstant::COLUMN_CREATED_AT, $day)->sum(BillConstant::COLUMN_TOTAL);
-            $arrDays[]  = 'N' . date('d', strtotime($month. '- '. $i . 'day'));
-        endfor;
-
-        return [
-            'days'  => $arrDays,
-            'total' => $bills
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    public function getCurrentDay() : array
-    {
-        $day        = date(Constant::DATE_FORMAT_YMD, strtotime('now'));
-        $lastDay    = date(Constant::DATE_FORMAT_YMD, strtotime('now - 1 day'));
-        $bills       = $this->model->whereDate(BillConstant::COLUMN_CREATED_AT, $day);
-        $oldBills    = $this->model->whereDate(BillConstant::COLUMN_CREATED_AT, $lastDay);
+        if ($condition == Constant::DATE_MONTH) :
+            $bills      = $this->model->whereMonth(BillConstant::COLUMN_CREATED_AT, $current);
+            $oldBills   = $this->model->whereMonth(BillConstant::COLUMN_CREATED_AT, $old);
+        elseif ($condition == Constant::DATE_YEAR) :
+            $bills      = $this->model->whereYear(BillConstant::COLUMN_CREATED_AT, $current);
+            $oldBills   = $this->model->whereYear(BillConstant::COLUMN_CREATED_AT, $old);
+        else:
+            $bills      = $this->model->whereDate(BillConstant::COLUMN_CREATED_AT, $current);
+            $oldBills   = $this->model->whereDate(BillConstant::COLUMN_CREATED_AT, $old);
+        endif;
 
         $incomeDifferentialPercent  = ($bills->sum(BillConstant::COLUMN_TOTAL) !== $oldBills->sum(BillConstant::COLUMN_TOTAL)) ? (($bills->sum(BillConstant::COLUMN_TOTAL) - $oldBills->sum(BillConstant::COLUMN_TOTAL)) / $oldBills->sum(BillConstant::COLUMN_TOTAL)) * 100 : 0;
         $billCountDifferential      = (count($bills->get()) !== count($oldBills->get())) ? ((count($bills->get()) - count($oldBills->get())) / count($oldBills->get())) * 100 : 0;
 
-        // foreach ($bills)
-
         return [
             'income'    => [
-                'today'     => $bills->sum(BillConstant::COLUMN_TOTAL),
-                'lastDay'   => $oldBills->sum(BillConstant::COLUMN_TOTAL)
+                'current'     => $bills->sum(BillConstant::COLUMN_TOTAL),
+                'old'   => $oldBills->sum(BillConstant::COLUMN_TOTAL)
             ],
             'count'     => [
-                'today'     => count($bills->get()),
-                'lastDay'   => count($oldBills->get())
+                'current'     => count($bills->get()),
+                'old'   => count($oldBills->get())
             ],
             'percent'   => [
                 'income'    => (int) $incomeDifferentialPercent,

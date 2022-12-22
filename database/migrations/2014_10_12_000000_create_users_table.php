@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('phone')->unique();
             $table->string('password');
             $table->string('status')->default('NOT_VERIFY');
-            $table->string('role')->default('ROLE_GUEST');
+            $table->string('role')->default('ROLE_WAITER');
             $table->string('cccd')->nullable();
             $table->string('avatar')->nullable();
             $table->string('gender')->nullable();

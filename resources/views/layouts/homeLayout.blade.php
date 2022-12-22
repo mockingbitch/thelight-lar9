@@ -195,7 +195,7 @@ use App\Constants\RouteConstant;
 							<li><a href="">{{$user->name}}</a></li>
 						@endif
 						<li class="active"><a href="{{route(RouteConstant::HOMEPAGE)}}">Trang chủ</a></li>
-						@if (null !== $user)
+						@if (null !== $user && $user->role !== UserConstant::ROLE_WAITER)
 							<li><a href="{{route(RouteConstant::DASHBOARD['home'])}}">Trang quản trị</a></li>
 						@endif
 						<li><a href="{{route(RouteConstant::HOME['order_list'])}}">Quản lý order</a></li>

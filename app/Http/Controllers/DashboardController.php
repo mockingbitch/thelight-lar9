@@ -8,6 +8,7 @@ use Illuminate\View\View;
 use App\Repositories\Contracts\Interface\BillRepositoryInterface;
 use App\Repositories\Contracts\Interface\BillDetailRepositoryInterface;
 use Illuminate\Http\JsonResponse;
+use App\Constants\Constant;
 
 class DashboardController extends Controller
 {
@@ -44,27 +45,49 @@ class DashboardController extends Controller
      */
     public function index() : View
     {
-        $bills      = $this->billRepository->getCurrentDay();
-        $topProduct = $this->billDetailRepository->getTopProduct();
+        $bills          = $this->billRepository->getDifferent('1', Constant::DATE_FORMAT_YMD, Constant::DATE_DAY);
+        $billsLastMonth = $this->billRepository->getDifferent('1', Constant::DATE_FORMAT_M, Constant::DATE_MONTH);
 
         return view('dashboard.index', [
             'breadcrumb'        => $this->breadcrumb,
             'income'            => $bills['income'],
             'count'             => $bills['count'],
-            'percent'           => $bills['percent']
+            'percent'           => $bills['percent'],
+            'percentLastMonth'  => $billsLastMonth['percent'],
         ]);
     }
 
     /**
-     * Undocumented function
+     * Return response json for Dashboard's Chart
      *
      * @return JsonResponse
      */
     public function getDataChart() : JsonResponse
     {
-        $bills      = $this->billRepository->getLastTenDays();
-        $oldBills   = $this->billRepository->getTenDaysLastMonth();
-        $getMonthly = $this->billRepository->getLastTwelveMonth();
+        $bills      = $this->billRepository
+                    ->getLastBills(
+                        'N',
+                        Constant::DATE_FORMAT_D,
+                        Constant::DATE_NOW,
+                        Constant::DATE_DAY,
+                        Constant::CONDITION_TENDAYSFROMNOW
+                    );
+        $oldBills   = $this->billRepository
+                    ->getLastBills(
+                        'N',
+                        Constant::DATE_FORMAT_D,
+                        date(Constant::DATE_FORMAT_YMD, strtotime('now - 1 month')),
+                        Constant::DATE_DAY,
+                        Constant::CONDITION_TENDAYSLASTMONTH
+                    );
+        $getMonthly = $this->billRepository
+                    ->getLastBills(
+                        'T',
+                        Constant::DATE_FORMAT_M,
+                        Constant::DATE_NOW,
+                        Constant::DATE_MONTH,
+                        Constant::CONDITION_TENMONTHSLASTYEAR
+                    );
 
         return response()->json([
             'current'   => $bills,

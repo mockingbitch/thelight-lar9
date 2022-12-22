@@ -9,6 +9,15 @@ class Constant
 
     public const DATE_FORMAT_DMY    = 'dd-MM-yyyy';
     public const DATE_FORMAT_YMD    = 'Y-m-d';
+    public const DATE_FORMAT_M      = 'm';
+    public const DATE_FORMAT_D      = 'd';
+    public const DATE_MONTH         = 'month';
+    public const DATE_DAY           = 'day';
+    public const DATE_YEAR          = 'year';
+    public const DATE_NOW           = 'now';
+    public const CONDITION_TENDAYSFROMNOW = 'TENDAYSFROMNOW';
+    public const CONDITION_TENDAYSLASTMONTH = 'TENDAYSLASTMONTH';
+    public const CONDITION_TENMONTHSLASTYEAR = 'TENMONTHSLASTYEAR';
 
     public const ERR_CODE = [
         'fail'    => self::ERR_CODE_FAIL,

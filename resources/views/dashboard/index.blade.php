@@ -2,7 +2,7 @@
 @section('content')
 <div class="container-fluid py-4">
     <div class="row">
-        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
                 <div class="card-body p-3">
                     <div class="row">
@@ -10,11 +10,11 @@
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Doanh thu hôm nay</p>
                                 <h5 class="font-weight-bolder mb-0">
-                                    {{number_format($income['today'])}} Đ
+                                    {{number_format($income['current'])}} Đ
                                     @if (null !== $percent['income'] && $percent['income'] > 0)
-                                        <span class="text-success text-sm font-weight-bolder" data-toggle="tooltip" title="Tăng {{number_format($income['today'] - $income['lastDay'])}} Đ">+{{$percent['income']}}%</span>
+                                        <span class="text-success text-sm font-weight-bolder" data-toggle="tooltip" title="Tăng {{number_format($income['current'] - $income['old'])}} Đ">+{{$percent['income']}}%</span>
                                     @else
-                                        <span class="text-danger text-sm font-weight-bolder" data-toggle="tooltip" title="Giảm {{number_format($income['lastDay'] - $income['today'])}} Đ">{{$percent['income']}}%</span>
+                                        <span class="text-danger text-sm font-weight-bolder" data-toggle="tooltip" title="Giảm {{number_format($income['old'] - $income['current'])}} Đ">{{$percent['income']}}%</span>
                                     @endif
                                 </h5>
                             </div>
@@ -28,7 +28,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
                 <div class="card-body p-3">
                     <div class="row">
@@ -36,11 +36,11 @@
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Số đơn hàng</p>
                                 <h5 class="font-weight-bolder mb-0">
-                                    {{$count['today']}}
+                                    {{$count['current']}}
                                     @if (null !== $percent['bill'] && $percent['bill'] > 0)
-                                        <span class="text-success text-sm font-weight-bolder" data-toggle="tooltip" title="Tăng {{$count['today'] - $count['lastDay']}}">+{{$percent['bill']}}%</span>
+                                        <span class="text-success text-sm font-weight-bolder" data-toggle="tooltip" title="Tăng {{$count['current'] - $count['old']}}">+{{$percent['bill']}}%</span>
                                     @else
-                                        <span class="text-danger text-sm font-weight-bolder"  data-toggle="tooltip" title="Giảm {{$count['lastDay'] - $count['today']}}">{{$percent['bill']}}%</span>
+                                        <span class="text-danger text-sm font-weight-bolder"  data-toggle="tooltip" title="Giảm {{$count['old'] - $count['current']}}">{{$percent['bill']}}%</span>
                                     @endif
                                 </h5>
                             </div>
@@ -54,7 +54,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
                 <div class="card-body p-3">
                     <div class="row">
@@ -62,8 +62,8 @@
                             <div class="numbers">
                             <p class="text-sm mb-0 text-capitalize font-weight-bold">Hôm qua</p>
                             <h5 class="font-weight-bolder mb-0">
-                                {{number_format($income['lastDay'])}} Đ
-                                <span class="text text-sm font-weight-bolder">({{$count['lastDay']}} đơn)</span>
+                                {{number_format($income['old'])}} Đ
+                                <span class="text text-sm font-weight-bolder">({{$count['old']}} đơn)</span>
                             </h5>
                             </div>
                         </div>
@@ -76,7 +76,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-3 col-sm-6">
+        {{-- <div class="col-xl-3 col-sm-6">
             <div class="card">
             <div class="card-body p-3">
                 <div class="row">
@@ -97,7 +97,7 @@
                 </div>
             </div>
             </div>
-        </div>
+        </div> --}}
     </div>
         {{-- <div class="row mt-4">
             <div class="col-lg-7 mb-lg-0 mb-4">
@@ -153,8 +153,18 @@
                         </div>
                     </div>
                     <h6 class="ms-2 mt-4 mb-0"> Doanh số theo tháng </h6>
-                    <p class="text-sm ms-2"> Tuần này: (<span class="font-weight-bolder">+23%</span>) </p>
-                    <div class="container border-radius-lg">
+                    @if (null !== $percentLastMonth['income'] && $percentLastMonth['income'] > 0)
+                        <p class="text-sm">
+                            <i class="fa fa-arrow-up text-success"></i>
+                            <span class="text-sm ms-2"> Tháng này: (<span class="font-weight-bolder">+{{$percentLastMonth['income']}}%</span>) </span>
+                        <p>
+                    @else
+                        <p class="text-sm">
+                            <i class="fa fa-arrow-down text-danger"></i>
+                            <span class="text-sm ms-2"> Tháng này: (<span class="font-weight-bolder">-{{$percentLastMonth['income']}}%</span>) </span>
+                        <p>
+                    @endif
+                    {{-- <div class="container border-radius-lg">
                         <div class="row">
                             <div class="col-3 py-3 ps-0">
                                 <div class="d-flex mb-2">
@@ -256,7 +266,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>

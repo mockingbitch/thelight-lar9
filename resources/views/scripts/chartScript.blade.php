@@ -11,7 +11,7 @@
         new Chart(ctx, {
             type: "bar",
             data: {
-                labels: json.month.months,  //Day from data
+                labels: json.month.label,  //Day from data
                 datasets: [{
                 label: "Doanh số",
                 tension: 0.4,
@@ -90,7 +90,7 @@
             new Chart(ctx2, {
             type: "line",
             data: {
-                labels: json.current.days,  //day from data
+                labels: json.current.label,  //day from data
                 datasets: [{
                     label: "Tháng này",
                     tension: 0.4,
