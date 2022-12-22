@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description')->nullable();
-            $table->string('status')->default(1);
+            $table->string('status')->default(0)->comment('0 > EMPTY, 1 > PENDING, 2 > ON_DELIVERY, 3 > DELIVERED');
             $table->timestamps();
             $table->softDeletes();
         });

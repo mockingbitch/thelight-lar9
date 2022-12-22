@@ -7,6 +7,18 @@ class Constant
     public const ERR_CODE_FAIL      = 0;
     public const ERR_CODE_SUCCESS   = 1;
 
+    public const DATE_FORMAT_DMY    = 'dd-MM-yyyy';
+    public const DATE_FORMAT_YMD    = 'Y-m-d';
+    public const DATE_FORMAT_M      = 'm';
+    public const DATE_FORMAT_D      = 'd';
+    public const DATE_MONTH         = 'month';
+    public const DATE_DAY           = 'day';
+    public const DATE_YEAR          = 'year';
+    public const DATE_NOW           = 'now';
+    public const CONDITION_TENDAYSFROMNOW = 'TENDAYSFROMNOW';
+    public const CONDITION_TENDAYSLASTMONTH = 'TENDAYSLASTMONTH';
+    public const CONDITION_TENMONTHSLASTYEAR = 'TENMONTHSLASTYEAR';
+
     public const ERR_CODE = [
         'fail'    => self::ERR_CODE_FAIL,
         'success' => self::ERR_CODE_SUCCESS
@@ -18,7 +30,7 @@ class Constant
     public const ERR_MSG_UPDATE_SUCCESS = 'Cập nhật thành công';
     public const ERR_MSG_DELETE_FAIL    = 'Xóa thất bại';
     public const ERR_MSG_DELETE_SUCCESS = 'Xóa thành công';
-    
+
     public const ERR_MSG = [
         'create_fail'    => self::ERR_MSG_CREATE_FAIL,
         'create_success' => self::ERR_MSG_CREATE_SUCCESS,
@@ -35,4 +47,4 @@ class Constant
         'available'     => self::STATUS_AVAILABLE,
         'unavailable'   => self::STATUS_UNAVAILABLE
     ];
-}   
+}

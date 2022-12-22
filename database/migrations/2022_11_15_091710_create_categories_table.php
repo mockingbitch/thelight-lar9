@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description')->nullable();
-            $table->string('status')->default('AVAILABLE');
+            $table->string('status')->default(1)->comment('0 > UNAVAILABLE, 1 > AVAILABLE');
             $table->timestamps();
             $table->softDeletes();
         });

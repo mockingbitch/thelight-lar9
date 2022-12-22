@@ -28,8 +28,8 @@ use App\Constants\RouteConstant;
                         @foreach($categories as $item)
                         <tr class="tb-row" onclick="handleClickRow({{$item->id}})">
                             <td>
-                                <div class="d-flex px-2 py-1">
-                                    <div class="d-flex flex-column justify-content-center">
+                                <div class="px-2 py-1">
+                                    <div class="flex-column justify-content-center">
                                         <h6 class="mb-0">{{$item->name}}</h6>
                                     </div>
                                 </div>

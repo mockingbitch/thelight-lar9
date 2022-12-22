@@ -10,6 +10,7 @@ class DashboardConstant
     public const BREADCRUMB_PRODUCT     = 'product';
     public const BREADCRUMB_BILL        = 'bill';
     public const BREADCRUMB_ORDER       = 'order';
+    public const BREADCRUMB_USER        = 'user';
 
     public const BREADCRUMB = [
         'home'      => self::BREADCRUMB_DASHBOARD,
@@ -17,6 +18,7 @@ class DashboardConstant
         'table'     => self::BREADCRUMB_TABLE,
         'product'   => self::BREADCRUMB_PRODUCT,
         'bill'      => self::BREADCRUMB_BILL,
-        'order'     => self::BREADCRUMB_ORDER
+        'order'     => self::BREADCRUMB_ORDER,
+        'user'      => self::BREADCRUMB_USER
     ];
 }

@@ -41,6 +41,13 @@
         }
     }
 
+
+    function handleToggleMenu() {
+        $('#responsive-nav').toggle('', function (e) {
+            $('#responsive-nav').addClass( "active" );
+        });
+    }
+
     function handleRemoveOrder() {
         var table = '{{$table->id ?? ''}}';
         var urlOrder = "{{route('home')}}" + "/order?table=" + table;
@@ -68,11 +75,6 @@
 
     }
 
-    function handleToggleMenu() {
-        $('#responsive-nav').toggle('', function () {
-            $('#responsive-nav').addClass( "active" );
-        });
-    }
 
     function handleRemoveItemOrder(id) {
         Swal.fire({

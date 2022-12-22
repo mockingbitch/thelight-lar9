@@ -23,7 +23,7 @@ return new class extends Migration
             $table->foreign('table_id')->references('id')->on('tables');
             $table->string('total');
             $table->string('note')->nullable();
-            $table->string('status')->default('CHECKED_OUT');
+            $table->string('status')->default(1)->comment('1 > CHECKED OUT');
             $table->timestamps();
             $table->softDeletes();
         });

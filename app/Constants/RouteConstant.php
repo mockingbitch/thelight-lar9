@@ -26,7 +26,8 @@ class RouteConstant
     public const DASHBOARD_BILL_DETAIL      = 'dashboard.bill.detail';
     public const DASHBOARD_BILL_UPDATE      = 'dashboard.bill.update';
     public const DASHBOARD_BILL_DELETE      = 'dashboard.bill.delete';
-
+    public const DASHBOARD_USER_LIST        = 'dashboard.user.list';
+    public const DASHBOARD_CHART            = 'dashboard.chart';
 
     public const DASHBOARD = [
         'home'              => self::DASHBOARD_HOME,
@@ -45,7 +46,9 @@ class RouteConstant
         'bill_list'         => self::DASHBOARD_BILL_LIST,
         'bill_update'       => self::DASHBOARD_BILL_UPDATE,
         'bill_delete'       => self::DASHBOARD_BILL_DELETE,
-        'bill_detail'       => self::DASHBOARD_BILL_DETAIL
+        'bill_detail'       => self::DASHBOARD_BILL_DETAIL,
+        'user_list'         => self::DASHBOARD_USER_LIST,
+        'chart'             => self::DASHBOARD_CHART,
     ];
 
     public const HOME_TABLE_LIST        = 'home.table.list';

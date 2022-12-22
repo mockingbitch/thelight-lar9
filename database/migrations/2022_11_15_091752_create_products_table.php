@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories');
-            $table->string('status')->nullable();
+            $table->string('status')->default(1)->comment('0 > UNAVAILABLE, 1 > AVAILABLE');
             $table->timestamps();
             $table->softDeletes();
         });

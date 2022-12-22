@@ -1,9 +1,12 @@
 @php
 use App\Constants\RouteConstant;
+use App\Constants\UserConstant;
 
 	$order = session()->get('order');
 	$table_id = null !== $order ? array_key_first($order) : null;
 	$subTotal = 0;
+	$user = auth()->guard('user')->user() ?? null;
+
 @endphp
 <!DOCTYPE html>
 <html lang="en">
@@ -29,9 +32,8 @@ use App\Constants\RouteConstant;
 		<link type="text/css" rel="stylesheet" href="{{asset('home/css/nouislider.min.css')}}"/>
 
 		<!-- Font Awesome Icon -->
-		<link rel="stylesheet" href="{{asset('home/css/font-awesome.min.css')}}">
+		{{-- <link rel="stylesheet" href="{{asset('home/css/font-awesome.min.css')}}"> --}}
 		<link rel="stylesheet" href="{{asset('home/css/all.css')}}">
-		{{-- <script src="https://kit.fontawesome.com/915a42d302.js" crossorigin="anonymous"></script> --}}
 
 
 		{{-- Custom Style --}}
@@ -122,46 +124,48 @@ use App\Constants\RouteConstant;
 								<!-- /Wishlist -->
 
 								<!-- Cart -->
-								<div class="dropdown orders {{null !== $order ? 'display-order' : ''}}">
-									<a class="dropdown-toggle" data-toggle="dropdown">
-										<i class="fa fa-shopping-cart"></i>
-										<span>Order</span>
-										<div class="qty">{{null !== $order && null !== $table_id ? count($order[$table_id]) : ''}}</div>
-									</a>
-									<div class="cart-dropdown">
-										@if (null !== $order && null !== $order[$table_id])
-										<div class="cart-list">
-											@foreach ($order[$table_id] as $item)
-											<div class="product-widget">
-												<div class="product-img">
-													<img src="{{asset('upload/images/products/' . $item['image'])}}" alt="">
+								@if (isset($breadcrumb) && null !== $breadcrumb && $breadcrumb == 'products_order')
+									<div class="dropdown orders {{null !== $order ? 'display-order' : ''}}">
+										<a class="dropdown-toggle" data-toggle="dropdown">
+											<i class="fa fa-shopping-cart"></i>
+											<span>Order</span>
+											<div class="qty">{{null !== $order && null !== $table_id ? count($order[$table_id]) : ''}}</div>
+										</a>
+										<div class="cart-dropdown">
+											@if (null !== $order && null !== $order[$table_id])
+											<div class="cart-list">
+												@foreach ($order[$table_id] as $item)
+												<div class="product-widget">
+													<div class="product-img">
+														<img src="{{asset('upload/images/products/' . $item['image'])}}" alt="">
+													</div>
+													<div class="product-body">
+														<h3 class="product-name"><a href="#">{{$item['name']}}</a></h3>
+														<h4 class="product-price"><span class="qty">{{$item['quantity']}} X</span>{{number_format($item['price'])}}</h4>
+													</div>
+													<a class="delete" onclick="handleRemoveItemOrder({{$item['id']}})"><i class="fa fa-close"></i></a>
 												</div>
-												<div class="product-body">
-													<h3 class="product-name"><a href="#">{{$item['name']}}</a></h3>
-													<h4 class="product-price"><span class="qty">{{$item['quantity']}} X</span>{{number_format($item['price'])}}</h4>
-												</div>
-												<a class="delete" onclick="handleRemoveItemOrder({{$item['id']}})"><i class="fa fa-close"></i></a>
+												@php
+													$subTotal += $item['quantity'] * $item['price']
+												@endphp
+												@endforeach
 											</div>
-											@php
-												$subTotal += $item['quantity'] * $item['price']
-											@endphp
-											@endforeach
-										</div>
-										<div class="cart-summary">
-											<small>{{count($order[$table_id])}} sản phẩm</small>
-											<h5>Tổng: {{number_format($subTotal)}}</h5>
-										</div>
-										@endif
-										<div class="cart-btns">
-											<a onclick="handleRemoveOrder()">Xoá order</a>
-											<a href="{{route(RouteConstant::HOME['order_submit'])}}">Xác nhận <i class="fa fa-arrow-circle-right"></i></a>
+											<div class="cart-summary">
+												<small>{{count($order[$table_id])}} sản phẩm</small>
+												<h5>Tổng: {{number_format($subTotal)}}</h5>
+											</div>
+											@endif
+											<div class="cart-btns">
+												<a onclick="handleRemoveOrder()">Xoá order</a>
+												<a href="{{route(RouteConstant::HOME['order_submit'])}}">Xác nhận <i class="fa fa-arrow-circle-right"></i></a>
+											</div>
 										</div>
 									</div>
-								</div>
+								@endif
 								<!-- /Cart -->
 
 								<!-- Menu Toogle -->
-								<div class="menu-toggle" onclick="handleToggleMenu()">
+								<div class="menu-toggle" onclick="{{isset($breadcrumb) && null !== $breadcrumb && $breadcrumb == 'products_order' ? 'handleToggleMenu()' : ''}}">
 									<a href="#">
 										<i class="fa fa-bars"></i>
 										<span>Menu</span>
@@ -188,14 +192,15 @@ use App\Constants\RouteConstant;
 				<div id="responsive-nav">
 					<!-- NAV -->
 					<ul class="main-nav nav navbar-nav">
+						@if (null !== $user)
+							<li><a href="">{{$user->name}}</a></li>
+						@endif
 						<li class="active"><a href="{{route(RouteConstant::HOMEPAGE)}}">Trang chủ</a></li>
-						<li><a href="{{route(RouteConstant::DASHBOARD['home'])}}">Trang quản trị</a></li>
+						@if (null !== $user && $user->role !== UserConstant::ROLE_WAITER)
+							<li><a href="{{route(RouteConstant::DASHBOARD['home'])}}">Trang quản trị</a></li>
+						@endif
 						<li><a href="{{route(RouteConstant::HOME['order_list'])}}">Quản lý order</a></li>
-						{{-- <li><a href="#">Categories</a></li> --}}
-						{{-- <li><a href="#">Laptops</a></li> --}}
-						{{-- <li><a href="#">Smartphones</a></li> --}}
-						{{-- <li><a href="#">Cameras</a></li> --}}
-						{{-- <li><a href="#">Accessories</a></li> --}}
+						<li><a href="{{route(RouteConstant::LOGOUT)}}">Đăng xuất</a></li>
 					</ul>
 					<!-- /NAV -->
 				</div>
@@ -208,7 +213,7 @@ use App\Constants\RouteConstant;
 		<!-- SECTION -->
 		@yield('content')
 		<!-- /SECTION -->
-		@extends('scripts.script')
+
 		<script>
 			// Get the button
 			let mybutton = document.getElementById("backTop");
