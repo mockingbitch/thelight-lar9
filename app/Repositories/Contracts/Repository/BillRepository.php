@@ -36,16 +36,7 @@ class BillRepository extends BaseRepository implements BillRepositoryInterface
         return $bill;
     }
 
-    /**
-     * @param string|null $label        //Chart's column name
-     * @param string|null $dateFormat   //Date format ('Y-m-d', 'd', 'm', ...)
-     * @param string|null $param1       //Now || specific date
-     * @param string|null $param2       //'month' || 'day'
-     * @param string|null $condition    //condition get
-     *
-     * @return array
-     */
-    public function getLastBills(?string $label, ?string $dateFormat, ?string $param1, ?string $param2, ?string $condition) : array
+    public function getLastBills($label, $dateFormat, $param1, $param2, $condition) : array
     {
         $bills      = [];
         $arrDays    = [];
@@ -56,15 +47,15 @@ class BillRepository extends BaseRepository implements BillRepositoryInterface
 
         for ($i = 9; $i >= 0; $i--) :
             switch ($condition) {
-                case Constant::CONDITION_TENMONTHSLASTYEAR :
+                case 'TenMonthsLastYear':
                     $month      = date('m', strtotime('now - '. $i . 'month'));
                     $bills[]    = $this->model->whereMonth(BillConstant::COLUMN_CREATED_AT, $month)->sum(BillConstant::COLUMN_TOTAL);
                     break;
-                case Constant::CONDITION_TENDAYSFROMNOW :
+                case Constant::CONDITION_TENDAYSFROMNOW:
                     $day        = date(Constant::DATE_FORMAT_YMD, strtotime('now - '. $i . 'day'));
                     $bills[]    = $this->model->whereDate(BillConstant::COLUMN_CREATED_AT, $day)->sum(BillConstant::COLUMN_TOTAL);
                     break;
-                case Constant::CONDITION_TENDAYSLASTMONTH :
+                case Constant::CONDITION_TENDAYSLASTMONTH:
                     $day        = date(Constant::DATE_FORMAT_YMD, strtotime($month. '- '. $i . 'day'));
                     $bills[]    = $this->model->whereDate(BillConstant::COLUMN_CREATED_AT, $day)->sum(BillConstant::COLUMN_TOTAL);
                     break;
@@ -104,8 +95,8 @@ class BillRepository extends BaseRepository implements BillRepositoryInterface
             $oldBills   = $this->model->whereDate(BillConstant::COLUMN_CREATED_AT, $old);
         endif;
 
-        $incomeDifferentialPercent  = ($bills->sum(BillConstant::COLUMN_TOTAL) !== $oldBills->sum(BillConstant::COLUMN_TOTAL)) ? (($bills->sum(BillConstant::COLUMN_TOTAL) - $oldBills->sum(BillConstant::COLUMN_TOTAL)) / $oldBills->sum(BillConstant::COLUMN_TOTAL)) * 100 : 0;
-        $billCountDifferential      = (count($bills->get()) !== count($oldBills->get())) ? ((count($bills->get()) - count($oldBills->get())) / count($oldBills->get())) * 100 : 0;
+        $incomeDifferentialPercent  = ($bills->sum(BillConstant::COLUMN_TOTAL) !== $oldBills->sum(BillConstant::COLUMN_TOTAL)) ? (($bills->sum(BillConstant::COLUMN_TOTAL) - $oldBills->sum(BillConstant::COLUMN_TOTAL)) / ($oldBills->sum(BillConstant::COLUMN_TOTAL) == 0 ?? 1)) * 100 : 0;
+        $billCountDifferential      = (count($bills->get()) !== count($oldBills->get())) ? ((count($bills->get()) - count($oldBills->get())) / (count($oldBills->get()) == 0 ?? 1)) * 100 : 0;
 
         return [
             'income'    => [

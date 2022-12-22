@@ -1,5 +1,6 @@
 @php
 use App\Constants\RouteConstant;
+use App\Constants\UserConstant;
 
 	$order = session()->get('order');
 	$table_id = null !== $order ? array_key_first($order) : null;
