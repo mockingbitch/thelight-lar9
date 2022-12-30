@@ -47,7 +47,7 @@ class BillRepository extends BaseRepository implements BillRepositoryInterface
 
         for ($i = 9; $i >= 0; $i--) :
             switch ($condition) {
-                case 'TenMonthsLastYear':
+                case Constant::CONDITION_TENMONTHSLASTYEAR:
                     $month      = date('m', strtotime('now - '. $i . 'month'));
                     $bills[]    = $this->model->whereMonth(BillConstant::COLUMN_CREATED_AT, $month)->sum(BillConstant::COLUMN_TOTAL);
                     break;

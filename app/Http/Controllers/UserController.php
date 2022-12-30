@@ -9,6 +9,7 @@ use App\Constants\UserConstant;
 use App\Constants\RouteConstant;
 use App\Constants\Constant;
 use Illuminate\View\View;
+use App\Http\Requests\UserRequest;
 
 class UserController extends Controller
 {
@@ -63,5 +64,17 @@ class UserController extends Controller
                     'userErrMsg' => UserConstant::ERR_MSG_NOT_FOUND
                 ]);
         }
+    }
+
+    /**
+     * @param integer|null $id
+     * @param UserRequest $request
+     *
+     * @return View|RedirectResponse
+     */
+    public function update(?int $id, UserRequest $userRequest) : View|RedirectResponse
+    {
+        return view('dashboard.user.update');
+
     }
 }
